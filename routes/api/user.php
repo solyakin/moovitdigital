@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 /*
 |--------------------------------------------------------------------------
@@ -20,4 +21,6 @@ Route::post('user/register',[RegisterController::class, 'userRegister'])->name('
 Route::group( ['prefix' => 'user','middleware' => ['auth:user-api','scopes:user'] ],function(){
    // authenticated users routes here
     Route::get('dashboard',[LoginController::class, 'userDashboard']);
+    Route::post('logout', [LoginController::class, 'logout']);
+    Route::get('profile', [ProfileController::class, 'profile']);
 });

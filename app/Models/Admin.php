@@ -11,7 +11,7 @@ use Laravel\Passport\HasApiTokens;
 class Admin extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens;
-    
+
     protected $guard = 'admin';
     /**
      * The attributes that are mass assignable.
@@ -23,7 +23,7 @@ class Admin extends Authenticatable
         'lastName',
         'email',
         'password',
-        'profilePic',
+        'image',
         'phone',
         'role'
     ];

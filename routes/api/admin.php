@@ -20,4 +20,6 @@ Route::post('admin/register',[RegisterController::class, 'adminRegister'])->name
 Route::group( ['prefix' => 'admin','middleware' => ['auth:admin-api','scopes:admin'] ],function(){
    // authenticated staff routes here
     Route::get('dashboard',[LoginController::class, 'adminDashboard']);
+    Route::post('logout', [LoginController::class, 'logout']);
+    Route::get('profile', [ProfileController::class, 'profile']);
 });

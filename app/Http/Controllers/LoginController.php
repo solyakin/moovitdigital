@@ -44,6 +44,7 @@ class LoginController extends Controller
             $user = User::select('users.*')->find(auth()->guard('user')->user()->id);
             $success =  $user;
             $success['token'] =  $user->createToken('MyApp',['user'])->accessToken;
+            $success['token'] ->save();
 
             return response()->json($success, 200);
         }else{
@@ -74,5 +75,16 @@ class LoginController extends Controller
         }else{
             return response()->json(['error' => ['Email or Password are Wrong.']], 400);
         }
+    }
+
+    /**
+     * Log the user out (Invalidate the token).
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout() {
+        auth()->logout();
+
+        return response()->json(['message' => 'User successfully signed out']);
     }
 }
