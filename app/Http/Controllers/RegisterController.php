@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
-    public function userRegister(Request $request) {
+    public function userRegister(Request $request)
+    {
         $data = $request->all();
         $validator = Validator::make($data, [
             'firstName' => ['required', 'string', 'max:255'],
@@ -29,10 +30,10 @@ class RegisterController extends Controller
         $path = $request->file('image')->store('public/profile/images');
 
         $user = User::create([
-        	'firstName' => $request->firstName,
-        	'lastName' => $request->lastName,
-        	'email' => $request->email,
-        	'password' => Hash::make($request->password),
+            'firstName' => $request->firstName,
+            'lastName' => $request->lastName,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
             'image' => $path,
             'phone' => $request->phone,
             'role' => $request->role
@@ -45,33 +46,45 @@ class RegisterController extends Controller
         ], 200);
     }
 
-    public function adminRegister(Request $request) {
+    public function adminRegister(Request $request)
+    {
         $data = $request->all();
         $validator = Validator::make($data, [
-            'firstName' => [ 'string', 'max:255'],
-            'lastName' => [ 'string', 'max:255'],
+            'firstName' => ['string', 'max:255'],
+            'lastName' => ['string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'image' => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
-            'phone' => [ 'string', 'max:255'],
+            'phone' => ['string', 'max:255'],
             'role' => ['required', 'string', 'max:255'],
         ]);
 
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 401);
         }
+        if (!$request->image) {
+            $admin = Admin::create([
+                'firstName' => $request->firstName,
+                'lastName' => $request->lastName,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'phone' => $request->phone,
+                'role' => $request->role
+            ]);
+        } else {
 
-        $path = $request->file('image')->store('public/profile/images');
+            $path = $request->file('image')->store('public/profile/images');
 
-        $admin = Admin::create([
-        	'firstName' => $request->firstName,
-        	'lastName' => $request->lastName,
-        	'email' => $request->email,
-        	'password' => Hash::make($request->password),
-            'image' => $path,
-            'phone' => $request->phone,
-            'role' => $request->role
-        ]);
+            $admin = Admin::create([
+                'firstName' => $request->firstName,
+                'lastName' => $request->lastName,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'image' => $path,
+                'phone' => $request->phone,
+                'role' => $request->role
+            ]);
+        }
 
         return response()->json([
             'success' => true,

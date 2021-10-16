@@ -27,4 +27,8 @@ class Admin extends Authenticatable
         'phone',
         'role'
     ];
+
+    public function sendPasswordResetNotification($token){
+        $this->notify(new \App\Notifications\MailResetPasswordNotification($token));
+    }
 }

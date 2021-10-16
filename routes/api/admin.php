@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 /*
 |--------------------------------------------------------------------------
@@ -22,4 +23,5 @@ Route::group( ['prefix' => 'admin','middleware' => ['auth:admin-api','scopes:adm
     Route::get('dashboard',[LoginController::class, 'adminDashboard']);
     Route::post('logout', [LoginController::class, 'logout']);
     Route::get('profile', [ProfileController::class, 'profile']);
+    Route::put('edit-profile/{id}', [ProfileController::class, 'editAdmin']);
 });

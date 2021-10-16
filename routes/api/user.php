@@ -23,4 +23,5 @@ Route::group( ['prefix' => 'user','middleware' => ['auth:user-api','scopes:user'
     Route::get('dashboard',[LoginController::class, 'userDashboard']);
     Route::post('logout', [LoginController::class, 'logout']);
     Route::get('profile', [ProfileController::class, 'profile']);
+    Route::put('edit-profile/{id}', [ProfileController::class, 'editUser']);
 });
