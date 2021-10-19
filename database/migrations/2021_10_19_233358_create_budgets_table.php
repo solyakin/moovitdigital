@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGraphicsTable extends Migration
+class CreateBudgetsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateGraphicsTable extends Migration
      */
     public function up()
     {
-        Schema::create('graphics', function (Blueprint $table) {
+        Schema::create('budgets', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('image');
+            $table->string('description');
+            $table->string('budget');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ class CreateGraphicsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('graphics');
+        Schema::dropIfExists('budgets');
     }
 }

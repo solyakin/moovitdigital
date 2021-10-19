@@ -2,34 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Graphic;
+use App\Models\Budget;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class GraphicController extends Controller
+class BudgetController extends Controller
 {
-    public function createGraphic (Request $request) {
+    public function createBudget (Request $request) {
         $data = $request->all();
         $validator = Validator::make($data, [
             'name' => ['required', 'string', 'max:250'],
-            'image' => ['required', 'image', 'mimes:png,jpg,svg,gif', 'max:2500']
+            'description' => ['required', 'string', 'max:500'],
+            'budget' => ['required', 'string', 'max:250']
         ]);
 
         if($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 401);
         };
 
-        $path = $request->file('image')->store('public/ads/images');
-
-        $graphic = Graphic::create([
+        $budget = Budget::create([
             'name' => $request->name,
-            'image' => $path
+            'description' => $request->description,
+            'budget' => $request->budget
         ]);
 
         return response()->json([
             'success' => true,
-            'message' => 'Graphic created successfully',
-            'data' => $graphic
+            'message' => 'Budget created successfully',
+            'data' => $budget
         ], 200);
     }
 }
