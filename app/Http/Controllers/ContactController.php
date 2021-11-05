@@ -2,13 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use App\Models\Contact;
+use App\Notifications\NewContactNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Notification;
 
 class ContactController extends Controller
 {
     public function contact(Request $request) {
+        $admin = Admin::all();
+        $collection = collect($admin);
+        $filtered = $collection->where('role', 'admin');
+        $filtered->all();
         $data = $request->all();
         $validator = Validator::make($data, [
             'name' => 'required',
@@ -28,10 +35,16 @@ class ContactController extends Controller
             'message' => $request->message
         ]);
 
+        Notification::send($filtered, new NewContactNotification($request->name, $request->subject));
+
         return response()->json([
             'success' => true,
             'message' => 'Thanks for contacting Us',
             'data' => $contact
         ], 200);
+    }
+
+    public function getContacts () {
+        return Contact::all();
     }
 }

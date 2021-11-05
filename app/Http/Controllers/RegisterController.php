@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Admin;
 use App\Models\User;
+use App\Models\Admin;
+use App\Models\Publisher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -14,34 +16,129 @@ class RegisterController extends Controller
     {
         $data = $request->all();
         $validator = Validator::make($data, [
-            'firstName' => ['required', 'string', 'max:255'],
-            'lastName' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
-            'phone' => ['required', 'string', 'max:255'],
-            'role' => ['required', 'string', 'max:255'],
         ]);
 
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 401);
         }
 
-        $path = $request->file('image')->store('public/profile/images');
-
         $user = User::create([
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        event(new Registered($user));
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User created successfully, Please verify email.',
+            'data' => $user
+        ], 200);
+    }
+
+    public function userUpdate(Request $request, $id)
+    {
+        $data = $request->all();
+        $validator = Validator::make($data, [
+            'firstName' => ['required', 'string', 'max:255'],
+            'lastName' => ['required', 'string', 'max:255'],
+            'image' => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+            'phone' => ['required', 'string', 'max:255'],
+            'dob' => ['required', 'string', 'max:255'],
+            'country' => ['required', 'string', 'max:255'],
+            'company' => ['string', 'max:255'],
+            'business_type' => ['string', 'max:255'],
+            'role' => ['required', 'string', 'max:255'],
+            'agree' => ['required', 'integer', 'max:250']
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 401);
+        }
+
+        if (!$request->image) {
+            $user = User::where('id', $id);
+            $user->update([
+                'firstName' => $request->firstName,
+                'lastName' => $request->lastName,
+                'phone' => $request->phone,
+                'dob' => $request->dob,
+                'country' => $request->country,
+                'company' => $request->company,
+                'business_type' => $request->business_type,
+                'role' => $request->role,
+                'agree' => $request->agree
+            ]);
+        } else {
+
+            $path = $request->file('image')->store('public/profile/images');
+
+            $user = User::where('id', $id);
+            $user->update([
+                'firstName' => $request->firstName,
+                'lastName' => $request->lastName,
+                'image' => $path,
+                'phone' => $request->phone,
+                'dob' => $request->dob,
+                'country' => $request->country,
+                'company' => $request->company,
+                'business_type' => $request->business_type,
+                'role' => $request->role,
+                'agree' => $request->agree
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'User profile created successfully',
+            'data' => $user
+        ], 200);
+    }
+
+    public function publisher(Request $request, $id)
+    {
+        $data = $request->all();
+        $validator = Validator::make($data, [
+            'firstName' => ['required', 'string', 'max:255'],
+            'lastName' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:250'],
+            'phone' => ['required', 'string', 'max:255'],
+            'dob' => ['required', 'string', 'max:255'],
+            'country' => ['required', 'string', 'max:255'],
+            'company' => ['required', 'string', 'max:255'],
+            'industry' => ['required', 'string', 'max:255'],
+            'website' => ['required', 'string', 'max:255'],
+            'average_visit' => ['required', 'string', 'max:255'],
+            'website_timeline' => ['required', 'string', 'max:255'],
+            'role' => ['required', 'string', 'max:255'],
+            'agree' => ['required', 'integer', 'max:255'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 401);
+        }
+
+        $user = Publisher::create([
             'firstName' => $request->firstName,
             'lastName' => $request->lastName,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'image' => $path,
             'phone' => $request->phone,
-            'role' => $request->role
+            'dob' => $request->dob,
+            'country' => $request->country,
+            'company' => $request->company,
+            'industry' => $request->industry,
+            'website' => $request->website,
+            'average_visit' => $request->average_visit,
+            'website_timeline' => $request->website_timeline,
+            'role' => $request->role,
+            'agree' => $request->agree
         ]);
 
         return response()->json([
             'success' => true,
-            'message' => 'User created successfully',
+            'message' => 'Request sent successfully',
             'data' => $user
         ], 200);
     }

@@ -13,4 +13,8 @@ class Graphic extends Model
         'name',
         'image'
     ];
+
+    public function adverts() {
+        return $this->hasMany(Advert::class, 'graphic_id');
+    }
 }

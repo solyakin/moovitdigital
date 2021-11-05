@@ -19,6 +19,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     public const HOME = '/home';
 
+
     /**
      * The controller namespace for the application.
      *
@@ -58,6 +59,9 @@ class RouteServiceProvider extends ServiceProvider
                 ->group(base_path('routes/web.php'));
         });
     }
+
+
+    public const USERLOGIN = 'moovitdigital.com/login';
 
     /**
      * Configure the rate limiters for the application.

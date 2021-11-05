@@ -33,21 +33,21 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()->all()]);
         }
 
-        if(auth()->guard('user')->attempt(['email' => request('email'), 'password' => request('password')])){
+        if (auth()->guard('user')->attempt(['email' => request('email'), 'password' => request('password')])) {
 
             config(['auth.guards.api.provider' => 'user']);
 
             $user = User::select('users.*')->find(auth()->guard('user')->user()->id);
             $success =  $user;
-            $success['token'] =  $user->createToken('MyApp',['user'])->accessToken;
-            $success['token'] ->save();
+            $success['token'] =  $user->createToken('MyApp', ['user'])->accessToken;
+            // $success['token']->save();
 
             return response()->json($success, 200);
-        }else{
+        } else {
             return response()->json(['error' => ['Email or Password are Wrong.']], 400);
         }
     }
@@ -59,20 +59,20 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()->all()]);
         }
 
-        if(Auth::guard('admin')->attempt(['email' => request('email'), 'password' => request('password')])){
+        if (Auth::guard('admin')->attempt(['email' => request('email'), 'password' => request('password')])) {
 
             config(['auth.guards.api.provider' => 'admin']);
 
             $admin = Admin::select('admins.*')->find(auth()->guard('admin')->user()->id);
             $success =  $admin;
-            $success['token'] =  $admin->createToken('MyApp',['admin'])->accessToken;
+            $success['token'] =  $admin->createToken('MyApp', ['admin'])->accessToken;
 
             return response()->json($success, 200);
-        }else{
+        } else {
             return response()->json(['error' => ['Email or Password are Wrong.']], 400);
         }
     }
@@ -82,7 +82,8 @@ class LoginController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function logout (Request $request) {
+    public function logout(Request $request)
+    {
         $token = $request->user()->token();
         $token->revoke();
         $response = ['message' => 'You have been successfully logged out!'];

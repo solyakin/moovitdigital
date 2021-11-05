@@ -5,17 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Budget extends Model
+class PublisherAds extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'name',
-        'description',
-        'budget'
+        'banner',
+        'user_id'
     ];
 
-    public function adverts() {
-        return $this->hasMany(Advert::class, 'budget_id');
+    public function users() {
+        return $this->belongsToMany(User::class, 'user_id');
     }
 }

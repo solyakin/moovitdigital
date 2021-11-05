@@ -12,18 +12,19 @@ class GraphicController extends Controller
         $data = $request->all();
         $validator = Validator::make($data, [
             'name' => ['required', 'string', 'max:250'],
-            'image' => ['required', 'image', 'mimes:png,jpg,svg,gif', 'max:2500']
+            'image' => ['required', 'string', 'max:250'],
+            // 'image' => ['required', 'image', 'mimes:png,jpg,svg,gif', 'max:2500']
         ]);
 
         if($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 401);
         };
 
-        $path = $request->file('image')->store('public/ads/images');
+        // $path = $request->file('image')->store('public/ads/images');
 
         $graphic = Graphic::create([
             'name' => $request->name,
-            'image' => $path
+            'image' => $request->image
         ]);
 
         return response()->json([

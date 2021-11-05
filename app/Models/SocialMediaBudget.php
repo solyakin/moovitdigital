@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Budget extends Model
+class SocialMediaBudget extends Model
 {
     use HasFactory;
 
@@ -15,7 +15,7 @@ class Budget extends Model
         'budget'
     ];
 
-    public function adverts() {
-        return $this->hasMany(Advert::class, 'budget_id');
+    public function budget() {
+        $this->hasMany(SocialMedia::class, 'budget_Id');
     }
 }

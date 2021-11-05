@@ -8,7 +8,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -21,10 +21,16 @@ class User extends Authenticatable
         'firstName',
         'lastName',
         'email',
+        'email_verified_at',
         'password',
         'image',
         'phone',
-        'role'
+        'dob',
+        'country',
+        'company',
+        'business_type',
+        'role',
+        'agree'
     ];
 
     /**
@@ -52,5 +58,9 @@ class User extends Authenticatable
 
     public function adverts() {
         return $this->hasMany(Advert::class, 'createdBy');
+    }
+
+    public function publisherAds() {
+        return $this->hasMany(PublisherAds::class, 'user_id');
     }
 }
