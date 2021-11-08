@@ -1,0 +1,27 @@
+.header{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    .navbar{
+        .navbar-collapse{
+            margin-left: 20px;
+            .navbar-nav{
+                .nav-item{
+                    margin-right: 15px!important;
+                    a{
+                        font-weight: 600;
+                        &.start-btn{
+                            border: none;
+                            padding: 10px 20px;
+                            color: white;
+                            text-decoration: none;
+                            background: #35469C;
+                            margin-top: 15px;
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,45 @@
+.services{
+    padding-top: 60px;
+    padding-bottom: 60px;
+    text-align: left;
+    .container{
+        .service-text{
+            h2{
+                font-weight: 700;
+                margin-bottom: 0;
+                font-size: 37px;
+            }
+            p{
+                font-size: 15px;
+                line-height: 1.8;
+                font-weight: normal;
+            }
+            .row{
+                align-items: center;
+                .content-text{
+                    h3{
+                        font-size: 26px;
+                        font-weight: 600;
+                        color:  #2D3A8C;
+                        
+                    }
+                    button{
+                        padding: 10px 20px;
+                            border: none;
+                            color: white;
+                            margin-top: 10px;
+                        }
+                    }
+                .col-md-4{
+                    text-align: right;
+                    .img{
+                        width: 270px;
+                        height: 270px;
+                        border-radius: 50%;
+                        background: #C4C4C4;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,146 @@
+import React from 'react';
+import '../../dashboard/dashboard.scss';
+import '../../dashboard/createAds/createAds.scss';
+import '../../dashboard/payment/payment.scss';
+import caretDown from '../../../assets/CaretDown.svg';
+import caretRight from '../../../assets/CaretRight.svg';
+import caretDown2 from '../../../assets/CaretDown2.svg';
+import check from '../../../assets/Progress Tick Done.svg';
+import squares from '../../../assets/SquaresFour.svg';
+import megaphone from '../../../assets/MegaphoneSimple.svg';
+import bag from '../../../assets/BagSimple.svg';
+import creditCard from '../../../assets/CreditCard.svg';
+import user from '../../../assets/User.svg';
+import Handshake from '../../../assets/Handshake.svg';
+import signout from '../../../assets/SignOut.svg';
+import ellipse2 from '../../../assets/Ellipse 28.svg';
+import fluttericon from '../../../assets/Frame 180.svg';
+
+import { Link } from 'react-router-dom';
+
+
+const Payment = () => {
+
+    return (
+            <div className="dashboard create-ads">
+            <div className="small-title">
+                <div className="title-text">
+                    <p>The Brand Hub</p>
+                    <img src={caretDown} alt="" />
+                </div>
+                <div className="dashboard-main-wrapper">
+                <div className="tabs">
+                        <div className="tab-item">
+                            <img src={squares} alt="" />
+                            <Link to='/dashboard'>Dashboard</Link>
+                        </div>
+                        <div className="tab-ads">
+                            <div className="tab-item">
+                                <img src={megaphone} alt="" />
+                                <p>Ads Management</p>
+                                <img src={caretDown2} alt="" />
+                            </div>
+                            <div className="sub-track">
+                                <Link to='/create-ads'>Create an Ad</Link>
+                                <Link to='/ads-history'>Ad History</Link>
+                            </div>
+                        </div>
+                        <div className="tab-item">
+                            <img src={bag} alt="" />
+                            <p>Packages</p>
+                        </div>
+                        <div className="tab-item">
+                            <img src={creditCard} alt="" />
+                            <Link to='/payment-history'>Payment History</Link>
+                        </div>
+                        <div className="tab-item">
+                            <img src={user} alt="" />
+                            <Link to='/profile'>Profile</Link>
+                        </div>
+                        <div className="tab-item">
+                            <img src={Handshake} alt="" />
+                            <Link to='/support'>Support</Link>
+                        </div>
+                        <div className="tab-item">
+                            <img src={signout} alt="" />
+                            <p>Logout</p>
+                        </div>
+                    </div>
+                    <div className="dashboard-main">
+                        <div className="pages-link">
+                            <Link>Home</Link>
+                            <img src={caretRight} alt="caret right"/>
+                            <Link>Create an Ad</Link>
+                        </div>
+                        <div className="page-progress">
+                            <div className="item first">
+                                <img src={check} alt="ellipse1" />
+                                <p>Ads details</p>
+                            </div>
+                            <div className="item">
+                                <img src={check} alt="ellipse1" />
+                                <p>Select a budget</p>
+                            </div>
+                            <div className="item">
+                                <img src={check} alt="ellipse1" />
+                                <p>Have a call</p>
+                            </div>
+                            <div className="item last">
+                                <img src={ellipse2} alt="ellipse1" />
+                                <p>Make payment</p>
+                            </div>
+                        </div>
+                        <div className="payment">
+                            <div className="pay-heading">
+                                <h5>Make payment</h5>
+                            </div>
+                            <div className="row">
+                                <div className="col">
+                                    <form action="">
+                                        <p>Payment method</p>
+                                        <img src={fluttericon} alt="icon" />
+                                        <div className="form-group">
+                                            <label htmlFor=""> Full Name</label><br></br>
+                                            <input type="text" placeholder="John doe" />
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor=""> Email-address</label><br></br>
+                                            <input type="email" placeholder="John@doe.com" />
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor=""> Phone Number</label><br></br>
+                                            <input type="email" placeholder="081 345 667 231" />
+                                        </div>
+
+                                        <button>Pay Now</button>
+                                    </form>
+                                </div>
+                                <div className="col">
+                                    <div className="content-form">
+                                        <h5>Price List</h5>
+                                        <div className="price">
+                                            <div className="tier">
+                                                <p>Tier 2</p>
+                                                <h4>#50,000</h4>
+                                                <ul>
+                                                    <li>Realtime analytics</li>
+                                                    <li>Get 1-on-1 advice from a marketer</li>
+                                                    <li>Post ads on social media platforms</li>
+                                                    <li>Post ads on blogs</li>
+                                                    <li>Two location only</li>
+                                                    <button>Change budget</button>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default Payment;

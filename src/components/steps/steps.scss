@@ -1,0 +1,55 @@
+.steps{
+    text-align: left;
+    .container{
+        h1{
+            font-weight: 700;
+            font-size: 36px;
+        }
+        p{
+            color: #333333;
+            font-size: 14px;
+        }
+        .headings{
+            display: flex;
+            align-items: center;
+            margin-bottom: 5rem;
+            margin-top: 2rem;
+            h5{
+                position: relative;
+                font-size: 16px;
+                margin-right: 50px;
+                &::after{
+                    content: "";
+                    position: absolute;
+                    bottom: -5px;
+                    left: 0;
+                    width: 50px;
+                    height: 2px;
+                    background: blue;
+                }
+            }
+        }
+        .step-list{
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            width: 100%;
+            margin-top: 150px;
+            margin-bottom: 50px;
+            .wrapper{
+                position: relative;
+                .liner{
+                    position: absolute;
+                    top: -60px;
+                    left: 20px;
+                    img{
+                        width: 105%;
+                    }
+                }
+                p{
+                    margin-top: 20px;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+}

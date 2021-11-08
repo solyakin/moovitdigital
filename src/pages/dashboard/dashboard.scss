@@ -1,0 +1,201 @@
+.dashboard{
+    p{
+        margin-bottom: 0;
+        margin-top: 0;
+    }
+    .small-title{
+        padding-top: 10px;
+        .title-text{
+            display: flex;
+            align-items: center;
+            justify-content: right;
+            padding-right: 50px;
+            padding-bottom: 10px;
+            img{
+                width : 20px;
+            }
+        }
+        .dashboard-main-wrapper{
+            display: flex;
+            .tabs{
+                flex: .2;
+                background: #333333;
+                color: white;
+                text-align: left;
+                padding: 30px 20px;
+                .tab-item{
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 30px;
+                    p{
+                        font-size: 14px;
+                        margin-right: 20px;
+                    }
+                    a{
+                        color: white;
+                        text-decoration: none;
+                        font-size: 14px;
+                        margin-right: 20px;
+                    }
+                    img{
+                        margin-right: 20px;
+                        width: 20px;
+                    }
+                }
+                .tab-ads{
+                    margin-bottom: 30px;
+                    .sub-track{
+                        // display: none;
+                        a{
+                            color: white;
+                            text-decoration: none;
+                            font-size: 14px;
+                            margin-right: 20px;
+                        }
+                    }
+                }
+            }
+            .dashboard-main{
+                flex: .8;
+                background: #E5E5E5;
+                padding: 20px;
+                padding-right: 50px;
+                .main-heading{
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    .welcome{
+                        h4{
+                            font-weight: 600;
+                        }
+                    }
+                    .smm{
+                        padding-right: 25px;
+                        a{
+                            text-decoration: none;
+                            color: #19216C;
+                            border: 1px solid rgb(153, 152, 152);
+                            padding: 7px;
+                            font-size: 14px;
+                        }
+                    }
+                }
+                .main-records{
+                    background: white;
+                    text-align: left;
+                    padding: 15px 25px;
+                    .funds-wrapper{
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        color: #333333;
+                        margin-bottom: 4rem;
+                        .fund-balance{
+                            p{
+                                font-size: 14px;
+                            }
+                            h3{
+                                font-size: 32px;
+                                font-weight: 600;
+                                span{
+                                    font-size: 13px;
+                                    color: #2D3A8C;
+                                    font-weight: 400;
+                                }
+                            }
+                        }
+                        .create-ads-btn{
+                            button{
+                                border: none;
+                                padding: 7px 20px;
+                                color: white;
+                                font-size: 14px;
+                                span{
+                                    margin-right: 10px;
+                                }
+                                a{
+                                    color: white;
+                                    text-decoration: none;
+                                }
+                            }
+                        }
+                    }
+                    .ads-records{
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        p{
+                            color: #808080;
+                            font-size: 14px;
+                            font-weight: 500;
+                        }
+                        h4{
+                            font-weight: 600;
+                        }
+                    }
+                }
+                .ads-stats{
+                    display: flex;
+                    margin-top: 10px;
+                    margin-bottom: 6rem;
+                    .ads-graph{
+                        background: white;
+                        flex: .55;
+                        height: 300px;
+                        margin-right: 10px;
+                        .graph-heading{
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            border-bottom: 1px solid rgba($color: grey, $alpha: .3);
+                            padding: 20px 15px;
+                            p{
+                                font-size: 13px;
+                                span{
+                                    width: 8px;
+                                    height: 8px;
+                                    border-radius: 50%;
+                                    background-color: green;
+                                }
+                            }
+                        }
+                    }
+                    .smm-package{
+                        background: white;
+                        flex: .45;
+                        text-align: left;
+                        .smm-heading{
+                            display: flex;
+                            justify-content: space-between;
+                            padding: 20px 15px;
+                            border-bottom: 1px solid rgba($color: grey, $alpha: .3);
+                            .item{
+                                p{
+                                    font-size: 13px;
+                                }
+                                h5{
+                                    font-weight: 500;
+                                    span{
+                                        font-size: 13px;
+                                        color: #2D3A8C;
+                                    }
+                                }
+                            }
+                            .cancel-plan{
+                                p{
+                                    color: rgb(253, 132, 132);
+                                }
+                            }
+                        }
+                        .running-smm{
+                            padding: 20px 15px;
+                            p{
+                                margin-bottom: 10px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
