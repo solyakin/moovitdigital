@@ -6,7 +6,7 @@ import Header from './components/header/header';
 import Homepage from './pages/homepage/homepage';
 import Login from './pages/Login/Login';
 import SignUp from './pages/signUp/signUp';
-import UserRegistration from './pages/userReg/userReg';
+import UserRegistration from './pages/userReg/userReg';  
 import Dashboard from './pages/dashboard/dashboard';
 import CreateAds from './pages/dashboard/createAds/createAds';
 import Pricing from './pages/dashboard/pricing/pricing';
