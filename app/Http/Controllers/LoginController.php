@@ -44,6 +44,13 @@ class LoginController extends Controller
             $user = User::select('users.*')->find(auth()->guard('user')->user()->id);
             $success =  $user;
             $success['token'] =  $user->createToken('MyApp', ['user'])->accessToken;
+
+            $saveToken = User::where('id', $success['id']);
+            $saveToken->update(
+                [
+                    'remember_token' => $success['token']
+                ]
+                );
             // $success['token']->save();
 
             return response()->json($success, 200);

@@ -64,4 +64,17 @@ class UserController extends Controller
             'data' => $filter
         ], 200);
     }
+
+    public function updatePhone(Request $request){
+        $userPhone = User::where('id', auth()->user()->id);
+        $userPhone->update([
+            'phone'=>$request->phone
+        ]);
+
+        return response()->json([
+            'success'=>true,
+            'message'=>'phone number updated',
+            'data'=>$userPhone
+        ]);
+    }
 }

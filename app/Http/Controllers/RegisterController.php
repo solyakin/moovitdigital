@@ -50,6 +50,11 @@ class RegisterController extends Controller
             'country' => ['required', 'string', 'max:255'],
             'company' => ['string', 'max:255'],
             'business_type' => ['string', 'max:255'],
+            'other' => ['string', 'max:255'],
+            'business_size' => ['string', 'max:255'],
+            'turnover' => ['string', 'max:255'],
+            'business_bio' => ['string', 'max:255'],
+            'business_duration' => ['string', 'max:255'],
             'role' => ['required', 'string', 'max:255'],
             'agree' => ['required', 'integer', 'max:250']
         ]);
@@ -68,6 +73,11 @@ class RegisterController extends Controller
                 'country' => $request->country,
                 'company' => $request->company,
                 'business_type' => $request->business_type,
+                'other' => $request->other,
+                'business_size' => $request->business_size,
+                'turnover' => $request->turnover,
+                'business_bio' => $request->business_bio,
+                'business_duration' => $request->business_duration,
                 'role' => $request->role,
                 'agree' => $request->agree
             ]);
@@ -85,6 +95,11 @@ class RegisterController extends Controller
                 'country' => $request->country,
                 'company' => $request->company,
                 'business_type' => $request->business_type,
+                'other' => $request->other,
+                'business_size' => $request->business_size,
+                'turnover' => $request->turnover,
+                'business_bio' => $request->business_bio,
+                'business_duration' => $request->business_duration,
                 'role' => $request->role,
                 'agree' => $request->agree
             ]);
@@ -97,7 +112,7 @@ class RegisterController extends Controller
         ], 200);
     }
 
-    public function publisher(Request $request, $id)
+    public function publisher(Request $request)
     {
         $data = $request->all();
         $validator = Validator::make($data, [
@@ -110,6 +125,8 @@ class RegisterController extends Controller
             'company' => ['required', 'string', 'max:255'],
             'industry' => ['required', 'string', 'max:255'],
             'website' => ['required', 'string', 'max:255'],
+            'api' => ['required', 'string', 'max:255'],
+            'dimensions' => ['required', 'string', 'max:255'],
             'average_visit' => ['required', 'string', 'max:255'],
             'website_timeline' => ['required', 'string', 'max:255'],
             'role' => ['required', 'string', 'max:255'],
@@ -130,6 +147,8 @@ class RegisterController extends Controller
             'company' => $request->company,
             'industry' => $request->industry,
             'website' => $request->website,
+            'api' => $request->api,
+            'dimensions' => json_encode($request->dimensions),
             'average_visit' => $request->average_visit,
             'website_timeline' => $request->website_timeline,
             'role' => $request->role,

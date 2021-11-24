@@ -45,6 +45,17 @@
                     </svg>
                 </div>
 
+                <form id="contactForm" role="form">
+                    {{ csrf_field() }}
+
+                    <input type="text" name="userPhone" id="userPhone"
+                    placeholder="(651) 555-7889"/>
+                    <input  type="text" name="salesPhone" id="salesPhone"
+                    value="+2347054528890" hidden/>
+
+                    <input type="submit" value="contact" />
+                </form>
+
                 <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
                     <div class="grid grid-cols-1 md:grid-cols-2">
                         <div class="p-6">

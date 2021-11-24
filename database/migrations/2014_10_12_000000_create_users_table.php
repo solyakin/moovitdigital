@@ -26,6 +26,11 @@ class CreateUsersTable extends Migration
             $table->string('country')->nullable();
             $table->string('company')->nullable();
             $table->string('business_type')->nullable();
+            $table->string('other')->nullable();
+            $table->string('turnover')->nullable();
+            $table->string('business_size')->nullable();
+            $table->string('business_bio')->nullable();
+            $table->string('business_duration')->nullable();
             $table->enum('role', ['advertiser', 'publisher'])->nullable();
             $table->integer('agree')->nullable();
             $table->rememberToken();

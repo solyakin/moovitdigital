@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\UserVerify;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Events\Registered;
 use App\Providers\RouteServiceProvider;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Foundation\Auth\VerifiesEmails;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 class VerificationController extends Controller
 {
@@ -28,7 +33,7 @@ class VerificationController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = RouteServiceProvider::USERLOGIN;
 
     /**
      * Create a new controller instance.
@@ -48,14 +53,48 @@ class VerificationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
-    public function show(Request $request)
-    {
-        return redirect('https://moovitdigital.com/login');
+    // public function show(Request $request)
+    // {
+    //     return redirect()->to('https://moovitdigital.com/email-verification');
+    // }
+
+    public function verify($user_id, Request $request) {
+        if (!$request->hasValidSignature()) {
+            return response()->json(["msg" => "Invalid/Expired url provided."], 401);
+        }
+
+        $user = User::findOrFail($user_id);
+
+        if (!$user->hasVerifiedEmail()) {
+            $user->markEmailAsVerified();
+        }
+
+        return redirect()->to('https://moovitdigital.com/login');
     }
 
-    public function verify(EmailVerificationRequest $request) {
-        $request->fulfill();
+    public function resend() {
+        if (auth()->user()->hasVerifiedEmail()) {
+            return response()->json(["msg" => "Email already verified."], 400);
+        }
 
-        return redirect('https://moovitdigital.com/login');
+        event(new Registered(auth()->user()));
+
+        return response()->json(["msg" => "Email verification link sent on your email id"]);
     }
+
+    // public function request()
+    // {
+    //     auth()->user()->sendEmailVerificationNotification();
+
+    //     return back()
+    //         ->with('success', 'Verification link sent!');
+    // }
+
+    // public function verify(EmailVerificationRequest $request)
+    // {
+
+    //     $request->fulfill();
+
+    //     return Redirect::to('https://moovitdigital.com/login');
+    // }
 }

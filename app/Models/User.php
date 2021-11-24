@@ -22,6 +22,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'lastName',
         'email',
         'email_verified_at',
+        'status',
+        'google_id',
+        'facebook_id',
         'password',
         'image',
         'phone',
@@ -29,6 +32,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'country',
         'company',
         'business_type',
+        'other',
+        'turnover',
+        'business_size',
+        'business_bio',
+        'business_duration',
         'role',
         'agree'
     ];

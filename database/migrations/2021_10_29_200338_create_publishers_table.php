@@ -24,6 +24,8 @@ class CreatePublishersTable extends Migration
             $table->string('company');
             $table->string('industry');
             $table->string('website');
+            $table->string('api');
+            $table->string('dimensions');
             $table->string('average_visit');
             $table->string('website_timeline');
             $table->enum('role', ['advertiser', 'publisher']);

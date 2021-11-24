@@ -24,6 +24,8 @@ class Publisher extends Model
         'company',
         'industry',
         'website',
+        'api',
+        'dimensions',
         'average_visit',
         'website_timeline',
         'role',
