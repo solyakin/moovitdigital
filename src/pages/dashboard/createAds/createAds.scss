@@ -1,4 +1,8 @@
 .create-ads{
+    .styling{
+        background: #f0f0f0;
+        border: 1px solid blue;
+    }
     .dashboard-main{
         background: transparent;
         .pages-link{
@@ -17,8 +21,8 @@
         .page-progress{
             display: flex;
             align-items: center;
-            width: 80%;
-            margin: auto;
+            width: 90%;
+            margin: 20px auto;
             .item{
                 position: relative;
                 flex: .33;
@@ -36,8 +40,8 @@
                     position: absolute;
                     top: 13px;
                     width: 98%;
-                    height: 1px;
-                    background: #bdbcbc;
+                    height: 1.5px;
+                    background: #c4c4c4;
                 }
             }
             .last{
@@ -56,7 +60,8 @@
             text-align: left;
             margin-top: 2rem;
             .row{
-                form{
+                --bs-gutter-x: 0rem;
+                // form{
                     h5{
                         padding: 15px 20px;
                         font-size: 18px;
@@ -66,44 +71,73 @@
                     }
                     .form-wrapper{
                         padding: 15px 20px;
+                        width: 60%;
                         label{
-                            font-size: 14px;
+                            font-size: 13px;
                             color: #484848;
                             font-weight: 500;
-                            margin-bottom: 7px;
+                            margin-bottom: 5px;
                         }
                         input{
-                            font-size: 14px;
-                            padding: 10px 20px;
+                            font-size: 13px;
+                            padding: 10px;
                             margin-bottom: 10px;
                             border: 1px solid #bdbcbc;
-                            width: 70%;
                             outline: none;
+                            width: 100%;
                         }
                         textarea{
                             font-size: 14px;
                             padding: 10px 20px;
                             margin-bottom: 10px;
                             border: 1px solid #bdbcbc;
-                            width: 70%;
                             outline: none;
+                            width: 100%;
                         }
                         .dSXVwH{
                             display: block;
                             text-align: center;
                             border: 1px dashed #808080;
-                            height: 150px;
+                            height: 110px;
                             max-width: 100%;
-                            width: 70%;
+                            width: 100%;
                             svg{
-                                margin-top: 20px;
+                                margin-top: 10px;
                             }
                             .ebdQkY{
                                 justify-content: center;
-                                margin-top: 20px;
+                                margin-top: 10px;
                             }
                         }
-                        .col-lg-6{
+                        .dates{
+                            .start{
+                                margin-right: 20px;
+                            }
+                            .end{
+                                margin-left: 20px;
+                            }
+                        
+                            label{
+                                color : #484848;
+                            }
+                            select{
+                                width: 100%;
+                                border: 1px solid #bdbcbc;
+                                padding: 7px 15px;
+                                outline: none;
+                                font-size: 14px;
+                                color: #808080;
+                            }
+                            option{
+                                font-size: 13px;
+                                color: #808080;
+                            }
+                            p{
+                                font-size: 12px;
+                                color: #808080;
+                            }
+                        }
+                        .col-lg-8{
                             .inner-content{
                                 margin-top: 20px;
                                 h4{
@@ -164,6 +198,7 @@
                     .price-list{
                         display: flex;
                         padding: 20px;
+                        justify-content: center;
                         .tier{
                             border: 1px solid #f1efef;
                             margin-right: 15px;
@@ -205,7 +240,7 @@
                                     width: 80%;
                                     border: none;
                                     color: white;
-                                    background: #666666;
+                                    background: #484848;
                                     font-size: 14px;
                                     margin: auto;
                                 }
@@ -214,35 +249,9 @@
                         }
                     }
                     .target-area{
-                        padding: 20px;
-                        margin-top: 1rem;
-                        .target-form{
-                            .form-group{
-                                margin-bottom: 15px;
-                                label{
-                                    color : #484848;
-                                }
-                                select{
-                                    width: 50%;
-                                    border: 1px solid #bdbcbc;
-                                    padding: 7px 15px;
-                                    outline: none;
-                                    font-size: 14px;
-                                    color: #808080;
-                                }
-                                option{
-                                    font-size: 13px;
-                                    color: #808080;
-                                }
-                                p{
-                                    font-size: 12px;
-                                    color: #808080;
-                                }
-                            }
-                        }
+                        // padding: 20px;
                         .picked-locations{
-                            margin-top: 2rem;
-                            width: 50%;
+                            width: 80%;
                             h5{
                                 font-size: 15px;
                                 font-weight: 600;
@@ -254,13 +263,13 @@
                                 align-items: center;
                                 grid-template-columns: repeat(3, 1fr);
                                 p{
-                                    font-size: 13px;
+                                    font-size: 11px;
                                     color: #333333;
                                     border: 1px solid grey;
                                     background: #f0f0f0;
                                     border-radius: 20px;
-                                    padding: 6px 10px;
-                                    // width: 80px;
+                                    padding: 5px 10px;
+                                    font-weight: 500;
                                     margin-right: 30px;
                                     margin-bottom: 10px;
                                 }
@@ -272,6 +281,7 @@
                         align-items: center;
                         padding: 20px;
                         margin-bottom: 4rem;
+                        margin-top: 3rem;
                         button{
                             color : white;
                             border: none;
@@ -286,6 +296,17 @@
         
                         }
                     }
+                // }
+            }
+            .lower_btn{
+                padding-bottom: 50px;
+                button{
+                    width: 150px;
+                }
+                p{
+                    font-size: 12px;
+                    margin-top: 30px;
+                    color: #666666;
                 }
             }
         }

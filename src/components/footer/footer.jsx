@@ -4,14 +4,15 @@ import { Link } from 'react-router-dom';
 import fb from '../../assets/facebook/active.svg';
 import twitter from '../../assets/TwitterLogo.svg';
 import instagram from '../../assets/InstagramLogo.svg';
+import image from '../../assets/image 1.png';
 
 const Footer = () => {
     return (
         <div className="footer">
             <div className="container">
                 <div className="content">
-                    <div className="about">
-                        <h4>MoovIT</h4>
+                    <div className="about_">
+                        <img src={image} alt="moovit-digital-logo" className="mb-4"/>
                         <p>2972 Westheimer Rd. Santa Ana, Illinois 85486 </p>
 
                         <div className="social">

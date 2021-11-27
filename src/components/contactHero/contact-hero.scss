@@ -1,0 +1,70 @@
+$highlight : url('../../assets/Highlight_05.svg');
+
+.contact-hero{
+    padding-top: 120px;
+    height: 90vh;
+    .row{
+        --bs-gutter-x: 0rem;
+        @media only screen and (max-width : 990px){
+            display: block!important;
+        }
+        @media only screen and (max-width: 590px){
+            margin-left: 5%;
+        }
+        .left{
+            text-align: left;
+            
+            h1{
+                font-weight: 700;
+                font-size: 2.6rem;
+                @media only screen and (max-width: 590px){
+                    font-size: 2.3rem;
+                }
+            }
+            .get-in{
+                color: black;
+                position: relative;
+                margin-bottom: 0;
+                &::before{
+                    content: $highlight;
+                    position: absolute;
+                    top: -20px;
+                    left: -10px;
+                    width: 100px;
+                }
+            }
+            
+            .touch{
+                color: #EE315D;
+            }
+            p{
+                width: 400px;
+                position: relative;
+                margin-left: 20px;
+                margin-top: 1.5rem;
+                @media screen and (max-width : 590px){
+                    width: 85%;
+                    font-size: 12px;
+                }
+                &::before{
+                    content: "";
+                    position: absolute;
+                    width: 2px;
+                    height: 50px;
+                    background: #EE315D;
+                    top: 0px;
+                    left: -10px;
+                }
+            }
+        }
+        .right{
+            img{
+                width : 320px;
+                @media only screen and (max-width: 590px){
+                    width: 250px;
+                    margin-top: 2rem;
+                }
+            }
+        }
+    }
+}

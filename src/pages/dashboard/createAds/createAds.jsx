@@ -1,24 +1,22 @@
 import React, {useState} from 'react';
+import {useHistory} from 'react-router-dom';
 import axios from 'axios';
 import '../../dashboard/dashboard.scss';
 import '../../dashboard/createAds/createAds.scss';
 import caretDown from '../../../assets/CaretDown.svg';
-import caretRight from '../../../assets/CaretRight.svg';
-import caretDown2 from '../../../assets/CaretDown2.svg';
-import squares from '../../../assets/SquaresFour.svg';
-import megaphone from '../../../assets/MegaphoneSimple.svg';
-import bag from '../../../assets/BagSimple.svg';
-import creditCard from '../../../assets/CreditCard.svg';
-import user from '../../../assets/User.svg';
-import Handshake from '../../../assets/Handshake.svg';
-import signout from '../../../assets/SignOut.svg';
-import ellipse1 from '../../../assets/Ellipse 27.svg';
-import ellipse2 from '../../../assets/Ellipse 28.svg';
-import { Link } from 'react-router-dom';
-import DragDrop from '../../../components/dragDrop/dragDrop';
+import Tags from '../../../components/Tags/Tags';
+import Pricing from '../pricing/pricing';
+import CreateForm from '../../../components/createForm/createForm';
+import Templates from '../../../components/templates/templates';
 
 const CreateAds = () => {
 
+    const history = useHistory();
+    const [file, setFile] = useState(null);
+    const [hide, setHide] = useState(false);
+    const [showNext, setShowNext] = useState("block");
+    const [showNext2, setShowNext2] = useState("none");
+    const [showNext3, setShowNext3] = useState("none");
     const [createAds, setCreateAds] = useState({
         title : "",
         description : "",
@@ -28,7 +26,7 @@ const CreateAds = () => {
         phone : "",
         start : "",
         end : "", 
-        graphic_id : "",
+        graphic_id : 1,
         budget_id : "",
         area : "",
         awareness : 0,
@@ -42,20 +40,16 @@ const CreateAds = () => {
         interests : "all interest"
     })
 
-    const [file, setFile] = useState(null);
-   
+    const handleClick = (e) => {
+        e.preventDefault();
+        setHide(!hide);
+        console.log(hide);
+    }
+    
     const handleChange = (e) =>{
         e.persist();
         setCreateAds({...createAds, [e.target.name]: e.target.value})
     }
-    // const handleCheck = (e) => {
-    //     e.persist();
-    //     let isChecked = e.target.checked;
-    //     if(isChecked === true){
-    //         setCreateAds({...createAds, [e.target.name] : e.target.name});
-    //     }
-    // }
-    console.log(createAds)
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -119,14 +113,16 @@ const CreateAds = () => {
         .then(res => {
             if(res.status == 200){
                 const result = res.data;
-                for (const [key, value] of Object.entries(result)) {
-                    console.log(value);
-                  }
-                // history.push('/user-registration');
+                console.log(result.message)
+                // for (const [key, value] of Object.entries(result)) {
+                //     console.log(value);
+                //   }
+                history.push('/request-call');
             }
         })
         .catch(err => console.log(err))
     }
+    console.log(createAds)
     return (
             <div className="dashboard create-ads">
             <div className="small-title">
@@ -136,175 +132,31 @@ const CreateAds = () => {
                 </div>
                 <div className="dashboard-main-wrapper">
                     <div className="tabs">
-                        <div className="tab-item">
-                            <img src={squares} alt="" />
-                            <Link to='/dashboard'>Dashboard</Link>
-                        </div>
-                        <div className="tab-ads">
-                            <div className="tab-item">
-                                <img src={megaphone} alt="" />
-                                <p>Ads Management</p>
-                                <img src={caretDown2} alt="" />
-                            </div>
-                            <div className="sub-track">
-                                <Link to='/create-ads'>Create an Ad</Link>
-                                <Link to='/ads-history'>Ad History</Link>
-                            </div>
-                        </div>
-                        <div className="tab-item">
-                            <img src={bag} alt="" />
-                            <p>Packages</p>
-                        </div>
-                        <div className="tab-item">
-                            <img src={creditCard} alt="" />
-                            <Link to='/payment-history'>Payment History</Link>
-                        </div>
-                        <div className="tab-item">
-                            <img src={user} alt="" />
-                            <Link to='/profile'>Profile</Link>
-                        </div>
-                        <div className="tab-item">
-                            <img src={Handshake} alt="" />
-                            <Link to='/support'>Support</Link>
-                        </div>
-                        <div className="tab-item">
-                            <img src={signout} alt="" />
-                            <p>Logout</p>
-                        </div>
+                        <Tags hide={hide} handleClick={handleClick}/>
                     </div>
                     <div className="dashboard-main">
-                        <div className="pages-link">
-                            <Link>Home</Link>
-                            <img src={caretRight} alt="caret right"/>
-                            <Link>Create an Ad</Link>
-                        </div>
-                        <div className="page-progress">
-                            <div className="item first">
-                                <img src={ellipse1} alt="ellipse1" />
-                                <p>Ads details</p>
-                            </div>
-                            <div className="item">
-                                <img src={ellipse2} alt="ellipse1" />
-                                <p>Select a budget</p>
-                            </div>
-                            <div className="item">
-                                <img src={ellipse2} alt="ellipse1" />
-                                <p>Have a call</p>
-                            </div>
-                            <div className="item last">
-                                <img src={ellipse2} alt="ellipse1" />
-                                <p>Make payment</p>
-                            </div>
-                        </div>
-                        <div className="content-form">
-                            <div className="row">
-                                <form onSubmit={handleSubmit}>
-                                    <h5>Ads details</h5>
-                                    <div className="form-wrapper">
-                                        <div className="form-group">
-                                            <label htmlFor="">Title</label><br></br>
-                                            <input type="text"  placeholder="The Brand Hub" name="title" onChange={handleChange} value={createAds.title}/>
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor="">budget_id</label><br></br>
-                                            <input type="text"  placeholder="The Brand Hub" name="budget_id" onChange={handleChange} value={createAds.budget_id}/>
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor="">graphic id</label><br></br>
-                                            <input type="text"  placeholder="The Brand Hub" name="graphic_id" onChange={handleChange} value={createAds.graphic_id}/>
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor="">Location</label><br></br>
-                                            <input type="text"  placeholder="The Brand Hub" name="location" onChange={handleChange} value={createAds.location}/>
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor="">Gender</label><br></br>
-                                            <input type="text"  placeholder="The Brand Hub" name="gender" onChange={handleChange} value={createAds.gender}/>
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor="">age range</label><br></br>
-                                            <input type="text"  placeholder="The Brand Hub" name="ageRange" onChange={handleChange} value={createAds.ageRange}/>
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor="">phone</label><br></br>
-                                            <input type="text"  placeholder="The Brand Hub" name="phone" onChange={handleChange} value={createAds.phone}/>
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor="">Area</label><br></br>
-                                            <input type="text"  placeholder="The Brand Hub" name="area" onChange={handleChange} value={createAds.area}/>
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor="">Start</label><br></br>
-                                            <input type="text"  placeholder="The Brand Hub" name="start" onChange={handleChange} value={createAds.start}/>
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor="">End</label><br></br>
-                                            <input type="text"  placeholder="The Brand Hub" name="end" onChange={handleChange} value={createAds.end}/>
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor="">Description</label><br></br>
-                                            <textarea name="" id="" cols="10" rows="4" placeholder="Type text here" name="description" value={createAds.description} onChange={handleChange}></textarea>
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor="">Upload banner</label><br></br>
-                                            <DragDrop />
-                                            <input type="file" name="image" 
-                                                    onChange={(e) => setFile( e.target.files[0])}
-                                                    onClick={(event)=> { 
-                                                        event.target.value = null
-                                                }}
-                                            />
-                                        </div>
-                                        <div className="row">
-                                            <div className="col-lg-6">
-                                                <div className="inner-content">
-                                                <h4>Campaign Type</h4>
-                                                <p>Tick all that apply*</p>
-                                                <div className="campagin">
-                                                    <div className="form-group">
-                                                        <input type="checkbox" name="awareness" id="" onClick={() =>setCreateAds({...createAds, 'awareness' : 1})}/>
-                                                        <span>Awareness</span>
-                                                    </div>
-                                                    <div className="form-group">
-                                                        <input type="checkbox" name="traffic" id="" onClick={() =>setCreateAds({...createAds, 'traffic' : 1})}/>
-                                                        <span>Traffic</span>
-                                                    </div>
-                                                    <div className="form-group">
-                                                        <input type="checkbox" name="engagement" id="" onClick={() =>setCreateAds({...createAds, 'engagement' : 1})}/>
-                                                        <span>Enagagement</span>
-                                                    </div>
-                                                    <div className="form-group">
-                                                        <input type="checkbox" name="conversions" id="" onClick={() =>setCreateAds({...createAds, 'conversions' : 1})}/>
-                                                        <span>Conversions</span>
-                                                    </div>
-                                                    <div className="form-group">
-                                                        <input type="checkbox" name="sales" id="" onClick={() =>setCreateAds({...createAds, 'sales' : 1})}/>
-                                                        <span>Sales</span>
-                                                    </div>
-                                                    <div className="form-group">
-                                                        <input type="checkbox" name="apps" id="" onClick={() =>setCreateAds({...createAds, 'apps' : 1})}/>
-                                                        <span>App installs</span>
-                                                    </div>
-                                                    <div className="form-group">
-                                                        <input type="checkbox" name="reach" id="" onClick={() =>setCreateAds({...createAds, 'reach' : 1})}/>
-                                                        <span>Reach</span>
-                                                    </div>
-                                                </div>
-                                                <div className="lower-btn">
-                                                    <p>Back</p>
-                                                    <button type="submit">
-                                                        Save and continue
-                                                    </button>
-                                                </div>
-                                            </div>
-                                            </div>
-                                        </div>
-                                        
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                
+                        <form action={handleSubmit}>
+                            <Pricing 
+                            createAds={createAds} 
+                            setCreateAds={setCreateAds} 
+                            showNext={showNext} 
+                            setShowNext={setShowNext}
+                            setShowNext2={setShowNext2}
+                            />
+                            <CreateForm createAds={createAds} 
+                            setCreateAds={setCreateAds} 
+                            showNext2={showNext2}
+                            setShowNext2={setShowNext2}
+                            setShowNext3={setShowNext3}
+                            setFile={setFile}
+                            handleChange={handleChange}
+                            />
+                            <Templates showNext3={showNext3}
+                            handleSubmit={handleSubmit}
+                            createAds={createAds}
+                            setCreateAds={setCreateAds}
+                            />
+                        </form> 
                     </div>
                 </div>
             </div>

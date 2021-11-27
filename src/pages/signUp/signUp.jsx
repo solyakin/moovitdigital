@@ -178,10 +178,14 @@ const SignUp = () => {
                        <div className="signup">
                            <p>Already have an account? <span>Login</span></p>
                        </div>
-                       <p>OR</p>
+                       <p className="my-4">OR</p>
                        <div className="google-btn">
                             <img src={google} alt="google icon" />
                             <p>Continue with Google</p>
+                       </div>
+                       <div className="google-btn">
+                            <img src={google} alt="google icon" />
+                            <p>Continue with Facebook</p>
                        </div>
                        <div className="policy">
                             <div className="tnc">

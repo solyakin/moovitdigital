@@ -1,45 +1,208 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+// $image : url()
 .services{
-    padding-top: 60px;
-    padding-bottom: 60px;
-    text-align: left;
-    .container{
+    padding-top: 0px;
+    padding-bottom: 100px;
+    // background: #FEF2CD;
+    backface-visibility: visible;
+    // background: #0cb9cf;
+    // color: #333333;
+    // font-family: 'Montserrat Alternates', sans-serif;
+    position: relative;
+    // &::before{
+    //     content: "";
+    //     background-image: url(../../assets//waves.svg);
+    //     opacity: .08;
+    //     position: absolute;
+    //     top: 0;
+    //     left: 0;
+    //     right: 0;
+    //     bottom: 0;
+    //     z-index: -1;
+    // }
+    // .container{
         .service-text{
+            color: white;
             h2{
                 font-weight: 700;
                 margin-bottom: 0;
                 font-size: 37px;
+                @media screen and (max-width : 576px) {
+                    font-size: 1.6rem;
+                }
             }
             p{
-                font-size: 15px;
-                line-height: 1.8;
+                font-size: 14px;
+                line-height: 1.4;
                 font-weight: normal;
+                width: 55%;
+                margin: 10px auto;
+                @media screen and (max-width : 576px) {
+                    font-size: 13px;
+                    width: 90%;
+                }
             }
-            .row{
+            button{
+                padding: 7px 30px;
+                margin-top: 30px;
+            }
+            .row_{
                 align-items: center;
-                .content-text{
-                    h3{
-                        font-size: 26px;
-                        font-weight: 600;
-                        color:  #2D3A8C;
-                        
+                margin-top: 4rem;
+                height: 100vh;
+                @media screen and (max-width: 768px){
+                    margin-top: 2rem;                        
+                };
+                .row{
+                    --bs-gutter-x: 0rem;
+                    height: 100vh;
+                }
+                .frame0{
+                    background-image: url(../../assets/image3.jpg);
+                    // background-image: url(../../assets/who.jpg);
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                    .content-text{
+                        p{
+                            font-size: 84px;
+                            line-height: 1.1;
+                            font-weight: 700;
+                        }
                     }
+                }
+                .frame1{
+                    // background-image: url(../../assets/portrait-cool-man-with-sunglasses-copy-space.jpg);
+                    background-image: url(../../assets/image1.jpg);
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                }
+                .frame2{
+                    // background-image: url(../../assets/pexel.jpg);
+                    background-image: url(../../assets/store1.jpg);
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                    // .content-text{
+                    //     text-align: right!important;
+                    //     width: 90%;
+                    //     margin-left: 0;
+                    //     margin-right: 10%;
+                    //     // h3{
+                    //     //     width: 40%;
+                    //     // }
+                    //     p{
+                    //         width: 500px;
+                    //         text-align: right!important;
+                    //     }
+                    // }
+                }
+                .frame3{
+                    background: url(../../assets/chess.jpg);
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                    background-position: 50% 50%;
+                }
+                .frame4{
+                    background: url(../../assets/social.jpg);
+                    background-size: cover;
+                    background-repeat: no-repeat;
+                    background-position: 50% 50%;
+                }
+                // .col{  
+                //     @media screen and (max-width : 992px) {
+                //         width: 50%;
+                //         flex: none;
+                //         margin-bottom: 15px;
+                //     }
+                //     @media screen and (max-width : 480px){
+                //         width: 100%;
+                //     }
+                // }
+                .content-text{
+                    text-align: left;
+                    margin-top: 10%;
+                    margin-left : 10%;
+                    width: 40%;
+                    // font-family : 'roboto';
+                    img{
+                        width: 45px;
+                        margin-bottom: 20px;
+                    }
+                    h3{
+                        font-size: 52px;
+                        font-weight: 800;
+                        color:  white;
+                        text-transform: uppercase;
+                        // line-height: 1.5;
+                        transition: transform .3s;
+                        // @media screen and (max-width : 768px) {
+                        //     font-size: 2.7rem;
+                        // }
+                        // @media screen and (max-width : 568px) {
+                        //     text-transform: uppercase;
+                        //     line-height: .8;
+                        //     color: rgb(241, 237, 237);
+                        //     margin-bottom: 1.5rem;
+                        //     font-size: 2.2rem;
+                        // }
+                    }
+                    p{
+                        color: white;
+                        font-size: 1.1rem;
+                        line-height: 1.8;
+                        width: 100%;
+                    }
+                    .text2{
+                        margin-left: 10%;
+                        @media screen and (max-width : 568px){
+                            margin-left: 0;
+                        }
+                    }
+                    .text3{
+                        margin-left: 20%;
+                        @media screen and (max-width : 568px){
+                            margin-left: 0;
+                        }
+                    }
+                    .text4{
+                        margin-left: 30%;
+                        @media screen and (max-width : 568px){
+                            margin-left: 0;
+                        }
+                    }
+                    // p{
+                    //     font-size: 13px;
+                    //     width: 100%;
+                    //     color: #484848;
+                    //     @media screen and (max-width : 480px){
+                    //         font-size: 12px;
+                    //     }
+                    // }
                     button{
                         padding: 10px 20px;
-                            border: none;
-                            color: white;
-                            margin-top: 10px;
+                        border: none;
+                        color: white;
+                        margin-top: 10px;
                         }
                     }
                 .col-md-4{
                     text-align: right;
+                    @media screen and (max-width : 576px) {
+                        text-align: center;
+                    }
                     .img{
                         width: 270px;
                         height: 270px;
                         border-radius: 50%;
                         background: #C4C4C4;
+                        @media screen and (max-width : 768px) {
+                            margin-top: 3rem;
+                            margin-left: auto;
+                            margin-right: auto;
+                        }
                     }
                 }
             }
         }
-    }
+    // }
 }

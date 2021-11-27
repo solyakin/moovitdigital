@@ -13,6 +13,7 @@ import signout from '../../../assets/SignOut.svg';
 import avatar from '../../../assets/Ellipse 51.png';
 import Trash from '../../../assets/Trash.svg';
 import { Link } from 'react-router-dom';
+import AdminTags from '../../../components/adminTags/adminTags';
 
 const Notifications = () => {
     return (
@@ -24,41 +25,7 @@ const Notifications = () => {
                 </div>
                 <div className="dashboard-main-wrapper">
                     <div className="tabs">
-                        <div className="tab-item">
-                            <img src={squares} alt="" />
-                            <p>Dashboard</p>
-                        </div>
-                        <div className="tab-ads">
-                            <div className="tab-item">
-                                <img src={megaphone} alt="" />
-                                <p>Ads Management</p>
-                                <img src={caretDown2} alt="" />
-                            </div>
-                            <div className="sub-track">
-                                <Link to='/create-ads'>Create an Ad</Link>
-                                <Link to='/ads-history'>Ad History</Link>
-                            </div>
-                        </div>
-                        <div className="tab-item">
-                            <img src={bag} alt="" />
-                            <p>Packages</p>
-                        </div>
-                        <div className="tab-item">
-                            <img src={creditCard} alt="" />
-                            <Link to='/payment-history'>Payment History</Link>
-                        </div>
-                        <div className="tab-item">
-                            <img src={user} alt="" />
-                            <Link to='/support'>Support</Link>
-                        </div>
-                        <div className="tab-item">
-                            <img src={Handshake} alt="" />
-                            <Link to='/profile'>Profile</Link>
-                        </div>
-                        <div className="tab-item">
-                            <img src={signout} alt="" />
-                            <p>Logout</p>
-                        </div>
+                        <AdminTags />
                     </div>
                     <div className="dashboard-main ">
                         <div className="notification-wrapper">

@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import { Link, useHistory } from 'react-router-dom';
 import '../../Login/Login.scss';
 import axios from 'axios';
+import image from '../../../assets/image 1.png';
 
 const AdminLogin = () => {
     const history = useHistory();
@@ -37,9 +38,13 @@ const AdminLogin = () => {
                 console.log(res.data)
                 localStorage.setItem('auth_token', res.data.token);
                 localStorage.setItem('auth_name', res.data.email);
-                // if(res.data.email === admin)
-                // write a login which checks if the user email contains admin
-                history.push('/admin');
+                localStorage.setItem('auth_id', res.data.id);
+                const userRole = res.data.role;
+                if(userRole == "marketer"){
+                    history.push('/marketer/dashboard');
+                }else if(userRole == "admin"){
+                    history.push('/admin');
+                }
             }
         })
         .catch(err => console.log(err))
@@ -50,7 +55,7 @@ const AdminLogin = () => {
                 <div className="row justify-content-center">
                     <div className="col-md-4">
                         <form onSubmit={formSubmit}>
-                            <h5>Logo</h5>
+                            <img src={image} alt="moovit-digital-logo" />
 
                             <h4>Welcome Back</h4>
                             <p>Fill in your login details</p>

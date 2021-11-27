@@ -58,6 +58,10 @@ const PublisherForm = () => {
                                     <label htmlFor="">Phone Number</label>
                                     <input type="text" placeholder="0912 342 3452" />
                                 </div>
+                                <div className="col-6">
+                                    <label htmlFor="">API</label>
+                                    <input type="text" placeholder="api.website.com" />
+                                </div>
                             </div>
 
                             <div className="duration mt-4">

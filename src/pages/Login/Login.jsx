@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import { Link, useHistory } from 'react-router-dom';
 import '../Login/Login.scss';
 import google from '../../assets/google.svg';
+import image from '../../assets/image 1.png';
 import axios from 'axios';
 
 const Login = () => {
@@ -37,8 +38,12 @@ const Login = () => {
             if(res.status == 200){
                 console.log(res.data)
                 localStorage.setItem('auth_token', res.data.token);
-                localStorage.setItem('auth_name', res.data.email);
-                history.push('/user-registration');
+                localStorage.setItem('auth_name', res.data.firstName);
+                localStorage.setItem('auth_id', res.data.id);
+                history.push('/user-registration'); 
+            }
+            if(res.status == 400){
+                console.log(res.error);
             }
         })
         .catch(err => console.log(err))
@@ -49,7 +54,7 @@ const Login = () => {
                 <div className="row justify-content-center">
                     <div className="col-md-4">
                         <form onSubmit={formSubmit}>
-                            <h5>Logo</h5>
+                            <img src={image} alt="" />
 
                             <h4>Welcome Back</h4>
                             <p>Fill in your login details</p>
@@ -69,10 +74,14 @@ const Login = () => {
                        <div className="signup">
                            <p>Don’t have an account? <Link to='/register'>Sign up</Link></p>
                        </div>
-                       <p className="or">OR</p>
+                       <p className="or my-4">OR</p>
                        <div className="google-btn">
                             <img src={google} alt="google icon" />
                             <p>Continue with Google</p>
+                       </div>
+                       <div className="google-btn">
+                            <img src={google} alt="google icon" />
+                            <p>Continue with Facebbok</p>
                        </div>
                        <div className="policy">
                             <div className="tnc">

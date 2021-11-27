@@ -5,12 +5,12 @@ import { FileUploader } from "react-drag-drop-files";
 
 function DragDrop() {
   const [file, setFile] = useState(null);
-  const handleChange = file => {
+  const handleChange2 = file => {
     setFile(file);
   };
   return (
     <FileUploader 
-        handleChange={handleChange} 
+        handleChange={handleChange2} 
         name="file" 
         // types={fileTypes} 
     />

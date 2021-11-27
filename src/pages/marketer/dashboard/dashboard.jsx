@@ -31,13 +31,14 @@ const MarketerDashboard = () => {
     const [staff, setStaff] = useState(0);
 
     const token = localStorage.getItem("auth_token");
+    const auth_id = localStorage.getItem("auth_id");
+    const auth_name = localStorage.getItem("auth_name");
     const authAxios = axios.create({
         baseURL : "https://api.moovitdigital.com",
         headers : {
             Authorization : `Bearer ${token}`
         }
     })
-    
     
     useEffect(() => {
         const fetchData = async () => {
@@ -46,9 +47,11 @@ const MarketerDashboard = () => {
             const adsListData = response.data.data;
             setAdsList(adsListData);
 
+            
+
             // const allAdvertisers = await authAxios.get('/api/admin/advertiser');
             // const res = allAdvertisers.data;
-            // const adsCount = res.data;
+            // const adsCount = res.wait data;
             // for (const [key, value] of Object.entries(adsCount)) {
             //     const allCount = key;
             //     setAdsCount(allCount);
@@ -71,13 +74,12 @@ const MarketerDashboard = () => {
     }, [])
 
     const newArray = adsList.filter(ele => {
-        return ele.assigned === "2";
+        return ele.assigned === auth_id;
     })
 
     //for previewing
     const handleClick = (e) => {
         const targetId = e.target.id;
-        console.log(targetId)
         const targetData = adsList.filter(ele => {
                 return ele.id == targetId;
             })
@@ -115,7 +117,7 @@ const MarketerDashboard = () => {
                         </div>
                         <div className="tab-item">
                             <img src={Handshake} alt="" />
-                            <Link to='/admin-profile'>Profile</Link>
+                            <Link to='/admin/profile'>Profile</Link>
                         </div>
                         <div className="tab-item">
                             <img src={signout} alt="" />
@@ -126,7 +128,7 @@ const MarketerDashboard = () => {
                         <div className="main-heading">
                             <div className="welcome">
                                 <p>Welcome Back</p>
-                                <h4>John Daniel</h4>
+                                <h4>{auth_name}</h4>
                             </div>
                             <div className="smm">
                                 <input type="text" placeholder="search"/>

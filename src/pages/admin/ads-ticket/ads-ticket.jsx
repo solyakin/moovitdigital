@@ -4,20 +4,16 @@ import '../../dashboard/dashboard.scss';
 import '../../admin/admin.scss';
 import '../../admin/ads-ticket/ads-ticket.scss';
 import caretDown from '../../../assets/CaretDown.svg';
-import squares from '../../../assets/SquaresFour.svg';
-import megaphone from '../../../assets/MegaphoneSimple.svg';
-import bag from '../../../assets/BagSimple.svg';
-import creditCard from '../../../assets/CreditCard.svg';
-import user from '../../../assets/User.svg';
-import Handshake from '../../../assets/Handshake.svg';
-import signout from '../../../assets/SignOut.svg';
-import paperclip from '../../../assets/Paperclip.svg'
+import paperclip from '../../../assets/Paperclip.svg';
 import userP from '../../../assets/Ellipse 48.png';
-import { Link } from 'react-router-dom';
+import AdminTags from '../../../components/adminTags/adminTags';
+import Alert from '../../../components/alert/alert';
 
 const AdsTicket = () => {
 
-    const [hide, setHide] = useState("none")
+    const [hide, setHide] = useState("none");
+    const [alert, setAlert] = useState("none");
+    const [response, setResponse] = useState([]);
     const [adsList, setAdsList] = useState([]);
     const [staff, setStaff] = useState([]);
     const [assignedStaff, setAssignedStaff] = useState("");
@@ -43,7 +39,6 @@ const AdsTicket = () => {
             setStaff(staffData);
         }
         fetchData();
-        
     },[])
 
     //grabbing the ticket via the id
@@ -59,20 +54,18 @@ const AdsTicket = () => {
     const handleClick = (e) => {
         e.preventDefault();
         const { id } = e.currentTarget;
-        console.log(id);
-
         const data = {
             assigned : id
         }
-        console.log(data)
         const assignTask = async () => {
             const query = await authAxios.put(`/api/admin/assign-ads/${assignedStaff}`, data);
             const res = query.data;
-            console.log(res)
+            setResponse(res);
         }
         assignTask(); 
+        setAlert("block")
     }
-    console.log(staff);
+     
     return (
         <div className="dashboard ads-ticket">
             <div className="small-title">
@@ -82,34 +75,7 @@ const AdsTicket = () => {
                 </div>
                 <div className="dashboard-main-wrapper">
                     <div className="tabs">
-                        <div className="tab-item">
-                            <img src={squares} alt="" />
-                            <Link to='/admin'>Dashboard</Link>
-                        </div>
-                        <div className="tab-item">
-                            <img src={megaphone} alt="" />
-                            <Link to='/add-staff'>Add staff</Link>
-                        </div>
-                        <div className="tab-item">
-                            <img src={bag} alt="" />
-                            <Link to='/message'>Message</Link>
-                        </div>
-                        <div className="tab-item">
-                            <img src={creditCard} alt="" />
-                            <Link to='/new-ads-ticket'>New ads ticket</Link>
-                        </div>
-                        <div className="tab-item">
-                            <img src={user} alt="" />
-                            <Link to='/notification'>Notification</Link>
-                        </div>
-                        <div className="tab-item">
-                            <img src={Handshake} alt="" />
-                            <Link to='/admin-profile'>Profile</Link>
-                        </div>
-                        <div className="tab-item">
-                            <img src={signout} alt="" />
-                            <p>Logout</p>
-                        </div>
+                        <AdminTags />
                     </div>
                     <div className="dashboard-main admin">
                         <div className="ads-heading">
@@ -122,13 +88,6 @@ const AdsTicket = () => {
                                 <div className="row">
                                     {
                                         adsList.map(({id, title, content, image, createdBy}) => {
-                                            // const fetchUser = async () => {
-                                            //     const userData = await authAxios.get(`/api/admin/user/${createdBy}`);
-                                            //     const userId = userData.data.data;
-                                            //     console.log(userId);
-                                                
-                                            // }
-                                            // fetchUser();
                                             return(
                                                 <div className="col-lg-4" key={id}>
                                                     <div className="ads-card" id={id}>
@@ -171,7 +130,7 @@ const AdsTicket = () => {
                             {
                                 staff.map(({firstName, lastName, id}) => {
                                     return(
-                                        <div className="user-profile" key={id}  id={id} onClick={handleClick}>
+                                        <div className="user-profile" key={id} id={id} onClick={handleClick}>
                                             <img src={userP} alt="" />
                                             <div className="user-text">
                                                 <h6>{`${firstName} ${lastName}`}</h6>
@@ -189,6 +148,7 @@ const AdsTicket = () => {
                     </form>
                 </div>
             </div>
+            <Alert response={response} alert={alert}/>
         </div>
     )
 }

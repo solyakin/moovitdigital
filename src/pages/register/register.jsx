@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import { Link, useHistory } from 'react-router-dom';
 import '../Login/Login.scss';
 import google from '../../assets/google.svg';
+import image from '../../assets/image 1.png';
 import axios from 'axios';
 
 const Register = () => {
@@ -38,11 +39,8 @@ const Register = () => {
         })
         .then(res => {
             if(res.status == 200){
-                console.log(res.data)
+                localStorage.setItem('user-email', data.email);
                 history.push('/email-verification');
-                // localStorage.setItem('auth_token', res.data.token);
-                // localStorage.setItem('auth_name', res.data.firstName);
-                // history.push('/dashboard');
             }
         })
         .catch(err => console.log(err))
@@ -53,7 +51,7 @@ const Register = () => {
                 <div className="row justify-content-center">
                     <div className="col-md-4">
                         <form onSubmit={formSubmit}>
-                            <h5>MoovIT</h5>
+                            <img src={image} alt="" />
 
                             <h4>Create an account</h4>
                             <p>Set up a new account</p>

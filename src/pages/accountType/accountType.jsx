@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../accountType/accountType.scss';
+import image from '../../assets/image 1.png';
 import axios from 'axios';
-
 
 const AccountType = () => {
 
@@ -28,13 +28,13 @@ const AccountType = () => {
     return (
         <div className="account-type">
             <div className="small-wrapper">
-                <h4>MoovIT</h4>
+                <img src={image} alt="logo" className="mb-2"/>
                 <p>Choose an account type</p>
 
                 <button>Continue as an advertiser</button>
                 <button className="thin">Continue as an publisher</button>
 
-                <p>Don’t know yet? <span>Learn more</span></p>
+                <p>Don’t know yet? <span>Request a call now!</span></p>
             </div>
         </div>
     )

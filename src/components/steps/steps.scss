@@ -1,5 +1,15 @@
 .steps{
     text-align: left;
+    margin-top: 80px;
+    width: 72%;
+    margin-left: auto;
+    margin-right: auto;
+    @media screen and (max-width : 1250px){
+        width: 90%;
+    }
+    @media screen and (max-width : 992px){
+        width: 100%;
+    }
     .container{
         h1{
             font-weight: 700;
@@ -12,43 +22,201 @@
         .headings{
             display: flex;
             align-items: center;
-            margin-bottom: 5rem;
+            margin-bottom: 2rem;
             margin-top: 2rem;
+            position: relative;
             h5{
-                position: relative;
+                
                 font-size: 16px;
                 margin-right: 50px;
-                &::after{
-                    content: "";
-                    position: absolute;
-                    bottom: -5px;
-                    left: 0;
-                    width: 50px;
-                    height: 2px;
-                    background: blue;
-                }
+                // border: 1px solid grey;
+                padding: 7px 15px;
+                cursor: pointer;
             }
         }
+        .indicator{
+            position: absolute;
+            height: 40px;
+            width: 120px;
+            border: 1px solid grey;
+            top: -5px;
+            left: 33%;
+            transition: all .3s;
+        }
         .step-list{
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
             width: 100%;
-            margin-top: 150px;
+            min-height: 1200px;
+            margin-top: 50px;
             margin-bottom: 50px;
+            position: relative;
+            .step_1{
+                position:  absolute;
+                left: 0;
+                top: 10px;
+                @media screen and (max-width : 992px){
+                    position: unset;
+                    margin-bottom: 4rem;
+                }
+            }
+            .step_2{
+                position: absolute;
+                right: 0;
+                top: 220px;
+                @media screen and (max-width : 992px){
+                    position: unset;
+                }
+            }
+            .step_3{
+                position: absolute;
+                left: 0;
+                bottom: 300px;
+                @media screen and (max-width:1200px){
+                    bottom: 200px;
+                }
+                @media screen and (max-width : 992px){
+                    position: unset;
+                    margin-bottom: 5rem;
+                }
+            }
+            .step_4{
+                position: absolute;
+                right: 0;
+                bottom: 50px;
+                @media screen and (max-width:1200px){
+                    bottom: 0;
+                }
+                @media screen and (max-width : 992px){
+                    position: unset;
+                }
+            }
+            .step_5{
+                position: absolute;
+                left: 0;
+                bottom: 0px;
+                @media screen and (max-width : 992px){
+                    position: unset;
+                }
+            }
             .wrapper{
-                position: relative;
-                .liner{
+                display: flex;
+                align-items: center;
+                @media screen and (max-width : 992px){
+                    display: block;
+                    text-align: center;
+                }
+                img{
+                    width: 200px;
+                    margin-right: 30px;
+                    @media screen and (max-width : 992px){
+                        width: 350px;
+                        height: 300px;
+                    }
+                    @media screen and (max-width : 480px){
+                        width: 80%;
+                        margin-right: 0;
+                        height: 200px;
+                    }
+                }
+                .login{
+                    @media screen and (max-width : 480px){
+                        width: 80%;
+                        height: 200px;
+                    }
+                }
+                .count{
+                    width: 200px;
+                    @media screen and (max-width : 992px){
+                        width: 70%;
+                        margin: 20px auto;
+                    }
+                    p{
+                        margin-bottom: 5px;
+                        margin-top: 10px;
+                        font-size: 13px;
+                        color: #333333;
+                    }
+                    h5{
+                        margin-bottom: 0px;
+                    }
+                }
+                .line1{
                     position: absolute;
-                    top: -60px;
-                    left: 20px;
-                    img{
-                        width: 105%;
+                    left: 130%;
+                    width: 60%;
+                    top: 45%;
+                    @media screen and (max-width:1200px){
+                        width: 200px;
+                    }
+                    @media screen and (max-width : 992px){
+                        display: none;
                     }
                 }
                 p{
                     margin-top: 20px;
                     font-weight: 500;
                 }
+            }
+            .line2{
+                margin-left: 50px;
+                margin-top: 30px;
+                @media screen and (max-width:1200px){
+                    width: 180px;
+                    position: absolute;
+                    right: 150px;
+                    margin-top: 40px;
+                }
+                @media screen and (max-width : 992px){
+                    display: none;
+                }
+            }
+            .line3{
+                margin-top: 40px;
+                margin-left: 50%;
+                bottom: 0px;
+                left: 180px;
+                @media screen and (max-width:1200px){
+                    width: 200px;
+                }
+                @media screen and (max-width : 992px){
+                    display: none;
+                }
+            }
+            .line4{
+                margin-left: 40px;
+                margin-top: 30px;
+                @media screen and (max-width:1200px){
+                    width: 200px;
+                    margin-left: 100px;
+                }
+                @media screen and (max-width : 992px){
+                    display: none;
+                }
+            }
+        }
+        .publisher{
+            .step_3{
+                bottom : 300px;
+                .wrapper{
+                    img{
+                        height: 200px;
+                    }
+                }
+            }
+            .step_5{
+                .wrapper{
+                    img{
+                        height: 200px;
+                    }
+                }
+            }
+            img{
+                height: 160px;
+            }
+            .login{
+                height: 180px;
+            }
+            .line3{
+                width: 60%;
             }
         }
     }

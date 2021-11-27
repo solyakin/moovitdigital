@@ -8,7 +8,14 @@
     .content{
         display: grid;
         grid-template-columns: repeat(5, 1fr);
-        .about{
+        @media screen and (max-width : 992px){
+            grid-template-columns: repeat(3, 1fr);
+        }
+        @media screen and (max-width : 562px){
+            grid-template-columns: repeat(1, 1fr);
+        }
+        
+        .about_{
             h4{
                 font-size: 20px;
             }
@@ -24,6 +31,9 @@
         }
         .item{
             display: block;
+            @media screen and (max-width : 562px){
+                margin-top: 20px;
+            }
             h4{
                 font-size: 18px;
             }

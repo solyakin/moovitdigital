@@ -1,0 +1,49 @@
+.row{
+    .template-fold{
+        display: flex;
+        margin-left: 20px;
+        margin-bottom: 7rem;
+        .template-tags{
+            flex: .2;
+            margin-right: 20px;
+            margin-top: 26px;
+            .tag-item{
+                border: 1px solid #dbd9d9;
+                padding: 10px;
+                margin-bottom: 15px;
+                display: flex;
+                justify-content: center;
+                img{
+                    width: 15px;
+                    margin-right: 15px;
+                }
+                p{
+                    font-size: 13px;
+                    color: #484848;
+                }
+            }
+        }
+        .template-image{
+            flex : .7;
+            .bordering{
+                border: 1px solid #dbd9d9;
+                padding: 20px;
+            }
+            .direction-btn{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-top: 30px;
+                p{
+                    font-size: 13px;
+                    color: #484848;
+                }
+                button{
+                    padding: 6px 25px;
+                    background: #484848;
+                }
+            }
+        }
+
+    }
+}

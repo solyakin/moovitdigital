@@ -1,11 +1,21 @@
-import React from 'react';
+import React, {useState} from 'react';
 import axios from 'axios'
 import '../header/header.scss';
 import { Link, useHistory } from 'react-router-dom';
+import logo from '../../assets/image 1.png';
+import Hamburger from '../Hamburger/hamburgerMenu';
 
-const Header = () => {
+const Header = ({navBackground}) => {
 
+    console.log(navBackground)
     const history = useHistory();
+    const [state, setState] = useState({
+        initial : false,
+        clicked : null,
+        setName : 'Menu'
+    })
+
+    const [disabled, setDisabled] = useState(false);
 
     const handleLogout = (e) => {
         e.preventDefault();
@@ -13,7 +23,7 @@ const Header = () => {
             baseURL : "https://api.moovitdigital.com",
             headers : {
                 Authorization : `Bearer ${token}`,
-               'Content-Type' : 'multipart/form-data',
+            //    'Content-Type' : 'multipart/form-data',
             }
 
         })
@@ -30,54 +40,68 @@ const Header = () => {
     const token = localStorage.getItem("auth_token");
     let LoginBtns = "";
 
-    if(!token){
-        LoginBtns = (
-            <div className="navbar">
-                <li className="nav-item">
-                    <Link className="nav-link" to="/login">Sign in</Link>
-                </li>
-                <li className="nav-item">
-                    <Link className="start-btn" to="/register">Get Started</Link>
-                </li>
-            </div>
-        )
-    }else{
-        LoginBtns = (
-            <li className="nav-item">
-                <button className="btn btn-danger btn-bg" onClick={handleLogout}>Logout</button>
-            </li>
+    const handleClick = () => {
+        disabledMenu();
+        if(state.initial === false){
+            setState({
+                initial : null,
+                clicked : true,
+                setName : "Close"
+            });
+            console.log(1)
+        }else if(state.clicked === true){
+            setState({
+                clicked : !state.clicked,
+                setName : "Menu"
+            })
+            console.log(2)
+        } else if(state.clicked === false){
+            setState({
+                clicked : !state.clicked,
+                setName : "Close"
+            })
+            console.log(3)
+        }
+         
+    }
+
+    // if(!token){
+    //     LoginBtns = (
+    //         <div className="navbar">
+    //             <li className="nav-item">
+    //                 <Link className="nav-link" to="/login">Sign in</Link>
+    //             </li>
+    //             <li className="nav-item">
+    //                 <Link className="start-btn" to="/register">Get Started</Link>
+    //             </li>
+    //         </div>
+    //     )
+    // }else{
+    //     LoginBtns = (
+    //         <li className="nav-item">
+    //             <button className="btn btn-danger btn-bg" onClick={handleLogout}>Logout</button>
+    //         </li>
             
-        )
+    //     )
+    // }
+
+    const disabledMenu = () => {
+        setDisabled(!disabled);
+        setTimeout(() => {
+            setDisabled(false)
+        }, 1200)
     }
     return (
-        <div className="header">
-            <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                <div className="container">
-                    <Link className="navbar-brand" to="/">MoovIT</Link>
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-                    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                            <li className="nav-item">
-                                <Link className="nav-link active" aria-current="page" to="/">Home</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="#">Services</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="#">Partnership</Link>
-                            </li>
-                            <li className="nav-item">
-                                <Link className="nav-link" to="#">Contact Us</Link>
-                            </li>
-                        </ul>
-                    <form className="d-flex navbar-nav">
-                        {LoginBtns}
-                    </form>
-                    </div>
+        <div className="header" style={{background : navBackground}}>
+            <div className="container">
+                <div className="logo">
+                    <Link to='/'>
+                        <img src={logo} alt="moovit-brand-logo" />
+                    </Link>
+                    <button disabled={disabled} onClick={handleClick}>Menu</button>
                 </div>
-                </nav>
+            </div>
+            <Hamburger state={state}/>
         </div>
     )
 }
