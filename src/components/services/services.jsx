@@ -1,23 +1,23 @@
 import React from 'react';
 import '../services/services.scss';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, {Autoplay, Pagination} from 'swiper';
+import SwiperCore, {Autoplay, Pagination, Navigation} from 'swiper';
 import 'swiper/swiper-bundle.css'
 import image1 from '../../assets/Frame 439.svg';
 import image2 from '../../assets/Frame 440.svg';
 import image3 from '../../assets/Frame 441.svg';
 import image4 from '../../assets/Frame 442.svg';
-SwiperCore.use([Autoplay, Pagination]);
+SwiperCore.use([Autoplay, Pagination, Navigation]);
 
 const Services = () => {
     return (
         <div className="services">
             {/* <div className="container"> */}
                 <div className ="service-text">
-                    <h2>MEET US</h2>
                     <div className="row_">
                         <Swiper className="desktop" slidesPerView={1}
                         spaceBetween={10}
+                        navigation={true}
                         pagination={{ clickable: true }}
                         autoplay={{
                             delay: 50000,

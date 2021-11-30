@@ -2,9 +2,11 @@ $highlight : url('../../assets/Highlight_05.svg');
 
 .contact-hero{
     padding-top: 120px;
-    height: 90vh;
+    height: 100%;
+    padding-bottom: 100px;
     .row{
         --bs-gutter-x: 0rem;
+        align-items: center;
         @media only screen and (max-width : 990px){
             display: block!important;
         }
@@ -13,10 +15,9 @@ $highlight : url('../../assets/Highlight_05.svg');
         }
         .left{
             text-align: left;
-            
             h1{
                 font-weight: 700;
-                font-size: 2.6rem;
+                font-size: 3rem;
                 @media only screen and (max-width: 590px){
                     font-size: 2.3rem;
                 }
@@ -59,12 +60,18 @@ $highlight : url('../../assets/Highlight_05.svg');
         }
         .right{
             img{
-                width : 320px;
+                width : 420px;
                 @media only screen and (max-width: 590px){
                     width: 250px;
                     margin-top: 2rem;
                 }
             }
         }
+    }
+    .wire{
+        position: absolute;
+        left: -20px;
+        z-index: 6;
+        width: 250px;
     }
 }

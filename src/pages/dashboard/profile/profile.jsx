@@ -6,6 +6,7 @@ import '../../dashboard/ads-history/ads-history.scss';
 import Tags from '../../../components/Tags/Tags';
 import caretDown from '../../../assets/CaretDown.svg';
 import profileImage from '../../../assets/Userprofile.svg';
+import logo from '../../../assets/image 1.png';
 
 const Profile = () => {
 
@@ -16,6 +17,15 @@ const Profile = () => {
         image : '',
     })
 
+    const [style, setStyle] = useState({
+        hide : false,
+        transformArrow : false,
+    });
+    const handleClick = (e) => {
+        e.preventDefault();
+        setStyle({hide : !style.hide, transformArrow : !style.transformArrow});
+    
+    }
     const handleChange = (e) => {
         e.persist();
         setProfile({...profile, [e.target.name] : e.target.value});
@@ -23,6 +33,9 @@ const Profile = () => {
     const id = localStorage.getItem("auth_id")
     const token = localStorage.getItem("auth_token")
 
+    useEffect(() => {
+        document.querySelector(".header").style.display = "none";
+    }, [])
     const authAxios = axios.create({
         baseURL : "https://api.moovitdigital.com",
         headers : {
@@ -67,13 +80,20 @@ const Profile = () => {
     return (
         <div className="dashboard">
             <div className="small-title">
-                <div className="title-text">
-                    <p>The Brand Hub</p>
-                    <img src={caretDown} alt="" />
+                <div className="title-text justify-content-between">
+                    <div className="logo">
+                        <Link to='/'>
+                            <img src={logo} alt="moovit-logo" />
+                        </Link>
+                    </div>
+                    <div className="text d-flex align center">
+                        <p>The Brand Hub</p>
+                        <img src={caretDown} alt="" />
+                    </div>
                 </div>
                 <div className="dashboard-main-wrapper">
                     <div className="tabs">
-                        <Tags />
+                        <Tags style={style} handleClick={handleClick}/>
                     </div>
                     <div className="dashboard-main">
                         <div className="ads-wrapper">

@@ -6,6 +6,7 @@
             .form-wrapper{
                 position : relative;
                 overflow: hidden;
+                width : 642px;
                 .form-heading{
                     display: flex;
                     align-items: center;
@@ -32,6 +33,7 @@
                     // box-shadow: 0 0 20px 0 rgba(0,0,0,0.1);
                     padding: 30px 20px;
                     height: 370px;
+                    
                     .title{
                         font-weight: 500;
                         font-size: 1.2rem;

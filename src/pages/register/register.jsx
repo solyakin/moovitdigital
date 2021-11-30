@@ -1,16 +1,19 @@
 import React, {useState} from 'react'
 import { Link, useHistory } from 'react-router-dom';
+import Loader from "react-loader-spinner";
 import '../Login/Login.scss';
 import google from '../../assets/google.svg';
 import image from '../../assets/image 1.png';
 import axios from 'axios';
 
 const Register = () => {
+    const [error_msg, setError_msg] = useState([]);
     const history = useHistory();
     const [register, setRegister] = useState({
         email : '',
         password : '',
-        confirm_password : ""
+        confirm_password : "",
+        loading : false,
     })
 
     const handleChange = (e) => {
@@ -20,6 +23,7 @@ const Register = () => {
 
     const formSubmit = (e) => {
         e.preventDefault();
+        setRegister({loading : true});
         const data = {
             email : register.email,
             password : register.password,
@@ -38,12 +42,34 @@ const Register = () => {
             config: { headers: {'Content-Type': 'multipart/form-data' }}
         })
         .then(res => {
-            if(res.status == 200){
+            if(res.status === 200){
                 localStorage.setItem('user-email', data.email);
                 history.push('/email-verification');
             }
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            setError_msg(err.response.data.error)
+            setRegister({loading : false});
+        })
+    }
+    const error_mail = error_msg.email;
+    const error_password = error_msg.password;
+
+    let error_text = '';
+    if (error_mail !== undefined){
+        error_mail.map(res => {
+            return(
+                error_text = <p>{res}</p>
+            )
+        })
+    }
+    let error_text2 = '';
+    if(error_password !== undefined){
+        error_password.map(res => {
+            return(
+                error_text2 = <p>{res}</p>
+            )
+        })
     }
     return (
         <div className="sign-up">
@@ -55,13 +81,19 @@ const Register = () => {
 
                             <h4>Create an account</h4>
                             <p>Set up a new account</p>
+
+                            <div className="error-box">
+                                
+                            </div>
                             <div className="form-group">
                                 <label>Email</label>
                                 <input type="text" placeholder="joe@gmail.com" name="email" onChange={handleChange} value={register.email}/>
+                                {error_text}
                             </div>
                             <div className="form-group">
                                 <label>Password</label>
                                 <input type="password" placeholder="Enter your password" name="password" onChange={handleChange} value={register.password}/>
+                                {error_text2}
                             </div>
                             <div className="form-group">
                                 <label>Confirm Password</label>
@@ -70,7 +102,13 @@ const Register = () => {
                             <div className="forget-password">
                                 <Link>Atleast 8 characters</Link>
                             </div>
-                            <button type="submit">Continue</button>
+                            
+                            <button type="submit" className="d-flex align-center justify-content-center">
+                                <span>Continue</span>
+                                <div className="spinner" style={{display : register.loading ? "block" : "none"}}>
+                                    <Loader type="TailSpin" color="#FFFFFF" height={30} width={30} />
+                                </div>
+                            </button>
                         </form>
                        <div className="signup">
                            <p>Already have an account? <Link to='/login'>Login </Link></p>

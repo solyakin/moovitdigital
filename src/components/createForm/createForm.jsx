@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import NaijaStates from 'naija-state-local-government';
 import DragDrop from '../dragDrop/dragDrop';
 import caretRight from '../../assets/CaretRight.svg';
 import ellipse1 from '../../assets/Ellipse 27.svg';
@@ -8,7 +9,6 @@ import ellipse2 from '../../assets/Ellipse 28.svg';
 import tick from '../../assets/Frame 338.svg';
 
 const CreateForm = ({createAds, setCreateAds, setFile, showNext2, setShowNext2, setShowNext3, handleChange}) => {
-
     
     const handleChange2 = (e) => {
         e.preventDefault();
@@ -20,24 +20,11 @@ const CreateForm = ({createAds, setCreateAds, setFile, showNext2, setShowNext2, 
       };
     const [value, setValue] = useState(initialValue);
     const [locations, setLocation] = useState([]);
-    const [getState, setGetState] = useState([]);
-    const [lga, setLga] = useState([]);    
 
-    useEffect( () => {
-        const url = 'http://locationsng-api.herokuapp.com/api/v1/states';
-        axios.get(url)
-        .then(res => {
-            const stateList = res.data;
-            setGetState(stateList);
-        })
+    const allState = NaijaStates.all();
+    const lga= NaijaStates.lgas(value);
+    let TargetLga = lga.lgas;
 
-        const url2 = `http://locationsng-api.herokuapp.com/api/v1/states/${value}/lgas`;
-        axios.get(url2)
-        .then(res => {
-            const lgas = res.data;
-            setLga(lgas)
-        })
-    }, [value])
     const __handleChange = (e) => {
         const targetLocation = e.target.value;
         setValue(targetLocation);
@@ -112,13 +99,13 @@ const CreateForm = ({createAds, setCreateAds, setFile, showNext2, setShowNext2, 
                                 <div className="col">
                                     <div className="form-group start">
                                         <label htmlFor="">Start date</label><br></br>
-                                        <input type="text"  placeholder="(DD/MM/YY) e.g 10/2/2021" name="start" onChange={handleChange} value={createAds.start}/>
+                                        <input type="date"  placeholder="(DD/MM/YY) e.g 10/2/2021" name="start" onChange={handleChange} value={createAds.start}/>
                                     </div>
                                 </div>
                                 <div className="col">
                                     <div className="form-group end">
                                     <label htmlFor="">End date</label><br></br>
-                                    <input type="text"  placeholder="(DD/MM/YY) e.g 20/3/2022" name="end" onChange={handleChange} value={createAds.end}/>
+                                    <input type="date"  placeholder="(DD/MM/YY) e.g 20/3/2022" name="end" onChange={handleChange} value={createAds.end}/>
                                 </div>
                             </div>
                             <div className="row dates mb-3">
@@ -202,9 +189,9 @@ const CreateForm = ({createAds, setCreateAds, setFile, showNext2, setShowNext2, 
                                         <label htmlFor="">Target area</label><br></br>
                                         <select value={value} onChange={__handleChange}>
                                             {
-                                                getState.map(({ name }) => {
+                                                allState.map(({ state }) => {
                                                     return(
-                                                        <option key={name} value={name}>{name}</option>
+                                                        <option key={state} value={state}>{state}</option>
                                                     )   
                                                 })
                                             }
@@ -216,9 +203,9 @@ const CreateForm = ({createAds, setCreateAds, setFile, showNext2, setShowNext2, 
                                         <label htmlFor="">Pick location</label><br></br>
                                         <select onChange={__handleChange2}>
                                             {
-                                                lga.map((result, index) => {
+                                                TargetLga.map((result) => {
                                                     return(
-                                                        <option key={index} value={result}>{result}</option>
+                                                        <option key={result.index} value={result}>{result}</option>
                                                     )   
                                                 })
                                             }

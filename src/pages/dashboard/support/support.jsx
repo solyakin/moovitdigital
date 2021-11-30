@@ -4,6 +4,7 @@ import '../../dashboard/dashboard.scss';
 import Tags from '../../../components/Tags/Tags';
 import '../../dashboard/ads-history/ads-history.scss';
 import caretDown from '../../../assets/CaretDown.svg';
+import logo from '../../../assets/image 1.png';
 import axios from 'axios';
 
 const Support = () => {
@@ -19,7 +20,18 @@ const Support = () => {
         e.persist();
         setSupport({...support, [e.target.name] : e.target.value});
     }
-
+    const [style, setStyle] = useState({
+        hide : false,
+        transformArrow : false,
+    });
+    const handleClick = (e) => {
+        e.preventDefault();
+        setStyle({hide : !style.hide, transformArrow : !style.transformArrow});
+    
+    }
+    useEffect(() => {
+        document.querySelector(".header").style.display = "none";
+    }, [])
     const formSubmit = (e) => {
         e.preventDefault();
         const data = {
@@ -54,13 +66,20 @@ const Support = () => {
     return (
         <div className="dashboard">
             <div className="small-title">
-                <div className="title-text">
-                    <p>The Brand Hub</p>
-                    <img src={caretDown} alt="" />
+                <div className="title-text justify-content-between">
+                    <div className="logo">
+                        <Link to='/'>
+                            <img src={logo} alt="moovit-logo" />
+                        </Link>
+                    </div>
+                    <div className="text d-flex align center">
+                        <p>The Brand Hub</p>
+                        <img src={caretDown} alt="" />
+                    </div>
                 </div>
                 <div className="dashboard-main-wrapper">
                     <div className="tabs">
-                        <Tags />
+                        <Tags style={style} handleClick={handleClick}/>
                     </div>
                     <div className="dashboard-main">
                         <div className="ads-wrapper mt-3">

@@ -49,81 +49,120 @@
             }
             .row_{
                 align-items: center;
-                margin-top: 4rem;
                 height: 100vh;
-                @media screen and (max-width: 768px){
-                    margin-top: 2rem;                        
-                };
                 .row{
                     --bs-gutter-x: 0rem;
                     height: 100vh;
+                    justify-content: center;
                 }
+                .swiper-button-next{
+                    color: #EE315D;
+                    @media only screen and (max-width: 480px){
+                        display: none;
+                    }
+                }
+                .swiper-button-prev{
+                    color: #EE315D;
+                    @media only screen and (max-width: 480px){
+                        display: none;
+                    }
+                }
+                .swiper-container-horizontal {
+                    .swiper-pagination-bullets{
+                        .swiper-pagination-bullet{
+                            background: #f77b98;
+                            width: 10px;
+                            height: 10px;
+                        }
+                    } 
+                } 
                 .frame0{
-                    background-image: url(../../assets/image3.jpg);
-                    // background-image: url(../../assets/who.jpg);
+                    background-image: url(../../assets/portrait-cool-man-with-sunglasses-copy-space.jpg);
                     background-size: cover;
                     background-repeat: no-repeat;
+                    @media screen and (max-width: 768px){
+                        background-position: right;
+                        background-image: linear-gradient(0deg, rgba(0,0,0,0.3), rgba(0,0,0,0.3)),url(../../assets/portrait-cool-man-with-sunglasses-copy-space.jpg);
+                    }
                     .content-text{
+                        @media screen and (max-width: 768px){
+                            margin-top: 200px;
+                        }
+                        @media screen and (max-width: 480px){
+                            margin-top: 260px;
+                        }
                         p{
-                            font-size: 84px;
+                            font-size: calc(32px + (84 - 34) * ((100vw - 300px) / (1600 - 300)));
                             line-height: 1.1;
                             font-weight: 700;
+                            @media screen and (max-width: 680px){
+                                font-size: 60px;
+                            }
+                            @media screen and (max-width: 480px){
+                                font-size: 43px;
+                            }
                         }
                     }
                 }
                 .frame1{
-                    // background-image: url(../../assets/portrait-cool-man-with-sunglasses-copy-space.jpg);
                     background-image: url(../../assets/image1.jpg);
                     background-size: cover;
                     background-repeat: no-repeat;
+                    @media screen and (max-width: 768px){
+                        background-position: right;
+                        background-image: linear-gradient(0deg, rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(../../assets/image1.jpg)
+                    }
+                    @media screen and (max-width: 480px){
+                        background-position: center;
+                    }
                 }
                 .frame2{
                     // background-image: url(../../assets/pexel.jpg);
                     background-image: url(../../assets/store1.jpg);
                     background-size: cover;
                     background-repeat: no-repeat;
-                    // .content-text{
-                    //     text-align: right!important;
-                    //     width: 90%;
-                    //     margin-left: 0;
-                    //     margin-right: 10%;
-                    //     // h3{
-                    //     //     width: 40%;
-                    //     // }
-                    //     p{
-                    //         width: 500px;
-                    //         text-align: right!important;
-                    //     }
-                    // }
+                    @media screen and (max-width: 768px){
+                        background-position: right;
+                        background-image: linear-gradient(0deg, rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(../../assets/store1.jpg)
+                    }
+                    @media screen and (max-width: 480px){
+                        background-position: center;
+                    }
                 }
                 .frame3{
                     background: url(../../assets/chess.jpg);
                     background-size: cover;
                     background-repeat: no-repeat;
                     background-position: 50% 50%;
+                    @media screen and (max-width: 768px){
+                        background-position: right;
+                    }
+                    @media screen and (max-width: 480px){
+                        background-position: center;
+                    }
                 }
                 .frame4{
-                    background: url(../../assets/social.jpg);
+                    background-image: linear-gradient(0deg, rgba(0,0,0,0.6), rgba(0,0,0,0.6)),url(../../assets/who.jpg);
                     background-size: cover;
                     background-repeat: no-repeat;
-                    background-position: 50% 50%;
+                    background-position: 20% 50%;
+                    @media screen and (max-width: 768px){
+                        background-position: right;
+                        background-image: linear-gradient(0deg, rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(../../assets/who.jpg)
+                    }
+                    @media screen and (max-width: 480px){
+                        background-position: center;
+                    }
                 }
-                // .col{  
-                //     @media screen and (max-width : 992px) {
-                //         width: 50%;
-                //         flex: none;
-                //         margin-bottom: 15px;
-                //     }
-                //     @media screen and (max-width : 480px){
-                //         width: 100%;
-                //     }
-                // }
                 .content-text{
                     text-align: left;
-                    margin-top: 10%;
+                    margin-top: 12%;
                     margin-left : 10%;
                     width: 40%;
-                    // font-family : 'roboto';
+                    @media screen and (max-width : 768px){
+                        width: 90%;
+                        margin: 200px auto;
+                    }
                     img{
                         width: 45px;
                         margin-bottom: 20px;
@@ -133,24 +172,22 @@
                         font-weight: 800;
                         color:  white;
                         text-transform: uppercase;
-                        // line-height: 1.5;
                         transition: transform .3s;
-                        // @media screen and (max-width : 768px) {
-                        //     font-size: 2.7rem;
-                        // }
-                        // @media screen and (max-width : 568px) {
-                        //     text-transform: uppercase;
-                        //     line-height: .8;
-                        //     color: rgb(241, 237, 237);
-                        //     margin-bottom: 1.5rem;
-                        //     font-size: 2.2rem;
-                        // }
+                        @media screen and (max-width : 768px) {
+                            font-size: 38px;
+                        }
+                        @media screen and (max-width : 480px) {
+                            font-size: 2.2rem;
+                        }
                     }
                     p{
                         color: white;
                         font-size: 1.1rem;
                         line-height: 1.8;
                         width: 100%;
+                        @media screen and (max-width : 480px) {
+                            font-size: 15px;
+                        }
                     }
                     .text2{
                         margin-left: 10%;

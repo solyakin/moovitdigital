@@ -42,6 +42,7 @@ import Contact from './pages/contact/contact';
 import AddBudget from './pages/admin/addBudget/addBudget';
 import AddGraphic from './pages/admin/addGraphic/addGraphic';
 import RunningAds from './pages/dashboard/ads-history/runningAds/runningAds';
+import Home from './pages/home/home';
 
 // TODO
 // 1. display user name on admin all-ads page
@@ -71,17 +72,18 @@ function App() {
 
   useEffect(() => {
     document.addEventListener("scroll", () => {
-      const backgroundcolor = window.scrollY < 500 ? "transparent" : "#FFFAEB";
+      const backgroundcolor = window.scrollY < 150 ? "transparent" : "#FFFAEB";
       setNavBackground(backgroundcolor);
     });
   },[])
 
   return (
     <div className="App">
-      {/* <Header navBackground={navBackground}/> */}
+      <Header navBackground={navBackground}/>
       <Switch>
         <Route exact path='/' render={() => <Homepage  />} />
         <Route exact path='/login' component={Login}/>
+        <Route exact path='/home' component={Home}/>
         <Route exact path='/register' component={Register}/>
         <Route exact path='/sign-up' component={SignUp}/>
         <Route exact path='/user-registration' component={UserRegistration}/>

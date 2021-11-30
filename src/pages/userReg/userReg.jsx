@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import '../../pages/userReg/userReg.scss';
 import axios from 'axios';
 
@@ -124,7 +124,7 @@ const UserRegistration = () => {
         <div className="user-registration"> 
             <div className="container">
                 <div className="row justify-content-center">
-                    <div className="col-lg-7">
+                    <div className="col-lg-6">
                         <div className="form-wrapper">
                             <div className="form-heading">
                                 <h5 style={{color : personal ? "grey" : "blue"}}>1. Personal Details</h5>
@@ -180,7 +180,9 @@ const UserRegistration = () => {
                                         </div>
                                     </div>
                                     <div className="buttons">
-                                        <button>Back</button>
+                                        <button>
+                                            <Link to='/account-type'>Back</Link>
+                                        </button>
                                         <button onClick={handleClick}>Continue</button>
                                     </div>
                                 </div>
@@ -282,7 +284,7 @@ const UserRegistration = () => {
                                     </div>
 
                                     <div className="buttons">
-                                        <button>Back</button>
+                                        <button onClick={handleClick}>Back</button>
                                         <button type='submit'>Finish</button>
                                     </div>
                                 </div>

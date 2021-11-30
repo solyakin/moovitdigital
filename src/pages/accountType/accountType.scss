@@ -1,5 +1,6 @@
 .account-type{
-    margin-top: 60px;
+    margin-top: 120px;
+    margin-bottom: 120px;
     text-align: center;
     h4{
         font-size: 16px;
@@ -34,11 +35,19 @@
                 background: transparent!important;
                 border: 1px solid #d6d6d6!important;
             }
+            a{
+                color: white;
+                text-decoration: none;
+                
+            }
         }
         .thin{
             background: transparent!important;
             border: 1px solid #d6d6d6!important;
             color: #333333;
+            a{
+                color: #333333;
+            }
         }
         
     }

@@ -8,7 +8,7 @@ import '../../../dashboard/ads-history/ads-history.scss';
 import caretDown from '../../../../assets/CaretDown.svg';
 import Tags from '../../../../components/Tags/Tags';
 import ReportModal from '../../Report-Modal/report-modal';
-
+import logo from '../../../../assets/image 1.png';
 
 const RunningAds = (props) => {
     const [isLoading, setLoading] = useState(false);
@@ -40,12 +40,22 @@ const RunningAds = (props) => {
         let single_Ads = insightData.filter(item => item.id === targetId)
        setfbData(single_Ads);
     }
+    useEffect(() => {
+        document.querySelector(".header").style.display = "none";
+    }, [])
     return (
         <div className="dashboard">
             <div className="small-title">
-                <div className="title-text">
-                    <p>The Brand Hub</p>
-                    <img src={caretDown} alt="" />
+                <div className="title-text justify-content-between">
+                    <div className="logo">
+                        <Link to='/'>
+                            <img src={logo} alt="moovit-logo" />
+                        </Link>
+                    </div>
+                    <div className="text d-flex align center">
+                        <p>The Brand Hub</p>
+                        <img src={caretDown} alt="" />
+                    </div>
                 </div>
                 <div className="dashboard-main-wrapper">
                     <div className="tabs">

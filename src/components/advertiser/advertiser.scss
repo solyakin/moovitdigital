@@ -18,7 +18,7 @@
         p{
             width: 450px;
             font-weight: 400px;
-            font-size: 14px;
+            font-size: 15px;
             margin-top: 20px;
             margin-bottom: 40px;
             line-height: 1.8;
@@ -45,7 +45,7 @@
             margin-bottom: 40px;
         }
     }
-    .row_{
+    .row{
         display: flex;
         align-items: center;
         @media screen and (max-width : 992px) {
@@ -53,12 +53,20 @@
             text-align: center;
         }
         img{
-            width: 80%;
-            @media screen and (max-width : 990px) {
-                width: 100%;
-                margin: 30px auto;    
+            width: 300px;
+        }
+        .first{
+            // text-align: center;
+            img{
+                margin: auto;
+                transform: rotate(-30deg);
+                @media screen and (max-width : 990px) {
+                    width: 100%;
+                    margin: 30px auto;    
+                }
             }
         }
+        
         .text-right{
             text-align: right;
             @media screen and (max-width : 990px) {

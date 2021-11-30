@@ -11,8 +11,13 @@
             justify-content: right;
             padding-right: 50px;
             padding-bottom: 10px;
-            img{
-                width : 20px;
+            .logo{
+                margin-left: 20px;
+            }
+            .text{
+                img{
+                    width : 20px;
+                }
             }
         }
         .dashboard-main-wrapper{

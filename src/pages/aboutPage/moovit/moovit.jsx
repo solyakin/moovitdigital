@@ -11,7 +11,7 @@ const Moovit = () => {
                         <div className="content">
                         <h5>MOOVIT</h5>
                         <h3>More than your typical digital marketing agency</h3>
-                        <p>Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit dolore cillum minim temp or enim. Elit aute irure tempor cupidatat incididun</p>
+                        <p>We help you get in front of potential clients. Get the most out of your online advertising budget with the right mix of creativity and hi-tech precision; we generate successful advertising campaigns for all types of businesses.</p>
                         </div>
                     </div>
                 </div>

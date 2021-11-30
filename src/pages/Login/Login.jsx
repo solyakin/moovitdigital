@@ -1,15 +1,19 @@
 import React, {useState} from 'react'
 import { Link, useHistory } from 'react-router-dom';
+import Loader from "react-loader-spinner";
 import '../Login/Login.scss';
 import google from '../../assets/google.svg';
 import image from '../../assets/image 1.png';
+import facebook from '../../assets/facebook.png';
 import axios from 'axios';
 
 const Login = () => {
     const history = useHistory();
+    const [error_msg, setError_msg] = useState([]);
     const [login, setLogin] = useState({
         email : '',
-        password : ''
+        password : '',
+        loading : false
     })
 
     const handleChange = (e) => {
@@ -19,6 +23,7 @@ const Login = () => {
 
     const formSubmit = (e) => {
         e.preventDefault();
+        setLogin({loading : true});
         const data = {
             email : login.email,
             password : login.password
@@ -35,18 +40,27 @@ const Login = () => {
             config: { headers: {'Content-Type': 'multipart/form-data' }}
         })
         .then(res => {
-            if(res.status == 200){
+            if(res.status === 200){
                 console.log(res.data)
                 localStorage.setItem('auth_token', res.data.token);
                 localStorage.setItem('auth_name', res.data.firstName);
                 localStorage.setItem('auth_id', res.data.id);
-                history.push('/user-registration'); 
-            }
-            if(res.status == 400){
-                console.log(res.error);
-            }
+                history.push('/account-type'); 
+            } 
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            setError_msg(err.response.data.error)
+            setLogin({loading : false});
+        })
+    }
+    console.log(error_msg);
+    let error_text = '';
+    if (error_msg !== undefined){
+        error_msg.map(res => {
+            return(
+                error_text = <p>{res}</p>
+            )
+        })
     }
     return (
         <div className="sign-up">
@@ -61,6 +75,7 @@ const Login = () => {
                             <div className="form-group">
                                 <label>Email</label>
                                 <input type="text" placeholder="joe@gmail.com" name="email" onChange={handleChange} value={login.email}/>
+                                {error_text}
                             </div>
                             <div className="form-group">
                                 <label>Password</label>
@@ -69,7 +84,12 @@ const Login = () => {
                             <div className="forget-password">
                                 <Link>Forgot Password?</Link>
                             </div>
-                            <button type="submit">Login</button>
+                            <button type="submit" className="d-flex align-center justify-content-center">
+                                <span>Login</span>
+                                <div className="spinner" style={{display : login.loading ? "block" : "none"}}>
+                                    <Loader type="TailSpin" color="#FFFFFF" height={30} width={30} />
+                                </div>
+                            </button>
                         </form>
                        <div className="signup">
                            <p>Don’t have an account? <Link to='/register'>Sign up</Link></p>
@@ -80,7 +100,7 @@ const Login = () => {
                             <p>Continue with Google</p>
                        </div>
                        <div className="google-btn">
-                            <img src={google} alt="google icon" />
+                            <img src={facebook} alt="google icon" />
                             <p>Continue with Facebbok</p>
                        </div>
                        <div className="policy">

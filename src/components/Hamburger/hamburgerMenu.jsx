@@ -2,12 +2,11 @@ import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import '../Hamburger/hamburger.scss';
 import {gsap} from 'gsap';
+import smile from '../../assets/stand.svg';
 
-
-const HamburgerMenu = ({state}) => {
+const HamburgerMenu = ({state, setState}) => {
 
     let menu = useRef(null);
-    console.log(menu)
     let revealMenu = useRef(null);
     let revealBackground = useRef(null);
     let line1 = useRef(null);
@@ -90,24 +89,25 @@ const HamburgerMenu = ({state}) => {
                         <div className="content">
                             <nav>
                                 <span>
-                                    <Link ref = {el => {line1 = el } } to="/about">Discover Us</Link>
+                                    <Link ref = {el => {line1 = el } } onClick={() => setState({clicked : false})} to="/home">Home</Link>
                                 </span>
                                 <span>
-                                    <Link ref = {el => {line2 = el } } to="/">Our Services</Link>
+                                    <Link ref = {el => {line2 = el } } onClick={() => setState({clicked : false})} to="/about">Discover Us</Link>
                                 </span>
                                 <span>
-                                    <Link ref = {el => {line2 = el } } to="/">Packages</Link>
+                                    <Link ref = {el => {line2 = el } } onClick={() => setState({clicked : false})} to="/">Packages</Link>
                                 </span>
                                 <span>
-                                    <Link ref = {el => {line3 = el } } to="/contact">Contact us</Link>
+                                    <Link ref = {el => {line3 = el } } onClick={() => setState({clicked : false})} to="/contact">Contact us</Link>
                                 </span>
                             </nav>
                             <div ref = {el => {info = el } } className="promise">
-                                <h4>WE ARE A</h4>
+                                {/* <h4>WE ARE A</h4>
                                 <p>FULL-SERVICE</p>
                                 <p>FULL-BRAIN</p>
                                 <p>FULL-THINKING</p>
-                                <p>WE ARE MOOOOOVIT....</p>
+                                <p>WE ARE MOOOOOVIT....</p> */}
+                                <img src={smile} alt="moovit-smile-icon" />
                             </div>
                         </div>
                         <div className="social">

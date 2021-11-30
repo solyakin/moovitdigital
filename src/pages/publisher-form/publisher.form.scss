@@ -1,6 +1,7 @@
 .publisher-form{
     background: #e5e5e5;
     text-align: left;
+    padding-top: 80px!important;
     padding-bottom: 4rem;
     .row{
         .col-md-8{
@@ -32,6 +33,13 @@
                     color: #484848;
                 }
                 input{
+                    width: 90%;
+                    font-size: 12px;
+                    padding: 10px;
+                    border: 1px solid #c4c4c4;
+                    margin-bottom: 15px;
+                }
+                select{
                     width: 90%;
                     font-size: 12px;
                     padding: 10px;

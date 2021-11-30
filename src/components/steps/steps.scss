@@ -1,6 +1,5 @@
 .steps{
     text-align: left;
-    margin-top: 80px;
     width: 72%;
     margin-left: auto;
     margin-right: auto;
@@ -10,7 +9,11 @@
     @media screen and (max-width : 992px){
         width: 100%;
     }
+    @media screen and(max-width: 768px){
+        margin-top: 0px;
+    }
     .container{
+        text-align: center;
         h1{
             font-weight: 700;
             font-size: 36px;
@@ -26,12 +29,13 @@
             margin-top: 2rem;
             position: relative;
             h5{
-                
                 font-size: 16px;
                 margin-right: 50px;
-                // border: 1px solid grey;
                 padding: 7px 15px;
                 cursor: pointer;
+                @media screen and(max-width: 768px){
+                    margin-right: 20px;
+                }
             }
         }
         .indicator{
@@ -49,6 +53,7 @@
             margin-top: 50px;
             margin-bottom: 50px;
             position: relative;
+            text-align: left;
             .step_1{
                 position:  absolute;
                 left: 0;
@@ -217,6 +222,17 @@
             }
             .line3{
                 width: 60%;
+            }
+        }
+        button{
+            padding: 12px;
+            width: 200px;
+            display: inline-block;
+            margin: auto;
+            justify-content: center;
+            a{
+                color: white;
+                text-decoration: none;
             }
         }
     }

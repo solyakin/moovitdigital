@@ -1,6 +1,8 @@
 import React from 'react';
-import arrow from "../../assets/rafik.svg";
+import arrow from "../../assets/ContactImage.svg";
+import frame from "../../assets/Frame 473.svg";
 import '../contactHero/contact-hero.scss';
+import Header from '../header/header';
 
 const ContactHero = () => {
     return (
@@ -17,7 +19,9 @@ const ContactHero = () => {
                     </div>
                 </div>
             </div>
-            
+            <div className="wire">
+                <img src={frame} alt="" />
+            </div>
         </div>
     )
 }

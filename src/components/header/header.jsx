@@ -2,7 +2,9 @@ import React, {useState} from 'react';
 import axios from 'axios'
 import '../header/header.scss';
 import { Link, useHistory } from 'react-router-dom';
-import logo from '../../assets/image 1.png';
+import smile from '../../assets/smile.svg';
+import hamburger from '../../assets/hamburger.png';
+import close from '../../assets/close.png';
 import Hamburger from '../Hamburger/hamburgerMenu';
 
 const Header = ({navBackground}) => {
@@ -64,7 +66,12 @@ const Header = ({navBackground}) => {
         }
          
     }
-
+    if(state.clicked === null || state.clicked === false){
+        LoginBtns = <img src={hamburger}  alt="hamburger-icon" width="40px"/>
+    }else if(state.clicked === true){
+        LoginBtns = <img src={close}  alt="close-icon" width="30px"/>
+    }
+    console.log(state.clicked);
     // if(!token){
     //     LoginBtns = (
     //         <div className="navbar">
@@ -95,13 +102,15 @@ const Header = ({navBackground}) => {
         <div className="header" style={{background : navBackground}}>
             <div className="container">
                 <div className="logo">
-                    <Link to='/'>
-                        <img src={logo} alt="moovit-brand-logo" />
+                    <Link to='/home'>
+                        <img src={smile} alt="moovit-smile-logo" />
                     </Link>
-                    <button disabled={disabled} onClick={handleClick}>Menu</button>
+                    <button disabled={disabled} onClick={handleClick}>
+                        {LoginBtns}
+                    </button>
                 </div>
             </div>
-            <Hamburger state={state}/>
+            <Hamburger state={state} setState={setState}/>
         </div>
     )
 }

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import '../steps/steps.scss';                                 
 import AdvertiserSteps from './advertiser/advertiser';
 import PublisherSteps from './publisher/publisher';
@@ -36,6 +37,8 @@ const Steps = () => {
                 </div>
                 <AdvertiserSteps show={show}/>
                 <PublisherSteps show1={show1}/>
+
+                <button><Link to='/register'>Register</Link></button>
             </div>
         </div>
     )

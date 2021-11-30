@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import '../../dashboard/dashboard.scss';
 import caretDown from '../../../assets/CaretDown.svg';
 import caretDown2 from '../../../assets/CaretDown2.svg';
@@ -10,14 +10,26 @@ import user from '../../../assets/User.svg';
 import Handshake from '../../../assets/Handshake.svg';
 import signout from '../../../assets/SignOut.svg';
 import { Link } from 'react-router-dom';
+import logo from '../../../assets/image 1.png';
 
 const PublisherDashboard = () => {
+
+    useEffect(() => {
+        document.querySelector(".header").style.display = "none";
+    }, [])
     return (
         <div className="dashboard">
             <div className="small-title">
-                <div className="title-text">
-                    <p>The Brand Hub</p>
-                    <img src={caretDown} alt="" />
+                <div className="title-text justify-content-between">
+                    <div className="logo">
+                        <Link to='/'>
+                            <img src={logo} alt="moovit-logo" />
+                        </Link>
+                    </div>
+                    <div className="text d-flex align center">
+                        <p>The Brand Hub</p>
+                        <img src={caretDown} alt="" />
+                    </div>
                 </div>
                 <div className="dashboard-main-wrapper">
                     <div className="tabs">
@@ -71,7 +83,6 @@ const PublisherDashboard = () => {
                                     <h3>#70,000.00</h3>
                                 </div>
                             </div>
-
                             <div className="ads-records">
                                 <div className="total">
                                     <h4>#90,000</h4>

@@ -2,9 +2,10 @@
  $highlight : url('../../../assets/Highlight_05.svg');
 
 .about-hero{
-    padding-top: 13%;
+    padding-top: 10%;
+    padding-bottom: 10%;
     position: relative;
-    height: 100vh;
+    height: 100%;
     @media screen and (max-width : 920px){
         padding-top: 20%;
     }
@@ -13,7 +14,7 @@
             width: 80%;
             margin: 20px auto;
             font-weight: 700;
-            font-size: 3.2rem;
+            font-size: 56px;
             span{
                 color : #EE315D;
             }
@@ -91,9 +92,16 @@
             }
             .image3{
                 position: absolute;
-                right: 200px;
-                top : 270px;
-                width: 100px;
+                right: 0px;
+                top : -50px;
+                width: 300px;
+                z-index : -1;
+                @media screen and (max-width : 768px){
+                    width: 200px;
+                }
+                @media screen and (max-width : 480px){
+                    width: 150px;
+                }
             }
         }
     }

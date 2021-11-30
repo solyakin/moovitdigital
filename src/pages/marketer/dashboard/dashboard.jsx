@@ -20,6 +20,7 @@ import frame2 from '../../../assets/Frame 232.svg';
 import frame3 from '../../../assets/Frame 231.svg';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import logo from '../../../assets/image 1.png';
 
 const MarketerDashboard = () => {
 
@@ -39,8 +40,17 @@ const MarketerDashboard = () => {
             Authorization : `Bearer ${token}`
         }
     })
+    const [style, setStyle] = useState({
+        hide : false,
+        transformArrow : false,
+    });
+    const handleClick = (e) => {
+        e.preventDefault();
+        setStyle({hide : !style.hide, transformArrow : !style.transformArrow});
     
+    }
     useEffect(() => {
+        document.querySelector(".header").style.display = "none";
         const fetchData = async () => {
             const allAds = await authAxios.get('/api/admin/ads');
             const response = allAds.data;
@@ -78,7 +88,7 @@ const MarketerDashboard = () => {
     })
 
     //for previewing
-    const handleClick = (e) => {
+    const handleClick_ = (e) => {
         const targetId = e.target.id;
         const targetData = adsList.filter(ele => {
                 return ele.id == targetId;
@@ -89,9 +99,16 @@ const MarketerDashboard = () => {
     return (
         <div className="dashboard">
             <div className="small-title">
-                <div className="title-text">
-                    <p>The Brand Hub</p>
-                    <img src={caretDown} alt="" />
+                <div className="title-text justify-content-between">
+                    <div className="logo">
+                        <Link to='/'>
+                            <img src={logo} alt="moovit-logo" />
+                        </Link>
+                    </div>
+                    <div className="text d-flex align center">
+                        <p>The Brand Hub</p>
+                        <img src={caretDown} alt="" />
+                    </div>
                 </div>
                 <div className="dashboard-main-wrapper">
                     <div className="tabs">
@@ -254,7 +271,7 @@ const MarketerDashboard = () => {
                                                                     <td>{start}</td>
                                                                     <td>{location}</td>
                                                                     <td>
-                                                                        <Link to={`/marketer/preview-advert/${id}`} id={id} onClick={handleClick}>Preview</Link>
+                                                                        <Link to={`/marketer/preview-advert/${id}`} id={id} onClick={handleClick_}>Preview</Link>
                                                                     </td>
                                                                 </tr>
                                                             )

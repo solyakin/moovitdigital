@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import fb from '../../assets/facebook/active.svg';
 import twitter from '../../assets/TwitterLogo.svg';
 import instagram from '../../assets/InstagramLogo.svg';
+import Linkedin from '../../assets/linkedin.png';
 import image from '../../assets/image 1.png';
 
 const Footer = () => {
@@ -13,32 +14,31 @@ const Footer = () => {
                 <div className="content">
                     <div className="about_">
                         <img src={image} alt="moovit-digital-logo" className="mb-4"/>
-                        <p>2972 Westheimer Rd. Santa Ana, Illinois 85486 </p>
+                        <p>info@moovitdigital.com </p>
 
                         <div className="social">
-                            <img src={fb} alt="" />
-                            <img src={twitter} alt="" />
-                            <img src={instagram} alt="" />
+                            <a href="https://www.facebook.com/moovitdigital"><img src={fb} alt="facebook-logo" /></a>
+                            <a href="https://www.linkedin.com/company/moovitdigital/"><img src={Linkedin} alt="linkedin-logo" width="20px"/></a>
+                            <a href="https://instagram.com/moovitdigital"><img src={instagram} alt="instagram-logo"/></a>
                         </div>
                     </div>
                     <div className="item">
                         <h4>Know Us</h4>
-                        <span> <Link>About us</Link></span>
+                        <span> <Link to='/about'>About us</Link></span>
                         <span><Link>Privacy Policy</Link></span>
                         <span><Link>Terms of Use</Link></span>                        
                     </div>
                     <div className="item">
                         <h4>Services</h4>
                         <span><Link>Digital advertising</Link></span>
-                        <span><Link>Market survey</Link></span>
-                        <span><Link>Digital Strategy</Link></span>
-                        <span><Link>Lead Generation</Link></span>
+                        <span><Link>Business Advisory</Link></span>
+                        <span><Link>Strategy Mapping</Link></span>
+                        <span><Link>Social Media Management</Link></span>
                     </div>
                     <div className="item">
                         <h4>Help</h4>
-                        <span><Link>Contact us</Link></span>
+                        <span><Link to='/contact'>Contact us</Link></span>
                         <span><Link>Privacy Policy</Link></span>
-                        <span><Link>FAQ</Link></span>
                     </div>
 
                     <div className="item">

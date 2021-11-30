@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {useHistory} from 'react-router-dom';
+import React, {useState, useEffect } from 'react';
+import {Link, useHistory} from 'react-router-dom';
 import axios from 'axios';
 import '../../dashboard/dashboard.scss';
 import '../../dashboard/createAds/createAds.scss';
@@ -8,9 +8,14 @@ import Tags from '../../../components/Tags/Tags';
 import Pricing from '../pricing/pricing';
 import CreateForm from '../../../components/createForm/createForm';
 import Templates from '../../../components/templates/templates';
+import logo from '../../../assets/image 1.png';
 
 const CreateAds = () => {
 
+    const [style, setStyle] = useState({
+        hide : false,
+        transformArrow : false,
+    });
     const history = useHistory();
     const [file, setFile] = useState(null);
     const [hide, setHide] = useState(false);
@@ -40,10 +45,13 @@ const CreateAds = () => {
         interests : "all interest"
     })
 
+    useEffect(() => {
+     document.querySelector(".header").style.display = "none"    
+    }, [])
     const handleClick = (e) => {
         e.preventDefault();
-        setHide(!hide);
-        console.log(hide);
+        setStyle({hide : !style.hide, transformArrow : !style.transformArrow});
+    
     }
     
     const handleChange = (e) =>{
@@ -126,16 +134,23 @@ const CreateAds = () => {
     return (
             <div className="dashboard create-ads">
             <div className="small-title">
-                <div className="title-text">
-                    <p>The Brand Hub</p>
-                    <img src={caretDown} alt="" />
+                <div className="title-text justify-content-between">
+                    <div className="logo">
+                        <Link to='/'>
+                            <img src={logo} alt="moovit-logo" />
+                        </Link>
+                    </div>
+                    <div className="text d-flex align center">
+                        <p>The Brand Hub</p>
+                        <img src={caretDown} alt="" />
+                    </div>
                 </div>
                 <div className="dashboard-main-wrapper">
                     <div className="tabs">
-                        <Tags hide={hide} handleClick={handleClick}/>
+                        <Tags style={style} handleClick={handleClick}/>
                     </div>
                     <div className="dashboard-main">
-                        <form action={handleSubmit}>
+                        <form onSubmit={handleSubmit}>
                             <Pricing 
                             createAds={createAds} 
                             setCreateAds={setCreateAds} 
