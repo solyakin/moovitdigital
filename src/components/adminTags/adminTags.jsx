@@ -1,9 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import squares from '../../assets/SquaresFour.svg';
-import megaphone from '../../assets/MegaphoneSimple.svg';
-import bag from '../../assets/BagSimple.svg';
-import creditCard from '../../assets/CreditCard.svg';
+import axios from 'axios';
 import user from '../../assets/User.svg';
 import Handshake from '../../assets/Handshake.svg';
 import Envelope from '../../assets/EnvelopeSimple.svg';
@@ -13,7 +11,27 @@ import Tag from '../../assets/Tag.svg';
 import note from '../../assets/Note.svg';
 import signout from '../../assets/SignOut.svg';
 
-const AdminTags = () => {
+const AdminTags = ({notification}) => {
+    let notification_count = notification.length;
+    const token = localStorage.getItem("auth_token");
+    const history = useHistory();
+    const authAxios = axios.create({
+        baseURL : "https://api.moovitdigital.com",
+        headers : {
+            Authorization : `Bearer ${token}`
+        }
+    })
+    const handleLogout = (e) => {
+        e.preventDefault();
+        authAxios.post('https://api.moovitdigital.com/api/admin/logout')
+        .then(res => {
+            if(res.status === 200){
+                history.push('/home');
+            }
+            console.log(res.data);
+        })
+        .catch(err => console.log(err));
+    }
     return (
         <div>
             <div className="tab-item">
@@ -42,7 +60,8 @@ const AdminTags = () => {
             </div>
             <div className="tab-item">
                 <img src={user} alt="" />
-                <Link to='/notification'>Notification</Link>
+                <Link to='/notification'>Notification <span style={{display
+                 : notification_count < 1 ? "none" : "flex"}}>{notification_count}</span></Link>
             </div>
             <div className="tab-item">
                 <img src={Handshake} alt="" />
@@ -50,7 +69,7 @@ const AdminTags = () => {
             </div>
             <div className="tab-item">
                 <img src={signout} alt="" />
-                <p>Logout</p>
+                <p onClick={handleLogout} className="logout">Logout</p>
             </div>
         </div>
     )

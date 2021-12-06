@@ -1,46 +1,55 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import '../../dashboard/dashboard.scss';
 import '../../admin/admin.scss';
 import axios from 'axios';
+import swal from 'sweetalert';
+import Loader from "react-loader-spinner";
 import caretDown from '../../../assets/CaretDown.svg';
 import AdminTags from '../../../components/adminTags/adminTags';
-import Alert from '../../../components/alert/alert';
 
 const AddGraphic = () => {
 
     const token = localStorage.getItem("auth_token")
-    const [alert, setAlert] = useState("none");
+    const [notification, setNotification] = useState([]);
+    const [loading, setLoading] = useState(false)
     const [file_, setFile_ ] = useState(null);
     const [graphic, setGraphic ] = useState({
         name: "",
-        image : ""
     })
 
+    const authAxios = axios.create({
+        baseURL : "https://api.moovitdigital.com",
+        headers : {
+            Authorization : `Bearer ${token}`,
+           'Content-Type' : 'multipart/form-data',
+        }
+    })
+    useEffect(() => {
+        document.querySelector(".header").style.display = "none";
+        const fetching = async () => {
+            const allNotifications = await authAxios.get('/api/admin/notifications');
+            const notification_array = allNotifications.data;
+            setNotification(notification_array.data);
+        }
+        fetching()
+    },[])
     const handleChange = (e) => {
         e.persist();
         setGraphic({...graphic, [e.target.name] : e.target.value})
     }
     const handleSubmit = (e) => {
         e.preventDefault();
-
+        setLoading(true);
         const newForm = new FormData();
         newForm.append("name", graphic.name);
-        newForm.append("image", graphic.image);
-        // newForm.append("image", file_);
-        const authAxios = axios.create({
-            baseURL : "https://api.moovitdigital.com",
-            headers : {
-                Authorization : `Bearer ${token}`,
-               'Content-Type' : 'multipart/form-data',
-            }
-
-        })
+        newForm.append("image", file_);
+        
         authAxios.post('/api/admin/create-graphic', newForm)
         .then(res => {
             if(res.status == 200){
                 const result = res.data;
-                console.log(result);
-                // history.push('/request-call');
+                setLoading(false);
+                swal("Great!", "New graphic template successfully added!", "success");
             }
         })
         .catch(err => console.log(err))
@@ -55,12 +64,12 @@ const AddGraphic = () => {
                 </div>
                 <div className="dashboard-main-wrapper">
                     <div className="tabs">
-                        <AdminTags />
+                        <AdminTags notification={notification}/>
                     </div>
                     <div className="dashboard-main admin">
                     <div className="ads-wrapper mt-3">
                             <div className="ads-heading">
-                                <h4>Add a new Budget</h4>
+                                <h4>Add a new Template</h4>
                             </div> 
                             <div className="support">
                                 <div className="row">
@@ -70,11 +79,11 @@ const AddGraphic = () => {
                                                 <label htmlFor="">Enter Graphic name</label>
                                                 <input type="text" name="name" onChange={handleChange} value={graphic.name}/>
                                             </div>
-                                            <div className="form-group">
+                                            {/* <div className="form-group">
                                                 <label htmlFor="">Enter Image Url</label>
                                                 <input type="text" name="image" onChange={handleChange} value={graphic.image}/>
-                                            </div>
-                                            {/* <div className="form-group">
+                                            </div> */}
+                                            <div className="form-group">
                                                 <label htmlFor="">Upload Template</label>
                                                 <input type="file" name="image" 
                                                         onChange={(e) => setFile_( e.target.files[0])}
@@ -82,8 +91,11 @@ const AddGraphic = () => {
                                                             event.target.value = null
                                                     }}
                                                 />
-                                            </div> */}
+                                            </div>
                                             <button type="submit">Create Budget</button>
+                                            <div className="spinner" style={{display : loading ? "block" : "none"}}>
+                                                <Loader type="TailSpin" color="#EE315D" height={30} width={30} />
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
@@ -91,7 +103,6 @@ const AddGraphic = () => {
                         </div>
                     </div>    
                 </div>
-                {/* <Alert alert={alert}/> */}
             </div>
         </div>
     )

@@ -12,11 +12,25 @@ const Pricing = ({createAds, budget_id, setCreateAds, showNext, setShowNext, set
     const [select, setSelect] = useState(false);
     const [select1, setSelect1] = useState(false);
     const [select2, setSelect2] = useState(false);
+    const [outline, setOutline] = useState({
+        box1 : false,
+        box2 : false,
+        box3 : false
+    })
     
     const handleClick = (e) => {
         e.preventDefault();
         const targetId = Number(e.target.id)
         setCreateAds({...createAds, budget_id : targetId});
+        if(targetId == 1){
+            setOutline({box1 : true, box2 : false, box3 : false})
+        }
+        else if(targetId == 2 ){
+            setOutline({box1 : false, box2 : true, box3 : false})
+        }
+        else if(targetId == 3){
+            setOutline({box1 : false, box2 : false, box3 : true})
+        }
         // const parent = e.target.parentElement.parentElement;
         // parent.classList.add("styling");
     } 
@@ -59,7 +73,7 @@ const Pricing = ({createAds, budget_id, setCreateAds, showNext, setShowNext, set
                     <div className="row justify-content-center">
                         <h5>Select a budget</h5>
                         <div className="price-list">
-                            <div className="tier" style={{background : select ? "#F0F0F0" : "white"}}>
+                            <div className="tier" style={{background : select ? "#F0F0F0" : "white", border : outline.box1 ? "1px solid grey" : "1px solid #f1efef"}}>
                                 <p>Tier 1</p>
                                 <h4>#10,000</h4>
                                 <ul>
@@ -70,7 +84,7 @@ const Pricing = ({createAds, budget_id, setCreateAds, showNext, setShowNext, set
                                     <button id="1" onClick={handleClick}>Choose budget</button>
                                 </ul>
                             </div>
-                            <div className="tier" style={{background : select1 ? "#F0F0F0" : "white"}}>
+                            <div className="tier" style={{background : select1 ? "#F0F0F0" : "white", border : outline.box2 ? "1px solid grey" : "1px solid #f1efef"}}>
                                 <p>Tier 2</p>
                                 <h4>#50,000</h4>
                                 <ul>
@@ -82,7 +96,7 @@ const Pricing = ({createAds, budget_id, setCreateAds, showNext, setShowNext, set
                                     <button id="2" onClick={handleClick}>Choose budget</button>
                                 </ul>
                             </div>
-                            <div className="tier" style={{background : select2 ? "#F0F0F0" : "white"}}>
+                            <div className="tier" style={{background : select2 ? "#F0F0F0" : "white", border : outline.box3 ? "1px solid grey" : "1px solid #f1efef"}}>
                                 <p>Tier 3</p>
                                 <h4>#100,000</h4>
                                 <ul>

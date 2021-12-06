@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import swal from 'sweetalert';
 import '../../dashboard/dashboard.scss';
 import '../../admin/admin.scss';
 import '../../admin/ads-ticket/ads-ticket.scss';
@@ -7,16 +8,15 @@ import caretDown from '../../../assets/CaretDown.svg';
 import paperclip from '../../../assets/Paperclip.svg';
 import userP from '../../../assets/Ellipse 48.png';
 import AdminTags from '../../../components/adminTags/adminTags';
-import Alert from '../../../components/alert/alert';
 
 const AdsTicket = () => {
 
     const [hide, setHide] = useState("none");
-    const [alert, setAlert] = useState("none");
     const [response, setResponse] = useState([]);
     const [adsList, setAdsList] = useState([]);
     const [staff, setStaff] = useState([]);
     const [assignedStaff, setAssignedStaff] = useState("");
+    const [notification, setNotification] = useState([]);
  
     const token = localStorage.getItem("auth_token");
     const authAxios = axios.create({
@@ -27,6 +27,7 @@ const AdsTicket = () => {
     })
    
     useEffect( ()=> {
+        document.querySelector(".header").style.display = "none";    
         const fetchData = async () =>{
             const allAds = await authAxios.get('/api/admin/ads');
             const response = allAds.data;
@@ -37,6 +38,10 @@ const AdsTicket = () => {
             const queryResponse = allStaff.data;
             const staffData = queryResponse.data.data;
             setStaff(staffData);
+
+            const allNotifications = await authAxios.get('/api/admin/notifications');
+            const notification_array = allNotifications.data;
+            setNotification(notification_array.data);
         }
         fetchData();
     },[])
@@ -50,22 +55,29 @@ const AdsTicket = () => {
         setAssignedStaff(id)
     }
 
+    const doneClick = (e) => {
+        e.preventDefault()
+        setHide("none");
+    }
+
     //handling the assign to marketer
     const handleClick = (e) => {
         e.preventDefault();
         const { id } = e.currentTarget;
+        console.log(id)
         const data = {
             assigned : id
         }
         const assignTask = async () => {
             const query = await authAxios.put(`/api/admin/assign-ads/${assignedStaff}`, data);
             const res = query.data;
+            swal("Great!", "Assigned successfully!", "success");
             setResponse(res);
         }
         assignTask(); 
-        setAlert("block")
+        // setAlert("block")
     }
-     
+    // console.log(assignedStaff)
     return (
         <div className="dashboard ads-ticket">
             <div className="small-title">
@@ -75,7 +87,7 @@ const AdsTicket = () => {
                 </div>
                 <div className="dashboard-main-wrapper">
                     <div className="tabs">
-                        <AdminTags />
+                        <AdminTags notification={notification}/>
                     </div>
                     <div className="dashboard-main admin">
                         <div className="ads-heading">
@@ -142,13 +154,12 @@ const AdsTicket = () => {
                             }
                         </div>
                         <div className="done-btn">
-                            <p onClick = {() => setHide("none")}>Back</p>
-                            <button>Done</button>
+                            <p></p>
+                            <button onClick ={doneClick}>Done</button>
                         </div>
                     </form>
                 </div>
             </div>
-            <Alert response={response} alert={alert}/>
         </div>
     )
 }

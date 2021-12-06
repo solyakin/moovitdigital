@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../../dashboard/dashboard.scss';
 import '../../dashboard/ads-history/ads-history.scss';
@@ -13,6 +13,9 @@ import Handshake from '../../../assets/Handshake.svg';
 import signout from '../../../assets/SignOut.svg';
 
 const PublisherPaymentHistory = () => {
+    useEffect(() => {
+        document.querySelector(".header").style.display = "none";
+    }, [])
     return (
         <div className="dashboard">
             <div className="small-title">
@@ -24,7 +27,7 @@ const PublisherPaymentHistory = () => {
                     <div className="tabs">
                         <div className="tab-item">
                             <img src={squares} alt="" />
-                            <Link to='/publisher-dashboard'>Dashboard</Link>
+                            <Link to='/dashboard/publisher'>Dashboard</Link>
                         </div>
                         <div className="tab-ads">
                             <div className="tab-item">

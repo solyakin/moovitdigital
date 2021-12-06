@@ -3,6 +3,7 @@ import './about.scss';
 import AboutHero from './aboutHero/aboutHero';
 import Affilations from './affilations/affilations';
 import Moovit from './moovit/moovit';
+import OurServices from './ourServices/OurServices';
 import Story from './story/story';
 
 const About =( ) => {
@@ -11,6 +12,7 @@ const About =( ) => {
             <AboutHero />
             <Story />
             <Moovit />
+            <OurServices />
             <Affilations />
         </div>
     )

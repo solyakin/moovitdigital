@@ -3,7 +3,7 @@ import axios from 'axios';
 // const FETCH_ADS_REQUEST = "FETCH_ADS_REQUEST",
 // const FETCH_ADS_SUCCESS = "FETCH_ADS_SUCCESS",
 // const FETCH_ADS_FAILURE = "FETCH_ADS_FAILURE"
-const fb_token = "EAAJi2Ryc3kYBAI1uSdENfBtx7pPP0YSO8wZARLKolsAf0jCZBn7cFyk0YV2ZBEZBrMxJfzgqMVWZCa4RmqZBf7yOzSOzCoZAZBfsxuAxaWvmXHgptrZCo0CRIUB9IpUXBHREwo8x6KbBT6Yrdi9Yb2fRz17hng2KsdP0HfgIZBydr0ke7PtxfI3EtJ";
+const fb_token = "EAAJi2Ryc3kYBAICv79ZCKtqEdBI8KrqFI2SNpQ9at0zj9C92xBFRaJ32ZChnTRywrBOsuWFJj49sNT6lrPU7azByvtCjJWPwsNtGaHWZBKxKbLCDZAe56bYyF3Ax4zepESUm3zbgmccMhrdUs6ELrZBwyDUeiVqS7Ip79IYx0fA1RA7KZBHjoB";
 
 const url = `https://graph.facebook.com/v12.0/act_743293312680703/campaigns?fields=insights.time_range({"since":"2021-08-01","until":"2021-08-13"}){spend,impressions,actions},name,AD_ID&access_token=${fb_token}`;
 

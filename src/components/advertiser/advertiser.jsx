@@ -27,8 +27,14 @@ const Advertiser = () => {
                         <div className="col">
                             <div className="content">
                                 <h3>Our Mission</h3>
-                                <p>Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute irure tempor cupidatat incididunt sint deserunt ut voluptate aute id deserunt nisi.</p>
-                                <p>Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui esse pariatur duis deserunt mollit dolore cillum minim tempor enim. Elit aute irure tempor cupidatat incididunt sint deserunt ut voluptate aute id deserunt nisi.</p>
+                                <p>To partner with small businesses to progress, grow, prosper and dominate. <b></b>We are building an economy of highly prosperous, globally respected businesses, which are champions of their markets and great contributors to economic growth.</p>
+                                <h4>Core Value</h4>
+                                <ul>
+                                    <li>Result-Oriented.</li>
+                                    <li>Integrity.</li>
+                                    <li>Visionary</li>
+                                    <li>Commitment.</li>
+                                </ul> 
                             </div>
                         </div>
                         <div className="col">

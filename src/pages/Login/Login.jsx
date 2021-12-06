@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { Link, useHistory } from 'react-router-dom';
 import Loader from "react-loader-spinner";
 import '../Login/Login.scss';
@@ -21,6 +21,27 @@ const Login = () => {
         setLogin({...login, [e.target.name] : e.target.value});
     }
 
+    // useEffect(()=> {
+    //     axios.get()
+    // }, [])
+    // api.moovitdigital.com/api/user/google/googlelogin
+    // api.moovitdigital.com/api/user/facebook/auth
+    const fb_login = (e) => {
+        e.preventDefault();
+        axios.get('https://api.moovitdigital.com/facebook/auth')
+        .then(res => {
+            console.log(res);
+        })
+        .catch(err => console.log(err));
+    }
+    const google_login = (e) => {
+        e.preventDefault();
+        axios.get('https://api.moovitdigital.com/google/googlelogin')
+        .then(res => {
+            console.log(res.data);
+        })
+        .catch(err => console.log(err))
+    }
     const formSubmit = (e) => {
         e.preventDefault();
         setLogin({loading : true});
@@ -42,10 +63,23 @@ const Login = () => {
         .then(res => {
             if(res.status === 200){
                 console.log(res.data)
-                localStorage.setItem('auth_token', res.data.token);
-                localStorage.setItem('auth_name', res.data.firstName);
-                localStorage.setItem('auth_id', res.data.id);
-                history.push('/account-type'); 
+                if(res.data.action === 'old' && res.data.data.role === 'advertiser'){
+                    localStorage.setItem('auth_name', res.data.data.firstName);
+                    localStorage.setItem('auth_id', res.data.data.id);
+                    localStorage.setItem('auth_token', res.data.data.token);
+                    localStorage.setItem('auth_role', res.data.data.role);
+                    history.push('/dashboard/advertiser'); 
+                }else if(res.data.action === "new"){
+                    localStorage.setItem('auth_token', res.data.data.token);
+                    localStorage.setItem('auth_id', res.data.data.id);
+                    history.push('/account-type'); 
+                }else if(res.data.action === 'old' && res.data.data.role === 'publisher'){
+                    localStorage.setItem('auth_name', res.data.data.firstName);
+                    localStorage.setItem('auth_id', res.data.data.id);
+                    localStorage.setItem('auth_token', res.data.data.token);
+                    localStorage.setItem('auth_role', res.data.data.role);
+                    history.push('/dashboard/publisher')
+                }  
             } 
         })
         .catch(err => {
@@ -62,9 +96,10 @@ const Login = () => {
             )
         })
     }
+    console.log(login)
     return (
         <div className="sign-up">
-            <div className="container">
+            <div className="container ">
                 <div className="row justify-content-center">
                     <div className="col-md-4">
                         <form onSubmit={formSubmit}>
@@ -74,12 +109,12 @@ const Login = () => {
                             <p>Fill in your login details</p>
                             <div className="form-group">
                                 <label>Email</label>
-                                <input type="text" placeholder="joe@gmail.com" name="email" onChange={handleChange} value={login.email}/>
+                                <input type="email" placeholder="joe@gmail.com" name="email" onChange={handleChange} value={login.email} required/>
                                 {error_text}
                             </div>
                             <div className="form-group">
                                 <label>Password</label>
-                                <input type="password" placeholder="Enter your password" name="password" onChange={handleChange} value={login.password}/>
+                                <input type="password" placeholder="Enter your password" name="password" onChange={handleChange} value={login.password} required/>
                             </div>
                             <div className="forget-password">
                                 <Link>Forgot Password?</Link>
@@ -95,14 +130,16 @@ const Login = () => {
                            <p>Don’t have an account? <Link to='/register'>Sign up</Link></p>
                        </div>
                        <p className="or my-4">OR</p>
-                       <div className="google-btn">
-                            <img src={google} alt="google icon" />
-                            <p>Continue with Google</p>
+                       <div className="google-btn" onClick={google_login} >
+                           {/* <a target="_blank" href='https://api.moovitdigital.com/google/googlelogin'> */}
+                                <img src={google} alt="google icon" />
+                                <p>Continue with Google</p>
+                           {/* </a> */}
                        </div>
-                       <div className="google-btn">
+                       <div className="google-btn" onClick={fb_login}>
                             <img src={facebook} alt="google icon" />
                             <p>Continue with Facebbok</p>
-                       </div>
+                        </div>
                        <div className="policy">
                             <div className="tnc">
                                 <Link>Terms and Conditions</Link>
@@ -120,33 +157,3 @@ const Login = () => {
 
 export default Login;
 
-
-
-// <script>
-//   window.fbAsyncInit = function() {
-//     FB.init({
-//       appId      : '{your-app-id}',
-//       cookie     : true,
-//       xfbml      : true,
-//       version    : '{api-version}'
-//     });
-      
-//     FB.AppEvents.logPageView();   
-      
-//   };
-
-//   (function(d, s, id){
-//      var js, fjs = d.getElementsByTagName(s)[0];
-//      if (d.getElementById(id)) {return;}
-//      js = d.createElement(s); js.id = id;
-//      js.src = "https://connect.facebook.net/en_US/sdk.js";
-//      fjs.parentNode.insertBefore(js, fjs);
-//    }(document, 'script', 'facebook-jssdk'));
-// </script>
-
-
-// app id : 410776757185843
-// app secret : 34fed8516bdfc5d08fbde9ffb60e8850
-
-// url : https%3A%2F%2Fmoovitdigital.com%2F
-// https://facebook.com/v6.0/dialog/oauth?client_id=410776757185843&redirect_url=https%3A%2F%2Fmoovitdigital.com%2F&state=08169114

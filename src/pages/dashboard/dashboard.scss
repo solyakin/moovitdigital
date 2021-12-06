@@ -1,4 +1,5 @@
 .dashboard{
+    transition: all 1s;
     p{
         margin-bottom: 0;
         margin-top: 0;
@@ -10,24 +11,50 @@
             align-items: center;
             justify-content: right;
             padding-right: 50px;
-            padding-bottom: 10px;
+            padding-bottom: 20px;
+            @media screen and (max-width : 768px){
+                padding-right: 15px;
+            }
             .logo{
                 margin-left: 20px;
+                display: flex;
+                align-items: center;
+                .hamburger{
+                    display: none;
+                }
+                @media only screen and (max-width : 768px){
+                    .hamburger{
+                        display: block;
+                        margin-right: 20px;
+                        cursor: pointer;
+                    }
+                }
             }
             .text{
                 img{
                     width : 20px;
                 }
+                @media screen and (max-width : 768px){
+                    p{
+                        font-size: 12px;
+                    }
+                }
             }
         }
         .dashboard-main-wrapper{
             display: flex;
+            // .mobile-tag{
+            //     padding-bottom: 6rem;
+            // }
             .tabs{
                 flex: .2;
-                background: #333333;
+                background: #151933;
                 color: white;
                 text-align: left;
                 padding: 30px 20px;
+                @media screen and (max-width : 768px){
+                    display: none;
+                }
                 .tab-item{
                     display: flex;
                     align-items: center;
@@ -36,11 +63,25 @@
                         font-size: 14px;
                         margin-right: 20px;
                     }
+                    .logout{
+                        cursor: pointer;
+                    }
                     a{
                         color: white;
                         text-decoration: none;
                         font-size: 14px;
                         margin-right: 20px;
+                        position: relative;
+                        span{
+                            position: absolute;
+                            right: -20px;
+                            top: -7px;
+                            background :red;
+                            border-radius: 50%;
+                            width: 20px;
+                            font-size: 12px;
+                            padding: 1px 5px;
+                        }
                     }
                     img{
                         margin-right: 20px;
@@ -70,6 +111,13 @@
                 background: #E5E5E5;
                 padding: 20px;
                 padding-right: 50px;
+                @media screen and (max-width : 920px){
+                    padding-right: 20px;
+                    padding: 20px 15px;
+                }
+                @media screen and (max-width : 768px){
+                    flex: 1;
+                }
                 .main-heading{
                     display: flex;
                     align-items: center;
@@ -78,20 +126,34 @@
                         h4{
                             font-weight: 500;
                             font-size: 1.6rem;
+                            text-align: left;
+                            @media screen and (max-width : 768px){
+                                font-size: 16px;
+                                text-align: left;
+                            }
                         }
                         p{
                             font-size: 14px;
-                            margin-left: -10px;
+                            // margin-left: -10px;
+                            @media screen and (max-width : 768px){
+                                margin-left: 0;
+                            }
                         }
                     }
                     .smm{
                         padding-right: 25px;
+                        @media screen and (max-width : 920px){
+                            padding-right: 0;
+                        }
                         a{
                             text-decoration: none;
                             color: #19216C;
                             border: 1px solid rgb(153, 152, 152);
                             padding: 7px;
                             font-size: 14px;
+                            @media screen and (max-width : 768px){
+                                font-size: 10px;
+                            }
                         }
                     }
                 }
@@ -99,6 +161,9 @@
                     background: white;
                     text-align: left;
                     padding: 15px 25px;
+                    @media screen and (max-width : 768px){
+                        padding: 10px;
+                    }
                     .funds-wrapper{
                         display: flex;
                         align-items: center;
@@ -112,6 +177,9 @@
                             h3{
                                 font-size: 32px;
                                 font-weight: 600;
+                                @media screen and (max-width : 768px){
+                                    font-size: 18px;
+                                }
                                 span{
                                     font-size: 12px;
                                     color: #2D3A8C;
@@ -120,6 +188,9 @@
                             }
                         }
                         .create-ads-btn{
+                            @media only screen and (max-width : 768px){
+                                display: none;
+                            }
                             button{
                                 border: none;
                                 padding: 7px 20px;
@@ -134,15 +205,32 @@
                                 }
                             }
                         }
+                        .mobile-plus{
+                            display: none;
+                            a{
+                                text-decoration: none;
+                                color : #333333;
+                                font-weight: 700;
+                            }
+                            @media only screen and (max-width: 768px){
+                                display : block
+                            }
+                        }
                     }
                     .ads-records{
                         display: flex;
                         align-items: center;
                         justify-content: space-between;
+                        @media screen and (max-width : 920px){
+                            text-align: center;
+                        }
                         p{
                             color: #808080;
                             font-size: 14px;
                             font-weight: 500;
+                            @media screen and (max-width : 768px){
+                                font-size: 11px;
+                            }
                         }
                         h4{
                             font-weight: 600;
@@ -153,11 +241,18 @@
                     display: flex;
                     margin-top: 10px;
                     margin-bottom: 6rem;
+                    @media screen and (max-width : 920px){
+                        display: block;
+                    }
                     .ads-graph{
                         background: white;
                         flex: .55;
                         height: 300px;
                         margin-right: 10px;
+                        @media screen and (max-width : 920px){
+                            margin-right: 0;
+                            margin-bottom: 20px;
+                        }
                         .graph-heading{
                             display: flex;
                             align-items: center;
@@ -190,6 +285,9 @@
                                 }
                                 h5{
                                     font-weight: 500;
+                                    @media screen and (max-width : 768px){
+                                        font-size: 16px;
+                                    }
                                     span{
                                         font-size: 12px;
                                         color: #2D3A8C;

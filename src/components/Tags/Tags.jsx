@@ -1,4 +1,6 @@
 import React from 'react';
+import { useHistory } from 'react-router';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 import caretDown2 from '../../assets/CaretDown2.svg';
 import squares from '../../assets/SquaresFour.svg';
@@ -10,11 +12,32 @@ import Handshake from '../../assets/Handshake.svg';
 import signout from '../../assets/SignOut.svg';
 
 const Tags = ({ style, handleClick }) => {
+
+    const token = localStorage.getItem("auth_token");
+    const history = useHistory();
+    const authAxios = axios.create({
+        baseURL : "https://api.moovitdigital.com",
+        headers : {
+            Authorization : `Bearer ${token}`
+        }
+    })
+    const handleLogout = (e) => {
+        e.preventDefault();
+        authAxios.post('https://api.moovitdigital.com/api/user/logout')
+        .then(res => {
+            if(res.status === 200){
+                localStorage.clear();
+                history.push('/home');
+            }
+            console.log(res.data);
+        })
+        .catch(err => console.log(err));
+    }
     return (
         <div>
             <div className="tab-item">
                 <img src={squares} alt="" />
-                <Link to='/dashboard'>Dashboard</Link>
+                <Link to='/dashboard/advertiser'>Dashboard</Link>
             </div>
             <div className="tab-ads">
                 <div className="tab-item mb-2">
@@ -47,7 +70,7 @@ const Tags = ({ style, handleClick }) => {
             </div>
             <div className="tab-item">
                 <img src={signout} alt="" />
-                <p>Logout</p>
+                <p onClick={handleLogout} className="logout">Logout</p>
             </div>
         </div>
     )

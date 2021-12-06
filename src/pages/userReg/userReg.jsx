@@ -111,7 +111,7 @@ const UserRegistration = () => {
             if(res.status === 200){
                 localStorage.setItem("user", data.firstName);
                 // localStorage.setItem("id", 9);
-                history.push('/dashboard');
+                history.push('/dashboard/advertiser');
             }else{
                 // setRegister({...register, error_list : res.data.validation_errors})
                 console.log(res.data.message)

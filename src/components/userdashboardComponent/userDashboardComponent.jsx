@@ -2,55 +2,16 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 const UserDashboardComponent = ({adsCount}) => {
-    const current_user = localStorage.getItem("user");
-    
-
-    const [actionsCount, setActionsCount] = useState([]);
-    // const [impressionCount, setImpressionCount] = useState("");
-    
-    
-
-    useEffect( () => {
-
-    }, []);
-   
-    let impressionCount = 0;
-
-    // fbData.map(item => {
-    //         if(item.insights){
-    //             const ADinsights = item.insights.data;
-    //             console.log(ADinsights);
-    //             // const ADimpressions = ADinsights.impressions;
-    //             // console.log(ADimpressions)
-    //             // ADinsights.map(({impressions, actions}) => {
-    //             //     impressionCount = impressions;
-    //             //     // console.log(impressions)
-    //             // })
-    //         }
-    // })
-    console.log(impressionCount); 
+    const current_user = localStorage.getItem("auth_name");
     return (
         <div>
-            {
-                // fbData.map(item => {
-                //     if(item.insights){
-                //         const ADinsights = item.insights.data;
-                //         ADinsights.map(({impressions, actions}) => {
-                //             setImpression(impressions);
-                //             setActions(actions)
-                //         })
-                //     }
-                //     console.log(impression)
-                // })
-                
-            }
             <div className="main-heading">
                 <div className="welcome">
                     <p>Welcome Back</p>
-                    <h4>Solomon</h4>
+                    <h4>{current_user}</h4>
                 </div>
                 <div className="smm">
-                    <Link>Purchase SMM Package</Link>
+                    <Link to='/smm'>Purchase SMM Package</Link>
                 </div>
             </div>
             <div className="main-records">
@@ -65,6 +26,9 @@ const UserDashboardComponent = ({adsCount}) => {
                             <Link to='/create-ads'>Create an Ad</Link>
                         </button>
                     </div>
+                    <div className="mobile-plus">
+                        <Link to='/create-ads'>+</Link>
+                    </div>
                 </div>
 
                 <div className="ads-records">
@@ -74,7 +38,7 @@ const UserDashboardComponent = ({adsCount}) => {
                     </div>
                     <div className="impression">
                         <h4>0</h4>
-                        <p>Impressions recieved</p>
+                        <p>Impressions</p>
                     </div>
                     <div className="clicks">
                         <h4>0</h4>

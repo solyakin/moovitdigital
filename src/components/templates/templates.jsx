@@ -1,6 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import '../templates/template.scss';
 import { Link } from 'react-router-dom';
+import Loader from "react-loader-spinner";
 import caretRight from '../../assets/CaretRight.svg';
 import ellipse1 from '../../assets/Ellipse 27.svg';
 import ellipse2 from '../../assets/Ellipse 28.svg';
@@ -11,7 +12,7 @@ import size3 from '../../assets/Rectangle 812.svg';
 import image1 from '../../assets/Rectangle 80.svg';
 import image2 from '../../assets/Rectangle 82.png';
 
-const Templates = ({showNext3, handleSubmit, setCreateAds, createAds}) => {
+const Templates = ({showNext3, handleSubmit, setCreateAds, createAds, loading}) => {
     const handleClick = (e) => {
         e.preventDefault();
         const targetId = Number(e.target.id);
@@ -112,12 +113,16 @@ const Templates = ({showNext3, handleSubmit, setCreateAds, createAds}) => {
                             </div>
                             <div className="direction-btn">
                                 <p>Back</p>
-                                <button type="submit" onClick={handleSubmit}>Next</button>
+                                <div className="btn">
+                                    <button type="submit" onClick={handleSubmit}>Submit</button>
+                                    <div className="spinner" style={{display : loading ? "block" : "none"}}>
+                                        <Loader type="TailSpin" color="#EE315D" height={30} width={30} />
+                                    </div>
+                                </div>          
                             </div>
                         </div>
                     </div>
-                </div>
-                
+                </div>                
             </div>
         </div>
     )

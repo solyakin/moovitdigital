@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import '../publisher-form/publisher.form.scss';
 import axios from 'axios';
+import Loader from "react-loader-spinner";
+import swal from 'sweetalert';
 
 const PublisherForm = () => {
-
-    const auth_id = localStorage.getItem("auth_id");
+    const [loading, setLoading] = useState(false);  
+    const id = localStorage.getItem("auth_id")
     const [data, setData] = useState({
         firstName : '',
         lastName : '',
-        state : '',
         country : '',
         company_name : '',
         email : '',
@@ -17,12 +18,10 @@ const PublisherForm = () => {
         phone : '',
         duration_time : '',
         visit : '',
-        dob : '',
         role : "publisher",
         agree : 1,
     })
     const [value, setValue] = useState("");
-
     const handleChange = (e) => {
         e.persist();
         setData({...data, [e.target.name] : e.target.value});
@@ -41,14 +40,13 @@ const PublisherForm = () => {
         setData({...data, visit : e.target.value});
     }
     const formSubmit = (e) => {
-        e.preventDefault()
+        e.preventDefault();
+        setLoading(true);
         const newForm = new FormData();
-        newForm.append("id", 1);
         newForm.append("firstName", data.firstName);
         newForm.append("lastName", data.lastName);
         newForm.append("email", data.email);
         newForm.append("phone", data.phone);
-        newForm.append("dob", data.dob);
         newForm.append("company", data.company_name);
         newForm.append("country", data.country);
         newForm.append("industry", data.industry);
@@ -56,9 +54,9 @@ const PublisherForm = () => {
         newForm.append("average_visit", data.visit);
         newForm.append("website_timeline", data.duration_time);
         newForm.append("role", data.role);
-        newForm.append("agreee", data.agree);
+        newForm.append("agree", data.agree);
         axios({
-            url : `https://api.moovitdigital.com/api/user/publisher/1?id=${auth_id}firstName=${data.firstName}&lastName=${data.lastName}&phone=${data.phone}&country=${data.country}&company=${data.company_name}&industry=${data.industry}&role=${data.role}&agree=1&website=${data.domain}&average_visit=${data.visit}&website_timeline=${data.duration_time}&dob=${data.dob}&email=${data.email}`,
+            url : `https://api.moovitdigital.com/api/user/publisher/${id}?firstName=${data.firstName}&lastName=${data.lastName}&phone=${data.phone}&country=${data.country}&company=${data.company_name}&industry=${data.industry}&role=${data.role}&agree=1&average_visit=${data.visit}&website_timeline=${data.duration_time}&website=${data.domain}&email=${data.email}`,
             method : 'PUT',
             data : newForm,
             config: { headers: {'Content-Type': 'multipart/form-data' }}
@@ -66,6 +64,8 @@ const PublisherForm = () => {
         .then(res => {
             if(res.status === 200){
                 console.log(res.data);
+                setLoading(false)
+                swal("Great!", "Request has been sent successfully", "success");
             }
         })
         .catch(error => console.log(error));
@@ -84,43 +84,43 @@ const PublisherForm = () => {
                             <div className="row justify-content-between">
                                 <div className="col-6">
                                     <label htmlFor="">First Name</label>
-                                    <input type="text" placeholder="Joe" name="firstName" value={data.firstName} onChange={handleChange} />
+                                    <input type="text" placeholder="Joe" name="firstName" value={data.firstName} onChange={handleChange} required />
                                 </div>
                                 <div className="col-6">
                                     <label htmlFor="">Last Name</label>
-                                    <input type="text" placeholder="Bullion" name="lastName" value={data.lastName} onChange={handleChange}/>
+                                    <input type="text" placeholder="Bullion" name="lastName" value={data.lastName} onChange={handleChange} required/>
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="col-6">
+                                {/* <div className="col-6">
                                     <label htmlFor="">State</label>
                                     <input type="text" placeholder="Lagos" name="state" value={data.state} onChange={handleChange}/>
-                                </div>
+                                </div> */}
                                 <div className="col-6">
                                     <label htmlFor="">Country</label>
-                                    <input type="text" placeholder="Nigeria" name="country" value={data.country} onChange={handleChange}/>
+                                    <input type="text" placeholder="Nigeria" name="country" value={data.country} onChange={handleChange} required/>
                                 </div>
                             </div>
                             <h5 className="mt-4">2. Company Details</h5>
                             <div className="row">
                                 <div className="col-6">
                                     <label htmlFor="">Name of company/organisation</label>
-                                    <input type="text" placeholder="The Brand Hub" name="company_name" value={data.company_name}onChange={handleChange}/>
+                                    <input type="text" placeholder="The Brand Hub" name="company_name" value={data.company_name}onChange={handleChange} required/>
                                 </div>
                                 <div className="col-6">
                                     <label htmlFor="">Email</label>
-                                    <input type="email" placeholder="jonbellion@gmail.com" name="email" value={data.email} onChange={handleChange}/>
+                                    <input type="email" placeholder="jonbellion@gmail.com" name="email" value={data.email} onChange={handleChange} required/>
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col-6">
                                     <label htmlFor="">Domain name</label>
-                                    <input type="text" placeholder="www.name.com" name="domain" value={data.domain} onChange={handleChange}/>
+                                    <input type="text" placeholder="www.name.com" name="domain" value={data.domain} onChange={handleChange} required/>
                                 </div>
                                 <div className="col-6">
                                     <div className="form-group star">
                                         <label htmlFor="">Business Type</label>
-                                        <select name="" id="" value={value} onChange={handleChange2}>
+                                        <select name="" id="" value={value} onChange={handleChange2} required>
                                             <option value="" className="first">Select Business Type</option>
                                             <option value="media">Media and Communication</option>
                                             <option value="hospitality">Hospitality </option>
@@ -140,12 +140,12 @@ const PublisherForm = () => {
                             <div className="row">
                                 <div className="col-6">
                                     <label htmlFor="">Phone Number</label>
-                                    <input type="text" placeholder="0912 342 3452" name="phone" value={data.phone} onChange={handleChange}/>
+                                    <input type="text" placeholder="0912 342 3452" name="phone" value={data.phone} onChange={handleChange} required/>
                                 </div>
-                                <div className="col-6">
+                                {/* <div className="col-6">
                                     <label htmlFor="">Phone Number</label>
                                     <input type="text" placeholder="12/01/01" name="dob" value={data.dob} onChange={handleChange}/>
-                                </div>
+                                </div> */}
                             </div>
 
                             <div className="duration mt-4">
@@ -236,6 +236,9 @@ const PublisherForm = () => {
                                 </div>
                             </div>
                             <button>Send Request</button>
+                            <div className="spinner mb-4" style={{display : loading ? "block" : "none"}}>
+                                <Loader type="TailSpin" color="#EE315D" height={30} width={30} />
+                            </div>
                         </form>
                     </div>
                 </div>

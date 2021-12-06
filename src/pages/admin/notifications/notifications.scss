@@ -11,7 +11,7 @@
                 border-bottom: 1px solid #D6D6D6;
                 padding: 10px 20px;
             }
-            .notification-list{
+            .notif-inner-wrapper{
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
@@ -41,11 +41,12 @@
                     }
                 }
                 .actions{
-                    a{
+                    button{
                         font-size: 12px;
                         text-decoration: none;
                         color: #35469C;
                         font-weight: 400;
+                        background: none;
                     }
                     img{
                         width: 20px;

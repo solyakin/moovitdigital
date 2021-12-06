@@ -29,15 +29,13 @@ const AdminProfile = () => {
             firstName : profile_update.firstName,
             lastName : profile_update.lastName,
             phone : profile_update.phone,
-            // image : file_.name
         }
-        console.log(data.image)
 
         const newForm = new FormData();
         newForm.append("firstName", data.firstName);
         newForm.append("lastName", data.lastName);
         newForm.append("phone", data.phone);
-        // newForm.append("image", file_);
+        newForm.append("image", file_.name);
 
         const authAxios = axios.create({
             baseURL : "https://api.moovitdigital.com",
@@ -47,7 +45,7 @@ const AdminProfile = () => {
             }
 
         })
-        authAxios.put(`/api/admin/edit-profile/${id}?firstName=${data.firstName}&lastName=${data.lastName}&phone=${data.phone}&image=${"image.png"}`, newForm)
+        authAxios.post(`/api/admin/edit-profile/${id}`, newForm)
         .then(res => {
             if(res.status === 200){
                 console.log(res.data);
@@ -55,7 +53,9 @@ const AdminProfile = () => {
         })
         .catch(error => console.log(error));
     }
-
+    useEffect( () => {
+        document.querySelector(".header").style.display = "none";
+    })
     console.log(profile_update);
     return (
         <div className="dashboard">

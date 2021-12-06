@@ -16,39 +16,39 @@ const Faq = () => {
                 <div className="questions">
                     <div className="item">
                         <div className="text">
-                            <h5>How do I activate my account?</h5>
-                            <p style={{display : show ? "block" : "none"}}>We’ll send a verification to your mail with instructions </p>
+                            <h5>What is Digital Marketing?</h5>
+                            <p style={{display : show ? "block" : "none"}}>Digital marketing is any kind of marketing that is geared towards smartphones, laptops, tablets and basically any other device that is capable of connecting to Wi-Fi. Traditional marketing will focus on radio, TV, print and film, whereas when it comes to digital marketing we want to be thinking about apps, websites, blogs, social media, email and online content. </p>
                         </div>
                         <img src={ArrowDown} alt="Arrow Down"  onClick={() => setShow(!show) } style={{transform : show ? "rotate(180deg)" : "rotate(0deg)"}}/>
                     </div>
                     <div className="item">
                         <div className="text">
-                            <h5>How can I use my remaining Account Credits?</h5>
-                            <p style={{display : show1 ? "block" : "none"}}>We’ll send a verification to your mail with instructions </p>
+                            <h5>How do I activate my account?</h5>
+                            <p style={{display : show1 ? "block" : "none"}}>Follow our four simple steps above to register as an advertiser or publisher.  </p>
                         </div>
                         <img src={ArrowDown} alt="Arrow Down" onClick={ () => setShow1(!show1)} style={{transform : show1 ? "rotate(180deg)" : "rotate(0deg)"}}/>
                     </div>
                     <div className="item">
                         <div className="text">
                             <h5>What are the payment methods available?</h5>
-                            <p style={{display : show2 ? "block" : "none"}}>We’ll send a verification to your mail with instructions </p>
+                            <p style={{display : show2 ? "block" : "none"}}>All payments are made via our website. Please NOTE that our staff will NEVER contact you to make payment or ask for your bank details, password or any confidential information. </p>
                         </div>
                         <img src={ArrowDown} alt="Arrow Down" onClick={ () => setShow2(!show2)} style={{transform : show2 ? "rotate(180deg)" : "rotate(0deg)"}}/>
                     </div>
                     <div className="item">
                         <div className="text">
-                            <h5>Can I pay using Paypal without a Paypal account?</h5>
-                            <p style={{display : show3 ? "block" : "none"}}>We’ll send a verification to your mail with instructions </p>
+                            <h5>Do you take Small Businesses?</h5>
+                            <p style={{display : show3 ? "block" : "none"}}>Yes we do, we help small businesses to progress, grow, prosper and dominate. We are building an economy of highly prosperous, globally respected businesses, which are champions of their markets and great contributors to economic growth.</p>
                         </div>
                         <img src={ArrowDown} alt="Arrow Down" onClick={ () => setShow3(!show3)} style={{transform : show3 ? "rotate(180deg)" : "rotate(0deg)"}}/>
                     </div>
-                    <div className="item">
+                    {/* <div className="item">
                         <div className="text">
                             <h5>What are the payment methods available?</h5>
                             <p style={{display : show4 ? "block" : "none"}}>We’ll send a verification to your mail with instructions </p>
                         </div>
                         <img src={ArrowDown} alt="Arrow Down" onClick={ () => setShow4(!show4)} style={{transform : show4 ? "rotate(180deg)" : "rotate(0deg)"}}/>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

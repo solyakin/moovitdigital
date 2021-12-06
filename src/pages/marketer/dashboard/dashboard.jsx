@@ -4,9 +4,8 @@ import '../../dashboard/dashboard.scss';
 import '../../admin/admin.scss';
 import caretDown from '../../../assets/CaretDown.svg';
 import squares from '../../../assets/SquaresFour.svg';
-import megaphone from '../../../assets/MegaphoneSimple.svg';
 import bag from '../../../assets/BagSimple.svg';
-import creditCard from '../../../assets/CreditCard.svg';
+import plus from '../../../assets/Plus.svg';
 import user from '../../../assets/User.svg';
 import Handshake from '../../../assets/Handshake.svg';
 import signout from '../../../assets/SignOut.svg';
@@ -24,9 +23,10 @@ import logo from '../../../assets/image 1.png';
 
 const MarketerDashboard = () => {
 
+    const history = useHistory();
     // const [ads, setAds] = useState(0);
     const [adsList, setAdsList] = useState([]);
-    // const [filtered, setFiltered] = useState([]);
+    const [notification, setNotification] = useState([]);
     const [adsCount, setAdsCount] =useState(0);
     const [pubCount, setpubCount] = useState(0);
     const [staff, setStaff] = useState(0);
@@ -57,6 +57,9 @@ const MarketerDashboard = () => {
             const adsListData = response.data.data;
             setAdsList(adsListData);
 
+            const allNotifications = await authAxios.get('/api/admin/notifications');
+            const notification_array = allNotifications.data;
+            setNotification(notification_array.data);
             
 
             // const allAdvertisers = await authAxios.get('/api/admin/advertiser');
@@ -83,10 +86,23 @@ const MarketerDashboard = () => {
         fetchData();
     }, [])
 
+    const handleLogout = (e) => {
+        e.preventDefault();
+        authAxios.post('https://api.moovitdigital.com/api/admin/logout')
+        .then(res => {
+            if(res.status === 200){
+                localStorage.clear();
+                history.push('/home');
+            }
+            console.log(res.data);
+        })
+        .catch(err => console.log(err));
+    }
     const newArray = adsList.filter(ele => {
         return ele.assigned === auth_id;
     })
 
+    console.log(newArray);
     //for previewing
     const handleClick_ = (e) => {
         const targetId = e.target.id;
@@ -96,6 +112,8 @@ const MarketerDashboard = () => {
         localStorage.setItem("targetData", JSON.stringify(targetData));
         localStorage.setItem("targetId", targetId);
     }
+    let notification_count = notification.length;
+    console.log(adsList);
     return (
         <div className="dashboard">
             <div className="small-title">
@@ -114,31 +132,36 @@ const MarketerDashboard = () => {
                     <div className="tabs">
                         <div className="tab-item">
                             <img src={squares} alt="" />
-                            <Link to='/admin'>Dashboard</Link>
-                        </div>
-                        <div className="tab-item">
-                            <img src={megaphone} alt="" />
-                            <Link to='/add-staff'>Add staff</Link>
+                            <Link to='/marketer/dashboard'>Dashboard</Link>
                         </div>
                         <div className="tab-item">
                             <img src={bag} alt="" />
                             <Link to='/message'>Message</Link>
                         </div>
                         <div className="tab-item">
-                            <img src={creditCard} alt="" />
-                            <Link to='/new-ads-ticket'>New ads ticket</Link>
+                            <img src={plus} alt="" />
+                            <Link to='/marketer/tickets'>My Ticket</Link>
                         </div>
                         <div className="tab-item">
                             <img src={user} alt="" />
-                            <Link to='/notification'>Notification</Link>
+                            <Link to='/marketer/notification'>Notification <span style={{display
+                 : notification_count < 1 ? "none" : "flex"}}>{notification_count}</span></Link>
                         </div>
                         <div className="tab-item">
                             <img src={Handshake} alt="" />
-                            <Link to='/admin/profile'>Profile</Link>
+                            <Link to='/create-adcode'>Create Adcode</Link>
+                        </div>
+                        <div className="tab-item">
+                            <img src={Handshake} alt="" />
+                            <Link to='/create-banner'>Create Banner</Link>
+                        </div>
+                        <div className="tab-item">
+                            <img src={Handshake} alt="" />
+                            <Link to='/marketer/profile'>Profile</Link>
                         </div>
                         <div className="tab-item">
                             <img src={signout} alt="" />
-                            <p>Logout</p>
+                            <p onClick={handleLogout} className="logout">Logout</p>
                         </div>
                     </div>
                     <div className="dashboard-main admin">
@@ -247,7 +270,7 @@ const MarketerDashboard = () => {
                                             </div>
                                         </div>
                                         <div className="history-table">
-                                            <table class="table">
+                                            <table className="table">
                                                 <thead>
                                                     <tr>
                                                     <th scope="col"></th>

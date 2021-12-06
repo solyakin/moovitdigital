@@ -1,4 +1,6 @@
 import React, {useEffect} from 'react';
+import {useHistory} from 'react-router-dom';
+import axios from 'axios';
 import '../../dashboard/dashboard.scss';
 import caretDown from '../../../assets/CaretDown.svg';
 import caretDown2 from '../../../assets/CaretDown2.svg';
@@ -14,9 +16,32 @@ import logo from '../../../assets/image 1.png';
 
 const PublisherDashboard = () => {
 
+    const current_user = localStorage.getItem("auth_name");
+    const token = localStorage.getItem("auth_token");
+
+    const history = useHistory();
     useEffect(() => {
         document.querySelector(".header").style.display = "none";
     }, [])
+
+    const authAxios = axios.create({
+        baseURL : "https://api.moovitdigital.com",
+        headers : {
+            Authorization : `Bearer ${token}`
+        }
+    })
+    const handleLogout = (e) => {
+        e.preventDefault();
+        authAxios.post('https://api.moovitdigital.com/api/user/logout')
+        .then(res => {
+            if(res.status === 200){
+                localStorage.clear();
+                history.push('/home');
+            }
+            console.log(res.data);
+        })
+        .catch(err => console.log(err));
+    }
     return (
         <div className="dashboard">
             <div className="small-title">
@@ -35,7 +60,7 @@ const PublisherDashboard = () => {
                     <div className="tabs">
                         <div className="tab-item">
                         <img src={squares} alt="" />
-                            <Link to='/publisher-dashboard'>Dashboard</Link>
+                            <Link to='/dashboard/publisher'>Dashboard</Link>
                         </div>
                         <div className="tab-ads">
                             <div className="tab-item">
@@ -47,7 +72,11 @@ const PublisherDashboard = () => {
                         </div>
                         <div className="tab-item">
                             <img src={bag} alt="" />
-                            <p>Packages</p>
+                            <Link to='/publisher/adcode'>Adcodes</Link>
+                        </div>
+                        <div className="tab-item">
+                            <img src={bag} alt="" />
+                            <p>Notifications</p>
                         </div>
                         <div className="tab-item">
                             <img src={creditCard} alt="" />
@@ -55,22 +84,22 @@ const PublisherDashboard = () => {
                         </div>
                         <div className="tab-item">
                             <img src={user} alt="" />
-                            <Link to='/profile'>Profile</Link>
+                            <Link to=''>Profile</Link>
                         </div>
                         <div className="tab-item">
                             <img src={Handshake} alt="" />
-                            <Link to='/support'>Support</Link>
+                            <Link to=''>Support</Link>
                         </div>
                         <div className="tab-item">
                             <img src={signout} alt="" />
-                            <p>Logout</p>
+                            <p onClick={handleLogout} className="logout">Logout</p>
                         </div>
                     </div>
                     <div className="dashboard-main">
                         <div className="main-heading">
                             <div className="welcome">
                                 <p>Welcome Back</p>
-                                <h4>John Doe</h4>
+                                <h4>{current_user}</h4>
                             </div>
                             <div className="smm">
                                 <Link>Purchase SMM Package</Link>

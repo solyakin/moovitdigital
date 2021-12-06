@@ -1,21 +1,38 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import '../../dashboard/dashboard.scss';
 import '../../admin/admin.scss';
 import axios from 'axios';
 import caretDown from '../../../assets/CaretDown.svg';
 import AdminTags from '../../../components/adminTags/adminTags';
-import Alert from '../../../components/alert/alert';
+import swal from 'sweetalert';
 
 const AddBudget = () => {
 
     const token = localStorage.getItem("auth_token")
-    const [alert, setAlert] = useState("none");
+    const [notification, setNotification] = useState([]);
     const [budget, setBudget ] = useState({
         name : "",
         description : "",
         budget : ""
     })
 
+    const authAxios = axios.create({
+        baseURL : "https://api.moovitdigital.com",
+        headers : {
+            Authorization : `Bearer ${token}`,
+           'Content-Type' : 'multipart/form-data',
+        }
+
+    })
+    useEffect(() => {
+        document.querySelector(".header").style.display = "none";
+        const fetching = async () => {
+            const allNotifications = await authAxios.get('/api/admin/notifications');
+            const notification_array = allNotifications.data;
+            setNotification(notification_array.data);
+        }
+        fetching()
+    },[])
     const handleChange = (e) => {
         e.persist();
         setBudget({...budget,  [e.target.name]: e.target.value})
@@ -27,20 +44,13 @@ const AddBudget = () => {
         newForm.append("name", budget.name);
         newForm.append("description", budget.description);
         newForm.append("budget", budget.budget);
-        const authAxios = axios.create({
-            baseURL : "https://api.moovitdigital.com",
-            headers : {
-                Authorization : `Bearer ${token}`,
-               'Content-Type' : 'multipart/form-data',
-            }
-
-        })
+        
         authAxios.post('/api/admin/create-budget', newForm)
         .then(res => {
             if(res.status == 200){
                 const result = res.data;
+                swal("Great!", "New budget successfully added!", "success");
                 console.log(result);
-                // history.push('/request-call');
             }
         })
         .catch(err => console.log(err))
@@ -55,7 +65,7 @@ const AddBudget = () => {
                 </div>
                 <div className="dashboard-main-wrapper">
                     <div className="tabs">
-                        <AdminTags />
+                        <AdminTags notification={notification}/>
                     </div>
                     <div className="dashboard-main admin">
                     <div className="ads-wrapper mt-3">

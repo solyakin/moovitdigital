@@ -1,6 +1,6 @@
 import React,{ useEffect, useState } from 'react';
 import './App.scss';
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, useHistory, Redirect } from 'react-router-dom'
 import Footer from './components/footer/footer';
 import Header from './components/header/header';
 import Homepage from './pages/homepage/homepage';
@@ -43,6 +43,13 @@ import AddBudget from './pages/admin/addBudget/addBudget';
 import AddGraphic from './pages/admin/addGraphic/addGraphic';
 import RunningAds from './pages/dashboard/ads-history/runningAds/runningAds';
 import Home from './pages/home/home';
+import MarketerNotification from './pages/marketer/notification/Notification';
+import Tickets from './pages/marketer/tickets/Tickets';
+import Adcodes from './pages/marketer/adcode/Adcodes';
+import SMM from './pages/dashboard/SMM/SMM';
+import PublisherAdcode from './pages/publisher-dashboard/adcodes/Adcodes';
+import CreateBanner from './pages/marketer/createBanner/createBanner';
+import MarketerProfile from './pages/marketer/profile/profile';
 
 // TODO
 // 1. display user name on admin all-ads page
@@ -57,18 +64,19 @@ import Home from './pages/home/home';
 function App() {
 
   const [navBackground, setNavBackground] = useState("transparent");
-  const [users, setUsers] = useState([]);
-  const [state, setState] = useState(true);
-
+  // const [users, setUsers] = useState([]);
+  // const [state, setState] = useState(true);
+  
+  // const authAxios = axios.create({
+  //     baseURL : "https://api.moovitdigital.com",
+  //     headers : {
+  //         Authorization : `Bearer ${token}`
+  //     }
+   // })
+  const history = useHistory();
   const token = localStorage.getItem("auth_token");
-  const authAxios = axios.create({
-      baseURL : "https://api.moovitdigital.com",
-      headers : {
-          Authorization : `Bearer ${token}`
-      }
-  })
-
   const currentID = localStorage.getItem("targetId");
+  const role = localStorage.getItem("auth_role");
 
   useEffect(() => {
     document.addEventListener("scroll", () => {
@@ -82,12 +90,13 @@ function App() {
       <Header navBackground={navBackground}/>
       <Switch>
         <Route exact path='/' render={() => <Homepage  />} />
-        <Route exact path='/login' component={Login}/>
+        {/* <Route exact path='/login' render={() => (token && role) ? (<Redirect to={`/dashboard/${role}`}/>) : (<Login/>)} /> */}
+        <Route exact path='/login' render={() => <Login />} />
         <Route exact path='/home' component={Home}/>
         <Route exact path='/register' component={Register}/>
         <Route exact path='/sign-up' component={SignUp}/>
         <Route exact path='/user-registration' component={UserRegistration}/>
-        <Route path='/dashboard' component={Dashboard}/>
+        <Route path='/dashboard/advertiser' render={() => <Dashboard/> }/>
         <Route exact path='/create-ads' component={CreateAds}/>
         <Route exact path='/create-ads/pricing' component={Pricing}/>
         <Route exact path='/request-call' component={Call}/>
@@ -99,7 +108,7 @@ function App() {
         <Route exact path='/profile' component={Profile}/>
         <Route exact path='/support' component={Support}/>
         <Route exact path='/payment' component={Payment}/>
-        <Route exact path='/publisher-dashboard' component={PublisherDashboard}/>
+        <Route exact path='/dashboard/publisher' render={(token) ? () => <PublisherDashboard/> : () => (<Redirect to='/admin-login'/>)}/>
         <Route exact path='/publisher-payment-history' component={PublisherPaymentHistory}/>
         <Route exact path='/publisher-ads-history' component={PublisherAdHistory}/>
         <Route exact path='/publisher-form' component={PublisherForm}/>
@@ -113,12 +122,19 @@ function App() {
         <Route exact path='/admin-login' component={AdminLogin}/>
         <Route exact path='/marketer/dashboard' component={MarketerDashboard}/>
         <Route path={`/marketer/preview-advert/${currentID}`} component={MarketerPreview}/>
+        <Route exact path='/marketer/notification/' component={MarketerNotification}/>
         <Route path='/admin/message' component={Message}/>
         <Route path='/admin/profile' component={AdminProfile}/>
         <Route path='/about' component={About}/>
         <Route path='/contact' component={Contact}/>
         <Route path='/new-budget' component={AddBudget}/>
         <Route path='/new-graphic' component={AddGraphic}/>
+        <Route exact path='/marketer/tickets' component={Tickets}/>
+        <Route exact path='/create-adcode' component={Adcodes}/>
+        <Route exact path='/smm' component={SMM}/>
+        <Route exact path='/publisher/adcode' component={PublisherAdcode}/>
+        <Route exact path='/create-banner' component={CreateBanner}/>
+        <Route exact path='/marketer/profile' component={MarketerProfile}/>
       </Switch>
       <Footer />
     </div>

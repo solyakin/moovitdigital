@@ -1,15 +1,15 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import '../../dashboard/dashboard.scss';
 import '../../admin/admin.scss';
 import axios from 'axios';
 import caretDown from '../../../assets/CaretDown.svg';
 import AdminTags from '../../../components/adminTags/adminTags';
-import Alert from '../../../components/alert/alert';
+import swal from 'sweetalert';
 
 const AddStaff = () => {
 
-    const token = localStorage.getItem("auth_token")
-    const [alert, setAlert] = useState("none");
+    const token = localStorage.getItem("auth_token");
+    const [notification, setNotification] = useState([]);
     const [staff, setStaff ] = useState({
         email : "",
         password : "",
@@ -17,6 +17,24 @@ const AddStaff = () => {
         role : ""
     })
 
+    const authAxios = axios.create({
+        baseURL : "https://api.moovitdigital.com",
+        headers : {
+            Authorization : `Bearer ${token}`,
+           'Content-Type' : 'multipart/form-data',
+        }
+
+    })
+    useEffect(() => {
+        document.querySelector(".header").style.display = "none";
+        const fetching = async () => {
+            const allNotifications = await authAxios.get('/api/admin/notifications');
+            const notification_array = allNotifications.data;
+            setNotification(notification_array.data);
+        }
+        fetching()
+
+    },[])
     const handleChange = (e) => {
         e.persist();
         setStaff({...staff,  [e.target.name]: e.target.value})
@@ -29,20 +47,12 @@ const AddStaff = () => {
         newForm.append("password", staff.password);
         newForm.append("password_confirmation", staff.confirm_password);
         newForm.append("role", staff.role);
-        const authAxios = axios.create({
-            baseURL : "https://api.moovitdigital.com",
-            headers : {
-                Authorization : `Bearer ${token}`,
-               'Content-Type' : 'multipart/form-data',
-            }
-
-        })
         authAxios.post('/api/admin/register', newForm)
         .then(res => {
             if(res.status == 200){
                 const result = res.data;
+                swal("Great!", "New staff successfully added!", "success");
                 console.log(result)
-                // history.push('/request-call');
             }
         })
         .catch(err => console.log(err))
@@ -57,7 +67,7 @@ const AddStaff = () => {
                 </div>
                 <div className="dashboard-main-wrapper">
                     <div className="tabs">
-                        <AdminTags />
+                        <AdminTags notification={notification}/>
                     </div>
                     <div className="dashboard-main admin">
                     <div className="ads-wrapper mt-3">
@@ -92,7 +102,6 @@ const AddStaff = () => {
                         </div>
                     </div>    
                 </div>
-                <Alert alert={alert}/>
             </div>
         </div>
     )

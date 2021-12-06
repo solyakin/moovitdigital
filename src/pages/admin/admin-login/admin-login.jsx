@@ -1,14 +1,17 @@
 import React, {useState} from 'react'
 import { Link, useHistory } from 'react-router-dom';
+import Loader from "react-loader-spinner";
 import '../../Login/Login.scss';
 import axios from 'axios';
 import image from '../../../assets/image 1.png';
 
 const AdminLogin = () => {
     const history = useHistory();
+    const [error_msg, setError_msg] = useState([]);
     const [login, setLogin] = useState({
         email : '',
-        password : ''
+        password : '',
+        loading : false
     })
 
     const handleChange = (e) => {
@@ -18,6 +21,7 @@ const AdminLogin = () => {
 
     const formSubmit = (e) => {
         e.preventDefault();
+        setLogin({loading : true})
         const data = {
             email : login.email,
             password : login.password
@@ -37,7 +41,7 @@ const AdminLogin = () => {
             if(res.status == 200){
                 console.log(res.data)
                 localStorage.setItem('auth_token', res.data.token);
-                localStorage.setItem('auth_name', res.data.email);
+                localStorage.setItem('auth_name', res.data.firstName);
                 localStorage.setItem('auth_id', res.data.id);
                 const userRole = res.data.role;
                 if(userRole == "marketer"){
@@ -47,7 +51,19 @@ const AdminLogin = () => {
                 }
             }
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            setError_msg(err.response.data.error)
+            setLogin({loading : false});
+        })
+    }
+    console.log(error_msg);
+    let error_text = '';
+    if (error_msg !== undefined){
+        error_msg.map(res => {
+            return(
+                error_text = <p>{res}</p>
+            )
+        })
     }
     return (
         <div className="sign-up">
@@ -56,12 +72,12 @@ const AdminLogin = () => {
                     <div className="col-md-4">
                         <form onSubmit={formSubmit}>
                             <img src={image} alt="moovit-digital-logo" />
-
                             <h4>Welcome Back</h4>
                             <p>Fill in your login details</p>
                             <div className="form-group">
                                 <label>Email</label>
-                                <input type="text" placeholder="joe@gmail.com" name="email" onChange={handleChange} value={login.email}/>
+                                <input type="email" placeholder="joe@gmail.com" name="email" onChange={handleChange} value={login.email}/>
+                                {error_text}
                             </div>
                             <div className="form-group">
                                 <label>Password</label>
@@ -70,10 +86,15 @@ const AdminLogin = () => {
                             <div className="forget-password">
                                 <Link>Forgot Password?</Link>
                             </div>
-                            <button type="submit">Login</button>
+                            <button type="submit">
+                                <span>Login</span>
+                                <div className="spinner" style={{display : login.loading ? "block" : "none"}}>
+                                    <Loader type="TailSpin" color="#FFFFFF" height={20} width={25} />
+                                </div>
+                            </button>
                         </form>
                        <div className="signup">
-                           <p>Don’t have an account? <Link to='/register'>Sign up</Link></p>
+                           <p>Don’t have an account? <Link to='/admin-registration'>Sign up</Link></p>
                        </div>
                        <div className="policy">
                             <div className="tnc">

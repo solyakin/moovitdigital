@@ -24,12 +24,34 @@ import shape5 from '../../assets/Group 2.svg';
 // import shap6 from '../../assets/shap6.svg';
 
 const Heroscreen = () => {
+    const token = localStorage.getItem("auth_token");
+    const role = localStorage.getItem("auth_role");
+    let loginBtn = '';
+    if(token && role === 'advertiser'){
+        loginBtn = (
+            <Link to='/dashboard/advertiser' className="login">
+                Login
+            </Link>
+        )
+    }else if(token && role === 'publisher'){
+        loginBtn = (
+            <Link to='/dashboard/publisher' className="login">
+                Login
+            </Link>
+        )
+    }else{
+        loginBtn = (
+            <Link to='/login' className="login">
+                Login
+            </Link>
+        )
+    }
     return (
         <div className='heroscreen'> 
             <div className="hero-content">
                 <img src={logo} alt="" className="logo" />
                 <div className="big-text">
-                    <p>Your ads on top sites, discovered by consumers just waiting to engage with you.</p>
+                    <p>Your advert on social media and top sites, discovered by consumers just waiting to engage with you.</p>
                 </div>
             </div>
             
@@ -108,9 +130,10 @@ const Heroscreen = () => {
             
             <div className="hero-btns">
                 <button>
-                    <Link to='/login' className="login">
-                        Login
-                    </Link>
+                    {loginBtn}
+                    {/* <Link to='/login' className="login">
+                       Login
+                    </Link> */}
                 </button>
                 <button>
                     <Link to='/register'>

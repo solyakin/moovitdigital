@@ -25,6 +25,9 @@
             @media screen and (max-width : 992px){
                 width: 100%;
             }
+            @media screen and (max-width : 590px){
+                text-align: justify;
+            }
         }
         button{
             border: none;
@@ -54,6 +57,7 @@
         }
         img{
             width: 300px;
+        
         }
         .first{
             // text-align: center;
@@ -61,8 +65,9 @@
                 margin: auto;
                 transform: rotate(-30deg);
                 @media screen and (max-width : 990px) {
-                    width: 100%;
+                    width: 80%;
                     margin: 30px auto;    
+                    transform: rotate(0deg);
                 }
             }
         }

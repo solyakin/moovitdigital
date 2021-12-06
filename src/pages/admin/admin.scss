@@ -108,19 +108,22 @@
                 }
             }
             .history-table{
+                // .admin-view{
+                //     text-align: center;
+                // }
                 thead{
                     text-align: left;
                     
                     th{
                         font-size: 14px;
                         font-weight: 400;
-                        // margin-right: 20px;
                     }
                 }
                 tbody{
                     tr{
                         td{
                             font-size: 13px;
+                            min-width: 100px;
                         }
                         .text-left{
                             text-align: left;

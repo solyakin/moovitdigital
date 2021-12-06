@@ -19,6 +19,9 @@ import { Link } from 'react-router-dom';
 
 const Call = () => {
 
+    useEffect(() => {
+        document.querySelector(".header").style.display = "none";
+    })
     return (
             <div className="dashboard create-ads">
             <div className="small-title">

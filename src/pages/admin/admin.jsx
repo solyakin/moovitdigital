@@ -4,7 +4,7 @@ import '../admin/admin.scss';
 import Loader from "react-loader-spinner";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import caretDown from '../../assets/CaretDown.svg';
-import notification from '../../assets/notif.svg';
+import notificationIcon from '../../assets/notif.svg';
 import share from '../../assets/Frame 239.svg';
 import users from '../../assets/Frame 240.svg';
 import dots from '../../assets/Dots.svg';
@@ -23,61 +23,73 @@ const Admin = () => {
     const [pubCount, setpubCount] = useState(0);
     const [staff, setStaff] = useState(0);
     const [isLoading, setLoading] = useState(true);
+    const [notification, setNotification] = useState([]);
 
     const token = localStorage.getItem("auth_token");
     const authAxios = axios.create({
         baseURL : "https://api.moovitdigital.com",
         headers : {
-            Authorization : `Bearer ${token}`
+            Authorization : `Bearer ${token}`,
+            'Content-Type' : "applciation/json",
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods' : 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers' : 'X-Requested-With, Content-Type, X-Token-Auth, Authorization',
+            'Access-Control-Allow-Credentials' : 'true'
         }
     })
     
     useEffect(() => {
+        document.querySelector(".header").style.display = "none";
         const fetchData = async () => {
-            const allAds = await authAxios.get('/api/admin/ads');
-            const response = allAds.data;
-            const adsListData = response.data.data;
-            setAdsList(adsListData);
+            // const allAds = await authAxios.get('/api/admin/ads/');
+            // const response = allAds.data;
+            // const adsListData = response.data.data;
+            // setAdsList(adsListData);
 
-            const allAdvertisers = await authAxios.get('/api/admin/advertiser');
-            const res = allAdvertisers.data;
-            const adsCount = res.data;
-            for (const [key, value] of Object.entries(adsCount)) {
-                const allCount = key;
-                setAdsCount(allCount);
-            }
+            // const allAdvertisers = await authAxios.get('/api/admin/advertiser/');
+            // const res = allAdvertisers.data;
+            // const adsCount = res.data;
+            // const allCount = Object.keys(adsCount).length;
+            // setAdsCount(allCount);
+            // setAdsCount(adsCount.length);
+            // for (const [key, value] of Object.entries(adsCount)) {
+            //     const allCount = value;
+            //     console.log(allCount.length);
+            //     setAdsCount(allCount);
+            // }
 
             const allPublishers = await authAxios.get('/api/admin/publisher');
             const result = allPublishers.data;
-            const pubData = result.data
-            for(const[key, value] of Object.entries(pubData)){
-                const allPubCount = key;
-                setpubCount(allPubCount);
-            }
+            const pubData = result.data;
+            const allPubCount = Object.keys(pubData).length
+            setpubCount(allPubCount);
 
             const allStaff = await authAxios.get('/api/admin/staff');
             const queryResponse = allStaff.data;
             const staffData = queryResponse.data.data.length;
             setStaff(staffData);
+
+            const allNotifications = await authAxios.get('/api/admin/notifications');
+            const notification_array = allNotifications;
+            console.log(notification_array);
+            setNotification(notification_array);
         }
 
-        // authAxios.get('/api/admin/ads')
-        //         .then(response => {
-        //         if(response.status == 200){
-        //             const data = response.data;
-        //             const adsListData = data.data.data;
-        //             setAdsList(adsListData)
-        //         }
-        //     })
-        //     .then(response => {
-        //         authAxios.get('/api/admin/advertiser')
-        //         .then(res => {
-        //             const data = res.data;
-        //             console.log(data)
-        //         })
-                
-        //     })
-        // .catch( err => console.log(err))
+        authAxios.get('/api/admin/ads')
+                .then(response => {
+                if(response.status == 200){
+                    const data = response.data;
+                    const adsListData = data.data.data;
+                    setAdsList(adsListData)
+                }
+            })
+        authAxios.get('/api/admin/advertiser')
+        .then(res => {
+            const adsCount = res.data.data;
+            const allCount = Object.keys(adsCount).length;
+            setAdsCount(allCount);
+        })
+        .catch( err => console.log(err))
         fetchData();
         setLoading(false);
     }, [])
@@ -92,6 +104,7 @@ const Admin = () => {
         localStorage.setItem("targetId", targetId);
     }
     
+    console.log(staff);
     return (
         <div className="dashboard">
             <div className="small-title">
@@ -101,7 +114,7 @@ const Admin = () => {
                 </div>
                 <div className="dashboard-main-wrapper">
                     <div className="tabs">
-                        <AdminTags />
+                        <AdminTags notification={notification}/>
                     </div>
                     <div className="dashboard-main admin">
                         {
@@ -125,7 +138,7 @@ const Admin = () => {
                                         <div className="col">
                                             <div className="content">
                                                 <div className="left-content">
-                                                    <img src={notification} alt="" />
+                                                    <img src={notificationIcon} alt="icoln" />
                                                     <div className="content-text">
                                                         <p>Total</p>
                                                         <h5>Advertisers</h5>
@@ -207,7 +220,7 @@ const Admin = () => {
                                                     </div>
                                                 </div>
                                                 <div className="history-table">
-                                                    <table class="table">
+                                                    <table className="table admin-view">
                                                         <thead>
                                                             <tr>
                                                             <th scope="col"></th>
@@ -222,14 +235,14 @@ const Admin = () => {
                                                                 adsList.filter((items, index) => (index < 5))
                                                                 .map(({title, start, location, id}) => {
                                                                     return (
-                                                                        <tr>
+                                                                        <tr key={id}>
                                                                             <th scope="row">
                                                                                 <input type="checkbox" name="" id="" />
                                                                             </th>
                                                                             <td className="text-left">{title}</td>
                                                                             <td>Tier 2</td>
-                                                                            <td>{start}</td>
-                                                                            <td>{location}</td>
+                                                                            <td className="text-left">{start}</td>
+                                                                            <td className="text-left">{location}</td>
                                                                             <td>
                                                                                 <Link to={`/marketer/preview-advert/${id}`} id={id} onClick={handleClick}>Preview</Link>
                                                                             </td>

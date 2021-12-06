@@ -22,6 +22,7 @@ const CreateAds = () => {
     const [showNext, setShowNext] = useState("block");
     const [showNext2, setShowNext2] = useState("none");
     const [showNext3, setShowNext3] = useState("none");
+    const [loading, setLoading] = useState(false);  
     const [createAds, setCreateAds] = useState({
         title : "",
         description : "",
@@ -61,7 +62,7 @@ const CreateAds = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-
+        setLoading(true);
         const data = {
             title : createAds.title,
             content : createAds.description,
@@ -115,17 +116,12 @@ const CreateAds = () => {
                 Authorization : `Bearer ${token}`,
                'Content-Type' : 'multipart/form-data',
             }
-
         })
         authAxios.post('/api/user/create-advert', newForm)
         .then(res => {
             if(res.status == 200){
                 const result = res.data;
-                console.log(result.message)
-                // for (const [key, value] of Object.entries(result)) {
-                //     console.log(value);
-                //   }
-                history.push('/request-call');
+                history.push('/payment');
             }
         })
         .catch(err => console.log(err))
@@ -170,6 +166,7 @@ const CreateAds = () => {
                             handleSubmit={handleSubmit}
                             createAds={createAds}
                             setCreateAds={setCreateAds}
+                            loading ={loading}
                             />
                         </form> 
                     </div>
