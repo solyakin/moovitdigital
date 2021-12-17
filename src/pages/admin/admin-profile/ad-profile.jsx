@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../../dashboard/dashboard.scss';
-import caretDown from '../../../assets/CaretDown.svg';
+import swal from 'sweetalert';
+import logo from '../../../assets/image 1.png';
 import AdminTags from '../../../components/adminTags/adminTags';
 import profileImage from '../../../assets/Userprofile.svg';
 import axios from 'axios';
@@ -9,6 +10,7 @@ import axios from 'axios';
 const AdminProfile = () => {
 
     const [file_, setFile_] = useState(null);
+    const [notification, setNotification] = useState([]);
     const [profile_update, setProfile_update] = useState({
         firstName : "",
         lastName : "",
@@ -22,9 +24,16 @@ const AdminProfile = () => {
     const token = localStorage.getItem("auth_token");
     const id = localStorage.getItem("auth_id");
 
+    const authAxios = axios.create({
+        baseURL : "https://test.canyousing.com.ng",
+        headers : {
+            Authorization : `Bearer ${token}`,
+           'Content-Type' : 'multipart/form-data',
+        }
+
+    })
     const updateFormSubmit = (e) => {
         e.preventDefault();
-
         const data = {
             firstName : profile_update.firstName,
             lastName : profile_update.lastName,
@@ -35,38 +44,40 @@ const AdminProfile = () => {
         newForm.append("firstName", data.firstName);
         newForm.append("lastName", data.lastName);
         newForm.append("phone", data.phone);
-        newForm.append("image", file_.name);
-
-        const authAxios = axios.create({
-            baseURL : "https://api.moovitdigital.com",
-            headers : {
-                Authorization : `Bearer ${token}`,
-               'Content-Type' : 'multipart/form-data',
-            }
-
-        })
-        authAxios.post(`/api/admin/edit-profile/${id}`, newForm)
+        authAxios.put(`/api/admin/edit-profile/${id}?firstName=${data.firstName}&lastName=${data.lastName}&phone=${data.phone}`)
         .then(res => {
             if(res.status === 200){
                 console.log(res.data);
+                swal("Great!", "Profile Updated successfully!", "success");
+                setProfile_update({firstName : "", lastName : "", phone : ""})
             }
         })
         .catch(error => console.log(error));
     }
-    useEffect( () => {
-        document.querySelector(".header").style.display = "none";
-    })
-    console.log(profile_update);
+    useEffect(() => {
+        const fetching = async ()=> {
+            const allNotifications = await authAxios.get('/api/admin/notifications');
+            const notification_array = allNotifications.data;
+            setNotification(notification_array.data);
+        }
+        fetching();
+    },[])
+    console.log(profile_update)
     return (
         <div className="dashboard">
             <div className="small-title">
-                <div className="title-text">
-                    <p>The Brand Hub</p>
-                    <img src={caretDown} alt="" />
+                <div className="title-text justify-content-between">
+                    <div className="logo">
+                        <Link to='/home'>
+                            <img src={logo} alt="moovit-logo" />
+                        </Link>
+                    </div>
+                    <div className="text d-flex align-center">
+                    </div>
                 </div>
                 <div className="dashboard-main-wrapper">
                     <div className="tabs">
-                        <AdminTags />
+                        <AdminTags notification={notification} />
                     </div>
                     <div className="dashboard-main">
                         <div className="ads-wrapper mt-3">
@@ -92,18 +103,10 @@ const AdminProfile = () => {
                                                 <label htmlFor="">Phone Number</label>
                                                 <input type="text" placeholder="+234 8169 1140 01" name="phone" onChange={handleChange}/>
                                             </div>
-                                            <div className="form-group">
-                                                <label htmlFor="">Upload profile image</label>
-                                                <input type="file" name="image" 
-                                                        onChange={(e) => setFile_( e.target.files[0])}
-                                                        onClick={(event)=> { 
-                                                            event.target.value = null
-                                                    }}
-                                                />
-                                            </div>
+                                            
                                             <div className="password">
                                                 <p>Password</p>
-                                                <Link>Change password</Link>
+                                                <Link to='/forget-password'>Change password</Link>
                                             </div>
                                             <button type="submit">Submit</button>
                                         </form>

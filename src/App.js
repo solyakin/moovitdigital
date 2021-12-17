@@ -1,11 +1,8 @@
 import React,{ useEffect, useState } from 'react';
 import './App.scss';
 import { Switch, Route, useHistory, Redirect } from 'react-router-dom'
-import Footer from './components/footer/footer';
-import Header from './components/header/header';
 import Homepage from './pages/homepage/homepage';
 import Login from './pages/Login/Login';
-import SignUp from './pages/signUp/signUp';
 import UserRegistration from './pages/userReg/userReg';  
 import Dashboard from './pages/dashboard/dashboard';
 import CreateAds from './pages/dashboard/createAds/createAds';
@@ -50,6 +47,21 @@ import SMM from './pages/dashboard/SMM/SMM';
 import PublisherAdcode from './pages/publisher-dashboard/adcodes/Adcodes';
 import CreateBanner from './pages/marketer/createBanner/createBanner';
 import MarketerProfile from './pages/marketer/profile/profile';
+import Withdraw from './pages/publisher-dashboard/withdraw/withdraw';
+import AdminPreview from './pages/admin/preview/AdminPreview';
+import PublisherProfile from './pages/publisher-dashboard/pb-profile/PublisherProfile';
+import PublisherEditProfile from './pages/publisher-dashboard/editprofile/PublisherEditProfile';
+import PublisherSupport from './pages/publisher-dashboard/pb-support/publisherSupport';
+import PublisherNotifications from './pages/publisher-dashboard/notifications/PublisherNotifications';
+import EditProfile from './pages/dashboard/edit-profile/EditProfile';
+import AdvertiserNotifications from './pages/dashboard/notifications/notifications';
+import MarketerEditProfile from './pages/marketer/edit-profile/edit-profile';
+import ForgetPassword from './pages/forgotPassword/ForgetPassword';
+import ResetPassword from './pages/resetpassword/Resetpassword';
+import Advertisers from './pages/admin/allAdvertisers/advertisers';
+import AllPublishers from './pages/admin/publishers/publishers';
+import AllMarketer from './pages/admin/markteter/marketer';
+import AdvertiserPreview from './pages/admin/advertiserPreview/advertiserPreview';
 
 // TODO
 // 1. display user name on admin all-ads page
@@ -64,15 +76,6 @@ import MarketerProfile from './pages/marketer/profile/profile';
 function App() {
 
   const [navBackground, setNavBackground] = useState("transparent");
-  // const [users, setUsers] = useState([]);
-  // const [state, setState] = useState(true);
-  
-  // const authAxios = axios.create({
-  //     baseURL : "https://api.moovitdigital.com",
-  //     headers : {
-  //         Authorization : `Bearer ${token}`
-  //     }
-   // })
   const history = useHistory();
   const token = localStorage.getItem("auth_token");
   const currentID = localStorage.getItem("targetId");
@@ -87,17 +90,15 @@ function App() {
 
   return (
     <div className="App">
-      <Header navBackground={navBackground}/>
       <Switch>
-        <Route exact path='/' render={() => <Homepage  />} />
+        <Route exact path='/' render={() => <Homepage navBackground={navBackground}/>} />
         {/* <Route exact path='/login' render={() => (token && role) ? (<Redirect to={`/dashboard/${role}`}/>) : (<Login/>)} /> */}
-        <Route exact path='/login' render={() => <Login />} />
-        <Route exact path='/home' component={Home}/>
-        <Route exact path='/register' component={Register}/>
-        <Route exact path='/sign-up' component={SignUp}/>
-        <Route exact path='/user-registration' component={UserRegistration}/>
-        <Route path='/dashboard/advertiser' render={() => <Dashboard/> }/>
-        <Route exact path='/create-ads' component={CreateAds}/>
+        <Route exact path='/login' render={() => <Login navBackground={navBackground}/>} />
+        <Route exact path='/home' render={() => <Home navBackground={navBackground}/> }/>
+        <Route exact path='/register' render={() => <Register navBackground={navBackground}/> }/>
+        <Route exact path='/user-registration' render={() => <UserRegistration navBackground={navBackground}/> }/>
+        <Route path='/dashboard/advertiser' render={() => <Dashboard/>  }/>
+        <Route exact path='/create-ads' render={() => <CreateAds /> }/>
         <Route exact path='/create-ads/pricing' component={Pricing}/>
         <Route exact path='/request-call' component={Call}/>
         <Route exact path='/review' component={Review}/>
@@ -108,7 +109,7 @@ function App() {
         <Route exact path='/profile' component={Profile}/>
         <Route exact path='/support' component={Support}/>
         <Route exact path='/payment' component={Payment}/>
-        <Route exact path='/dashboard/publisher' render={(token) ? () => <PublisherDashboard/> : () => (<Redirect to='/admin-login'/>)}/>
+        <Route exact path='/dashboard/publisher' render={() => <PublisherDashboard/> }/>
         <Route exact path='/publisher-payment-history' component={PublisherPaymentHistory}/>
         <Route exact path='/publisher-ads-history' component={PublisherAdHistory}/>
         <Route exact path='/publisher-form' component={PublisherForm}/>
@@ -116,17 +117,20 @@ function App() {
         <Route exact path='/add-staff' component={AddStaff}/>
         <Route exact path='/new-ads-ticket' component={AdsTicket}/>
         <Route exact path='/notification' component={Notifications}/>
-        <Route exact path='/email-verification' component={EmailVerification}/>
-        <Route exact path='/account-type' component={AccountType}/>
-        <Route exact path='/admin-registration' component={AdminRegistation}/>
-        <Route exact path='/admin-login' component={AdminLogin}/>
+        <Route exact path='/email-verification' render={() => <EmailVerification navBackground={navBackground}/>}/>
+        <Route exact path='/account-type' render={() => <AccountType navBackground={navBackground}/>}/>
+        <Route exact path='/admin-registration' render={() => <AdminRegistation navBackground={navBackground}/>}/>
+        <Route exact path='/admin-login' render={() => <AdminLogin navBackground={navBackground}/>}/>
         <Route exact path='/marketer/dashboard' component={MarketerDashboard}/>
-        <Route path={`/marketer/preview-advert/${currentID}`} component={MarketerPreview}/>
+        <Route path={`/marketer/preview-advert`} component={MarketerPreview}/>
+        <Route path={`/admin/preview`} component={AdminPreview}/>
         <Route exact path='/marketer/notification/' component={MarketerNotification}/>
         <Route path='/admin/message' component={Message}/>
         <Route path='/admin/profile' component={AdminProfile}/>
-        <Route path='/about' component={About}/>
-        <Route path='/contact' component={Contact}/>
+        <Route path='/about' render={() => <About navBackground={navBackground}/>} />
+        <Route path='/contact' render={() => <Contact navBackground={navBackground}/>}/>
+        <Route exact path='/forget-password' render={() => <ForgetPassword navBackground={navBackground}/>}/>
+        <Route exact path='/reset-password' render={() => <ResetPassword navBackground={navBackground}/>}/>
         <Route path='/new-budget' component={AddBudget}/>
         <Route path='/new-graphic' component={AddGraphic}/>
         <Route exact path='/marketer/tickets' component={Tickets}/>
@@ -135,8 +139,19 @@ function App() {
         <Route exact path='/publisher/adcode' component={PublisherAdcode}/>
         <Route exact path='/create-banner' component={CreateBanner}/>
         <Route exact path='/marketer/profile' component={MarketerProfile}/>
+        <Route exact path='/publisher/withdraw' component={Withdraw}/>
+        <Route exact path='/publisher/profile' component={PublisherProfile}/>
+        <Route exact path='/publisher/edit-profile' component={PublisherEditProfile}/>
+        <Route exact path='/publisher/support' component={PublisherSupport}/>
+        <Route exact path='/publisher/notifications' component={PublisherNotifications}/>
+        <Route exact path='/advertiser/edit-profile' component={EditProfile}/>
+        <Route exact path='/advertiser/notifications' component={AdvertiserNotifications}/>
+        <Route exact path='/marketer/edit-profile' component={MarketerEditProfile}/>
+        <Route exact path='/admin/advertisers' component={Advertisers}/>
+        <Route exact path='/admin/publisher' component={AllPublishers}/>
+        <Route exact path='/admin/marketer' component={AllMarketer}/>
+        <Route exact path='/admin/advertiser/preview' component={AdvertiserPreview}/>
       </Switch>
-      <Footer />
     </div>
   );
 }

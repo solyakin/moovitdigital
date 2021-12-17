@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import axios from 'axios'
 import '../../dashboard/dashboard.scss';
 import '../../dashboard/ads-history/ads-history.scss';
-import caretDown from '../../../assets/CaretDown.svg';
-import caretDown2 from '../../../assets/CaretDown2.svg';
 import squares from '../../../assets/SquaresFour.svg';
 import megaphone from '../../../assets/MegaphoneSimple.svg';
 import bag from '../../../assets/BagSimple.svg';
@@ -11,22 +10,46 @@ import creditCard from '../../../assets/CreditCard.svg';
 import user from '../../../assets/User.svg';
 import Handshake from '../../../assets/Handshake.svg';
 import signout from '../../../assets/SignOut.svg';
+import logo from '../../../assets/image 1.png';
 
 const PublisherPaymentHistory = () => {
-    useEffect(() => {
-        document.querySelector(".header").style.display = "none";
-    }, [])
+    const history = useHistory();
+    const token = localStorage.getItem("auth_token");
+    const auth_id = localStorage.getItem("auth_id");
+    const authAxios = axios.create({
+        baseURL : "https://test.canyousing.com.ng",
+        headers : {
+            Authorization : `Bearer ${token}`
+        }
+    })
+    const handleLogout = (e) => {
+        e.preventDefault();
+        authAxios.post('https://test.canyousing.com.ng/api/user/logout')
+        .then(res => {
+            if(res.status === 200){
+                localStorage.clear();
+                history.push('/home');
+            }
+            console.log(res.data);
+        })
+        .catch(err => console.log(err));
+    }
     return (
         <div className="dashboard">
             <div className="small-title">
-                <div className="title-text">
-                    <p>The Brand Hub</p>
-                    <img src={caretDown} alt="" />
+                <div className="title-text justify-content-between">
+                    <div className="logo">
+                        <Link to='/home'>
+                            <img src={logo} alt="moovit-logo" />
+                        </Link>
+                    </div>
+                    <div className="text d-flex align center">
+                    </div>
                 </div>
                 <div className="dashboard-main-wrapper">
                     <div className="tabs">
                         <div className="tab-item">
-                            <img src={squares} alt="" />
+                        <img src={squares} alt="" />
                             <Link to='/dashboard/publisher'>Dashboard</Link>
                         </div>
                         <div className="tab-ads">
@@ -39,23 +62,33 @@ const PublisherPaymentHistory = () => {
                         </div>
                         <div className="tab-item">
                             <img src={bag} alt="" />
-                            <p>Packages</p>
+                            <Link to='/publisher/adcode'>Adcodes</Link>
+                        </div>
+                        <div className="tab-item">
+                            <img src={bag} alt="" />
+                            <p>
+                                <Link to='/publisher/notifications'>Notifications</Link>
+                            </p>
                         </div>
                         <div className="tab-item">
                             <img src={creditCard} alt="" />
                             <Link to='/publisher-payment-history'>Finance</Link>
                         </div>
                         <div className="tab-item">
+                            <img src={creditCard} alt="" />
+                            <Link to='/publisher/withdraw'>Request Withdrawal</Link>
+                        </div>
+                        <div className="tab-item">
                             <img src={user} alt="" />
-                            <Link to='/profile'>Profile</Link>
+                            <Link to='/publisher/profile'>Profile</Link>
                         </div>
                         <div className="tab-item">
                             <img src={Handshake} alt="" />
-                            <Link to='/support'>Support</Link>
+                            <Link to='/publisher/support'>Support</Link>
                         </div>
                         <div className="tab-item">
                             <img src={signout} alt="" />
-                            <p>Logout</p>
+                            <p onClick={handleLogout} className="logout">Logout</p>
                         </div>
                     </div>
                     <div className="dashboard-main">
@@ -65,12 +98,9 @@ const PublisherPaymentHistory = () => {
                             </div>
                             <div className="history-wrapper">
                                 <div className="text-right">
-                                    <button>
-                                        <Link to='/create-ads'>+ <span>Create Ads</span></Link>
-                                    </button>
                                 </div>
                             
-                            <div className="text-left">
+                            <div className="text-left mt-4">
                                 <input type="text"  placeholder="search"/>
                             </div>
                             

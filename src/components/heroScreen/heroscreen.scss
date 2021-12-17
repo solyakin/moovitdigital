@@ -14,9 +14,9 @@
             @media screen and (max-width: 768px){
                 width: 80%;                      
             };
-            @media screen and (max-width: 768px){
-                width: 90%;                      
-            };
+            // @media screen and (max-width: 768px){
+            //     width: 90%;                      
+            // };
         }
         p{
             font-size: 1.3rem;
@@ -25,9 +25,13 @@
             width: 600px;
             margin: 20px auto;
             text-align: center;
+            @media screen and (max-width: 860px){
+                width: 90%;
+                text-align: center;
+            }
             @media screen and (max-width: 480px){
-                font-size: 14px;
-                width: 85%;
+                font-size: 16px;
+                width: 100%;
             }
         }
         
@@ -170,27 +174,36 @@
         margin: auto;
         @media screen and (max-width: 480px){
             display: block;  
-            bottom: 30%;                     
+            bottom: 20%;                     
         };
         button{
-            padding: 10px 20px;
+            // width: 200px;
+            padding : 10px;
             margin-left: 10px;
-            width: 200px;
             a{
                 text-decoration: none;
                 color: white;
                 font-weight: 500;
                 font-size: 14px;
+                padding: 10px 80px;
                 &:last-child{
                     color: black;
+                    // padding: 10px 60px;
                 }
             }
             .login{
                 color : white!important
             }
+            .register{
+                padding: 10px 70px!important;
+                @media screen and (max-width: 480px){
+                    width: 70%!important;
+                    padding: 10px !important;
+                }
+            }
             @media screen and (max-width: 480px){
                 margin-bottom: 10px; 
-                width: 90%;   
+                width: 70%;   
                 margin-left: 0;        
             };
             &:last-child{
@@ -200,15 +213,22 @@
         }
     }
     .big-text{
-        // position: absolute;
-        // bottom: 10px;
         width: 70%;
         margin: auto;
         left: 0;
         right: 0;
         h1{
             font-size: 2.5rem;
-            // color: #EE315D;
+        }
+        p{
+            @media screen and (max-width: 768px){
+                width: 90%;
+                text-align: center;
+            }
+        }
+        @media screen and (max-width: 768px){
+            width: 90%;
+            text-align: center;
         }
     }
 }

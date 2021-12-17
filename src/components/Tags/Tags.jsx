@@ -16,14 +16,14 @@ const Tags = ({ style, handleClick }) => {
     const token = localStorage.getItem("auth_token");
     const history = useHistory();
     const authAxios = axios.create({
-        baseURL : "https://api.moovitdigital.com",
+        baseURL : "https://test.canyousing.com.ng",
         headers : {
             Authorization : `Bearer ${token}`
         }
     })
     const handleLogout = (e) => {
         e.preventDefault();
-        authAxios.post('https://api.moovitdigital.com/api/user/logout')
+        authAxios.post('https://test.canyousing.com.ng/api/user/logout')
         .then(res => {
             if(res.status === 200){
                 localStorage.clear();
@@ -59,6 +59,10 @@ const Tags = ({ style, handleClick }) => {
             <div className="tab-item">
                 <img src={creditCard} alt="" />
                 <Link to='/payment-history'>Payment History</Link>
+            </div>
+            <div className="tab-item">
+                <img src={creditCard} alt="" />
+                <Link to='/advertiser/notifications'>Notifications</Link>
             </div>
             <div className="tab-item">
                 <img src={user} alt="" />

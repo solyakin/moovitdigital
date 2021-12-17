@@ -47,9 +47,12 @@
                 padding: 7px 30px;
                 margin-top: 30px;
             }
-            .row_{
+            .row__{
                 align-items: center;
-                height: 100vh;
+                height: 100vh; 
+                @media only screen and (max-width: 590px){
+                    height : 90vh;
+                }
                 .row{
                     --bs-gutter-x: 0rem;
                     height: 100vh;
@@ -76,6 +79,11 @@
                         }
                     } 
                 } 
+                .swiper-container{
+                    @media only screen and (max-width: 480px){
+                        height: 90vh;
+                    }
+                }
                 .frame0{
                     background-image: url(../../assets/portrait-cool-man-with-sunglasses-copy-space.jpg);
                     background-size: cover;
@@ -89,7 +97,7 @@
                             margin-top: 200px;
                         }
                         @media screen and (max-width: 480px){
-                            margin-top: 260px;
+                            margin-top: 180px;
                         }
                         p{
                             font-size: calc(32px + (84 - 34) * ((100vw - 300px) / (1600 - 300)));
@@ -163,6 +171,10 @@
                         width: 90%;
                         margin: 200px auto;
                     }
+                    @media screen and (max-width : 768px){
+                        width: 90%;
+                        margin-top : 120px;
+                    }
                     img{
                         width: 45px;
                         margin-bottom: 20px;
@@ -186,7 +198,7 @@
                         line-height: 1.8;
                         width: 100%;
                         @media screen and (max-width : 480px) {
-                            font-size: 15px;
+                            font-size: 17px;
                         }
                     }
                     .text2{

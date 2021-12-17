@@ -29,12 +29,25 @@
                         cursor: pointer;
                     }
                 }
+                @media only screen and (max-width : 580px){
+                    a{
+                        .logo-img{
+                            width: 80px;
+                        }
+                    }    
+                }
             }
             .text{
                 img{
                     width : 20px;
                 }
                 @media screen and (max-width : 768px){
+                    p{
+                        font-size: 12px;
+                    }
+                }
+                @media screen and (max-width : 480px){
+                    margin-top: 10px;
                     p{
                         font-size: 12px;
                     }
@@ -172,7 +185,8 @@
                         margin-bottom: 3rem;
                         .fund-balance{
                             p{
-                                font-size: 14px;
+                                font-size: 15px;
+                                font-weight: 500;
                             }
                             h3{
                                 font-size: 32px;
@@ -188,16 +202,21 @@
                             }
                         }
                         .create-ads-btn{
-                            @media only screen and (max-width : 768px){
-                                display: none;
-                            }
+                            
                             button{
                                 border: none;
                                 padding: 7px 20px;
                                 color: white;
                                 font-size: 14px;
+                                @media only screen and (max-width : 768px){
+                                    padding: 7px 10px;
+                                    font-size: 12px;
+                                }
                                 span{
                                     margin-right: 10px;
+                                    @media only screen and (max-width : 768px){
+                                        margin-right: 5px;
+                                    }
                                 }
                                 a{
                                     color: white;

@@ -3,31 +3,13 @@ import '../accountType/accountType.scss';
 import image from '../../assets/image 1.png';
 import {Link} from 'react-router-dom';
 import axios from 'axios';
+import Header from '../../components/header/header';
 
-const AccountType = () => {
-
-    // const [Ads, SetAds] = useState();
-    // const token = localStorage.getItem("auth_token");
-
-    // axios({
-    //     url : 'https://api.moovitdigital.com/api/user/user-ads',
-    //     method : 'GET',
-    //     config: { headers: {
-    //         'Content-Type': 'multipart/form-data',
-    //         'Authorization' : `Bearer ${token}`
-    //         }
-    //     }
-    // })
-    // .then(res => {
-    //     if(res.status == 200){
-    //         console.log(res.data)
-    //         // history.push('/');
-    //     }
-    // })
-    // .catch(err => console.log(err))
+const AccountType = ({navBackground}) => {
 
     return (
         <div className="account-type">
+            <Header navBackground={navBackground}/>
             <div className="small-wrapper">
                 <img src={image} alt="logo" className="mb-2"/>
                 <p>Choose an account type</p>

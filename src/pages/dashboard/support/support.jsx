@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../../dashboard/dashboard.scss';
+import Loader from "react-loader-spinner";
 import Tags from '../../../components/Tags/Tags';
 import '../../dashboard/ads-history/ads-history.scss';
-import caretDown from '../../../assets/CaretDown.svg';
 import logo from '../../../assets/image 1.png';
 import axios from 'axios';
+import swal from 'sweetalert';
 
 const Support = () => {
-
+    const [loading, setLoading] = useState(false);
     const [support, setSupport] = useState({
         name : '',
         email : '',
@@ -29,11 +30,9 @@ const Support = () => {
         setStyle({hide : !style.hide, transformArrow : !style.transformArrow});
     
     }
-    useEffect(() => {
-        document.querySelector(".header").style.display = "none";
-    }, [])
     const formSubmit = (e) => {
         e.preventDefault();
+        setLoading(true);
         const data = {
             name : support.name,
             email : support.email,
@@ -48,17 +47,19 @@ const Support = () => {
         newData.append('message', data.description);
 
         axios({
-            url : 'https://api.moovitdigital.com/api/contact',
+            url : 'https://test.canyousing.com.ng/api/contact',
             method : 'POST',
             data : newData,
             config: { headers: {'Content-Type': 'multipart/form-data' }}
         })
         .then(res => {
             if(res.status == 200){
-                console.log(res.data)
-                // if(res.data.email === admin)
-                // write a login which checks if the user email contains admin
-                // history.push('/admin');
+                setLoading(false)
+                swal("Great!", "Message sent successfully added!", "success");
+                setSupport({name : "", email : "", description : "", subject : ""});
+            }else if(res.status !== 200){
+                swal("Oops!", "Something went wrong!", "warning");
+                setLoading(false)
             }
         })
         .catch(err => console.log(err))
@@ -73,8 +74,8 @@ const Support = () => {
                         </Link>
                     </div>
                     <div className="text d-flex align center">
-                        <p>The Brand Hub</p>
-                        <img src={caretDown} alt="" />
+                        {/* <p>The Brand Hub</p>
+                        <img src={caretDown} alt="" /> */}
                     </div>
                 </div>
                 <div className="dashboard-main-wrapper">
@@ -94,23 +95,26 @@ const Support = () => {
                                         <form onSubmit={formSubmit}>
                                             <div className="form-group">
                                                 <label htmlFor="">Name</label>
-                                                <input type="text" name="name" value={support.name} onChange={handleChange} />
+                                                <input type="text" name="name" value={support.name} required onChange={handleChange} />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="">Email</label>
-                                                <input type="email"  name="email" value={support.email} onChange={handleChange}/>
+                                                <input type="email"  name="email" value={support.email} required onChange={handleChange}/>
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="">Subject</label>
-                                                <input type="text" name="subject" value={support.subject} onChange={handleChange} />
+                                                <input type="text" name="subject" value={support.subject} required onChange={handleChange} />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="">Description</label>
-                                                <textarea name="description" id="" cols="10" rows="3" placeholder="enter message here" value={support.description} onChange={handleChange}></textarea>
+                                                <textarea name="description" id="" cols="10" rows="3" required placeholder="enter message here" value={support.description} onChange={handleChange}></textarea>
                                             </div>
                                             <button type="submit">Send</button>
                                         </form>
                                     </div>
+                                </div>
+                                <div className="spinner" style={{display : loading ? "block" : "none", position : 'fixed', top : '10px', right : '20px'}}>
+                                    <Loader type="TailSpin" color="#EE315D" height={30} width={30} />
                                 </div>
                             </div>
                         </div>                 

@@ -5,7 +5,6 @@ import '../../dashboard/createAds/createAds.scss';
 import '../../dashboard/payment/payment.scss';
 import caretDown from '../../../assets/CaretDown.svg';
 import caretRight from '../../../assets/CaretRight.svg';
-import check from '../../../assets/Progress Tick Done.svg';
 import ellipse2 from '../../../assets/Ellipse 28.svg';
 import fluttericon from '../../../assets/Frame 180.svg';
 import { Link } from 'react-router-dom';
@@ -13,24 +12,30 @@ import Tags from '../../../components/Tags/Tags';
 import logo from '../../../assets/image 1.png';
 import hamburger from '../../../assets/hamburger.png';
 import MobileTags from '../../../components/MobileTags/mobileTags';
+import tick from '../../../assets/Frame 338.svg';
 
 const Payment = () => {
 
-    const token = localStorage.getItem("auth_token")
+    const token = 'FLWSECK_TEST-1af20f6cb3c2d471fb0cd00e1864422b-X';
+    const random_string = 'MV_'+Math.floor((Math.random()*100000000)+1);
+    console.log(random_string);
+    const budgetId = localStorage.getItem("bd_ix");
     const [data, setData] = useState({
         name : '',
         email : '',
         phone : '',
         amount : 50000
     })
+    const [data_2, setData_2] = useState({
+        redirect_url : "https://moovitdigital.com",
+        card : "card",
+        tx_ref : random_string
+    })
     const [style, setStyle] = useState({
         hide : false,
         transformArrow : false,
     });
     const [ham, setHam] = useState(false);
-    useEffect(() => {
-        document.querySelector(".header").style.display = "none";
-    }, [])
 
     const handleChange = (e) => {
         e.persist();
@@ -46,22 +51,21 @@ const Payment = () => {
         const newForm = new FormData();
         newForm.append("name" , data.name);
         newForm.append("email" , data.email);
-        newForm.append("phone" , data.phone);
+        newForm.append("phonenumber" , data.phone);
         newForm.append("amount" , data.amount);
+        newForm.append("redirect_url", data_2.redirect_url);
+        newForm.append("payment_options", data_2.card);
+        newForm.append("tx_ref", data_2.tx_ref);
 
         const authAxios = axios.create({
-            baseURL : "https://api.moovitdigital.com",
             headers : {
                 Authorization : `Bearer ${token}`,
-                contentType : "application/json",
+                "Content-Type" : "application/json",
             }
         })
 
-        authAxios.post('/pay')
+        authAxios.post('https://api.flutterwave.com/v3/payments', newForm)
         .then(res => {
-            res.header("Access-Control-Allow-Headers","*");
-            res.header('Access-Control-Allow-Credentials', true);
-            res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
             console.log(res.data)
         })
         .catch(err => console.log(err))
@@ -69,6 +73,14 @@ const Payment = () => {
     const toggler = (e) => {
         e.preventDefault();
         setHam(!ham);
+    }
+    let budget = ''
+    if(budgetId == 1){
+        budget = <h4>#10,000</h4>
+    }else if(budgetId == 2){
+        budget = <h4>#50,000</h4>
+    }else if(budgetId == 3){
+        budget = <h4>#100,000</h4>
     }
     return (
             <div className="dashboard create-ads">
@@ -81,8 +93,8 @@ const Payment = () => {
                         </Link>
                     </div>
                     <div className="text d-flex align center">
-                        <p>The Brand Hub</p>
-                        <img src={caretDown} alt="" />
+                        {/* <p>The Brand Hub</p>
+                        <img src={caretDown} alt="" /> */}
                     </div>
                 </div>
                 <div className="dashboard-main-wrapper">
@@ -94,26 +106,30 @@ const Payment = () => {
                     </div>
                     <div className="dashboard-main">
                         <div className="pages-link">
-                            <Link>Home</Link>
+                            <Link to='#'>Home</Link>
                             <img src={caretRight} alt="caret right"/>
-                            <Link>Create an Ad</Link>
+                            <Link to='#'>Create an Ad</Link>
                         </div>
                         <div className="page-progress">
                             <div className="item first">
-                                <img src={check} alt="ellipse1" />
-                                <p>Ads details</p>
-                            </div>
-                            <div className="item">
-                                <img src={check} alt="ellipse1" />
+                                <img src={tick} alt="ellipse1" />
                                 <p>Select a budget</p>
                             </div>
                             <div className="item">
-                                <img src={check} alt="ellipse1" />
-                                <p>Have a call</p>
+                                <img src={tick} alt="ellipse1" />
+                                <p>Ads details</p>
+                            </div>
+                            <div className="item">
+                                <img src={tick} alt="ellipse1" />
+                                <p>Pick a template</p>
+                            </div>
+                            <div className="item ">
+                                <img src={ellipse2} alt="ellipse1" />
+                                <p>Make payment</p>
                             </div>
                             <div className="item last">
                                 <img src={ellipse2} alt="ellipse1" />
-                                <p>Make payment</p>
+                                <p>Have a call</p>
                             </div>
                         </div>
                         <div className="payment">
@@ -147,14 +163,14 @@ const Payment = () => {
                                         <div className="price">
                                             <div className="tier">
                                                 <p>Tier 2</p>
-                                                <h4>#50,000</h4>
+                                                {budget}
                                                 <ul>
                                                     <li>Realtime analytics</li>
                                                     <li>Get 1-on-1 advice from a marketer</li>
                                                     <li>Post ads on social media platforms</li>
                                                     <li>Post ads on blogs</li>
                                                     <li>Two location only</li>
-                                                    <button>Change budget</button>
+                                                    {/* <button></button> */}
                                                 </ul>
                                             </div>
                                         </div>

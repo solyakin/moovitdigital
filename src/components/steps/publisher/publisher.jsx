@@ -19,7 +19,7 @@ const PublisherSteps = ({show1}) => {
                     <div className="count">
                         <p>STEP 1</p>
                         <h5>Create an account</h5>
-                        <p>Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui</p>
+                        <p>Quickly set up an account with your detials in few simple steps</p>
                     </div>
                     <img src={line1} alt="" className="line1" />
                 </div>
@@ -30,7 +30,7 @@ const PublisherSteps = ({show1}) => {
                     <div className="count">
                         <p>STEP 2</p>
                         <h5>Get approved</h5>
-                        <p>Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui</p>
+                        <p>Get onboard after proper review of your request</p>
                     </div>
                 </div>
                 <img src={line2} alt="" className="line2" />    
@@ -41,7 +41,7 @@ const PublisherSteps = ({show1}) => {
                     <div className="count">
                         <p>STEP 3</p>
                         <h5>Receive ads banners</h5>
-                        <p>Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui</p>
+                        <p>Get ads to run on your platform immediately</p>
                     </div>
                     
                 </div> 
@@ -53,7 +53,7 @@ const PublisherSteps = ({show1}) => {
                     <div className="count">
                         <p>STEP 4</p>
                         <h5>Publish ads on site</h5>
-                        <p>Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui</p>
+                        <p>Start running ads on your platform immediately</p>
                     </div>
                 </div>
                 <img src={line4} alt="" className="line4" />
@@ -64,7 +64,7 @@ const PublisherSteps = ({show1}) => {
                     <div className="count">
                         <p>STEP 5</p>
                         <h5>Get paid</h5>
-                        <p>Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui</p>
+                        <p>Recieve payment for all ads running on your platform</p>
                     </div>
                 </div>
             </div>

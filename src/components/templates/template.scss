@@ -1,33 +1,77 @@
-.row{
+.row_{
+    // display: block!important;
+    padding: 20px;
     .template-fold{
         display: flex;
         margin-left: 20px;
         margin-bottom: 7rem;
+        @media only screen and (max-width : 768px){
+            display: block;
+            margin-left: 0px;
+        }
         .template-tags{
             flex: .2;
             margin-right: 20px;
             margin-top: 26px;
+            cursor : pointer;
+            @media only screen and (max-width : 768px){
+                display: flex;
+                flex-wrap: wrap;
+                flex: 1;
+                margin-right: 0;
+                margin-bottom: 20px;
+                width: 70%;
+            }
+            @media only screen and (max-width : 480px)  {
+                width: 100%;
+            }
             .tag-item{
                 border: 1px solid #dbd9d9;
                 padding: 10px;
                 margin-bottom: 15px;
                 display: flex;
                 justify-content: center;
+                @media only screen and (max-width : 768px){
+                    margin-right: 10px;
+                }
+                @media only screen and (max-width : 480px){
+                    padding: 6px;
+                }
                 img{
                     width: 15px;
                     margin-right: 15px;
+                    @media only screen and (max-width : 480px){
+                        width: 10px;
+                        margin-right: 10px;
+                    }   
                 }
                 p{
                     font-size: 13px;
                     color: #484848;
+                    @media only screen and (max-width : 480px){
+                        font-size: 11px;
+                    }
                 }
             }
         }
         .template-image{
             flex : .7;
+            @media only screen and (max-width : 768px){
+                flex: 1;
+                // width: 100%;
+            }
+            img{
+                margin-bottom: 15px;
+                @media only screen and (max-width : 480px){
+                    width: 100px;
+                }
+            }
             .bordering{
                 border: 1px solid #dbd9d9;
                 padding: 20px;
+                @media only screen and (max-width : 480px){
+                    margin-top: 10px;   
+                }
             }
             .direction-btn{
                 display: flex;
@@ -38,9 +82,17 @@
                     font-size: 13px;
                     color: #484848;
                 }
+                .back{
+                    cursor: pointer;
+                }
                 button{
                     padding: 6px 25px;
                     background: #484848;
+                }
+                .spinner{
+                    position: fixed;
+                    right: 20px;
+                    top: 10px;
                 }
             }
         }

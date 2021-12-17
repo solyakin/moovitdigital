@@ -50,8 +50,9 @@
         box-sizing: border-box;
         max-width : 350px;
         overflow : wrap;
-        #text{
+        p{
             max-width : 300px;
+            color: #333333!important;
         }
     }
     .generate_btn{

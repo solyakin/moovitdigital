@@ -4,8 +4,9 @@ import Loader from "react-loader-spinner";
 import '../../Login/Login.scss';
 import axios from 'axios';
 import image from '../../../assets/image 1.png';
+import Header from '../../../components/header/header';
 
-const AdminLogin = () => {
+const AdminLogin = ({navBackground}) => {
     const history = useHistory();
     const [error_msg, setError_msg] = useState([]);
     const [login, setLogin] = useState({
@@ -32,7 +33,7 @@ const AdminLogin = () => {
         newData.append('password', data.password);
 
         axios({
-            url : 'https://api.moovitdigital.com/api/admin/login',
+            url : 'https://test.canyousing.com.ng/api/admin/login',
             method : 'POST',
             data : newData,
             config: { headers: {'Content-Type': 'multipart/form-data' }}
@@ -67,6 +68,7 @@ const AdminLogin = () => {
     }
     return (
         <div className="sign-up">
+            <Header navBackground={navBackground}/>
             <div className="container">
                 <div className="row justify-content-center">
                     <div className="col-md-4">

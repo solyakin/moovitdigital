@@ -2,12 +2,16 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import ContactForm from '../../components/contact-form/contact-form';
 import ContactHero from '../../components/contactHero/contact-hero';
+import Header from '../../components/header/header';
+import Footer from '../../components/footer/footer';
 
-const Contact = () => {
+const Contact = ({navBackground}) => {
     return (
         <div className="contact">
+            <Header navBackground={navBackground}/>
             <ContactHero />
             <ContactForm />
+            <Footer />
         </div>
     )
 }

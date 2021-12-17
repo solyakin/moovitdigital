@@ -23,14 +23,13 @@ const AdHistory = () => {
     // const [show, setShow] = useState("none");
 
     const authAxios = axios.create({
-        baseURL : "https://api.moovitdigital.com",
+        baseURL : "https://test.canyousing.com.ng",
         headers : {
             Authorization : `Bearer ${token}`
         }
     })
 
     useEffect(() => {
-        document.querySelector(".header").style.display = "none";
         const fetchData = async () => {
             const allUserAds = await authAxios.get('/api/user/user-ads');
             const response = allUserAds.data;
@@ -60,8 +59,8 @@ const AdHistory = () => {
                         </Link>
                     </div>
                     <div className="text d-flex align center">
-                        <p>The Brand Hub</p>
-                        <img src={caretDown} alt="" />
+                        {/* <p>The Brand Hub</p>
+                        <img src={caretDown} alt="" /> */}
                     </div>
                 </div>
                 <div className="dashboard-main-wrapper">
@@ -93,7 +92,7 @@ const AdHistory = () => {
                                         <thead>
                                             <tr>
                                             <th scope="col"></th>
-                                            <th scope="col">Title</th>
+                                            <th scope="col">Campaign</th>
                                             <th scope="col">Content</th>
                                             <th scope="col">Location</th>
                                             <th scope="col">Budget</th>

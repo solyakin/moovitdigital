@@ -5,7 +5,7 @@ import caretRight from '../../../assets/CaretRight.svg';
 import ellipse1 from '../../../assets/Ellipse 27.svg';
 import ellipse2 from '../../../assets/Ellipse 28.svg';
 import { Link } from 'react-router-dom';
-
+import tick from '../../../assets/Frame 338.svg';
 
 const Pricing = ({createAds, budget_id, setCreateAds, showNext, setShowNext, setShowNext2}) => {
 
@@ -21,6 +21,7 @@ const Pricing = ({createAds, budget_id, setCreateAds, showNext, setShowNext, set
     const handleClick = (e) => {
         e.preventDefault();
         const targetId = Number(e.target.id)
+        localStorage.setItem("bd_ix", targetId)
         setCreateAds({...createAds, budget_id : targetId});
         if(targetId == 1){
             setOutline({box1 : true, box2 : false, box3 : false})
@@ -43,32 +44,32 @@ const Pricing = ({createAds, budget_id, setCreateAds, showNext, setShowNext, set
     return (
             <div style={{display : showNext}}>
                 <div className="pages-link">
-                    <Link>Home</Link>
+                    <Link to='#'>Home</Link>
                     <img src={caretRight} alt="caret right"/>
-                    <Link>Create an Ad</Link>
+                    <Link to='#'>Create an Ad</Link>
                 </div>
                 <div className="page-progress">
                 <div className="item first">
-                        <img src={ellipse1} alt="ellipse1" />
-                        <p>Select a budget</p>
-                    </div>
-                    <div className="item">
-                        <img src={ellipse2} alt="ellipse1" />
-                        <p>Ads details</p>
-                    </div>
-                    <div className="item">
-                        <img src={ellipse2} alt="ellipse1" />
-                        <p>Pick a template</p>
-                    </div>
-                    <div className="item">
-                        <img src={ellipse2} alt="ellipse1" />
-                        <p>Have a call</p>
-                    </div>
-                    <div className="item last">
-                        <img src={ellipse2} alt="ellipse1" />
-                        <p>Make payment</p>
-                    </div>
+                    <img src={tick} alt="ellipse1" />
+                    <p>Select a budget</p>
                 </div>
+                <div className="item">
+                    <img src={ellipse1} alt="ellipse1" />
+                    <p>Ads details</p>
+                </div>
+                <div className="item">
+                    <img src={ellipse2} alt="ellipse1" />
+                    <p>Pick a template</p>
+                </div>
+                <div className="item ">
+                    <img src={ellipse2} alt="ellipse1" />
+                    <p>Make payment</p>
+                </div>
+                <div className="item last">
+                    <img src={ellipse2} alt="ellipse1" />
+                    <p>Have a call</p>
+                </div>
+            </div>
                 <div className="content-form">
                     <div className="row justify-content-center">
                         <h5>Select a budget</h5>
@@ -113,7 +114,6 @@ const Pricing = ({createAds, budget_id, setCreateAds, showNext, setShowNext, set
                     </div>
                     <div className="lower_btn text-center mt-5">
                         <button className="btn btn-large"onClick={nextPage}>Proceed</button>
-                        <p>Not sure yet? Get help</p>
                     </div>
                 </div>
         </div>

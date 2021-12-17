@@ -112,9 +112,15 @@ const HamburgerMenu = ({state, setState}) => {
                         </div>
                         <div className="social">
                             <ul>
-                                <li>Facebook</li>
-                                <li>Linkedin</li>
-                                <li>Instagram</li>
+                                <li>
+                                    <a href="https://www.facebook.com/moovitdigital">Facebook</a>
+                                </li>
+                                <li>
+                                <a href="https://www.linkedin.com/company/moovitdigital/">Linkedin</a>
+                                </li>
+                                <li>
+                                    <a href="https://instagram.com/moovitdigital">Instagram</a>
+                                </li>
                                 <li>Youtube</li>
                             </ul>
                         </div>

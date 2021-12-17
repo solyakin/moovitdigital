@@ -1,91 +1,77 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import '../../dashboard/dashboard.scss';
 import '../../dashboard/createAds/createAds.scss';
 import '../approved/approved.scss';
-import caretDown from '../../../assets/CaretDown.svg';
 import caretRight from '../../../assets/CaretRight.svg';
-import caretDown2 from '../../../assets/CaretDown2.svg';
-import check from '../../../assets/Progress Tick Done.svg';
-import squares from '../../../assets/SquaresFour.svg';
-import megaphone from '../../../assets/MegaphoneSimple.svg';
-import bag from '../../../assets/BagSimple.svg';
-import creditCard from '../../../assets/CreditCard.svg';
-import user from '../../../assets/User.svg';
-import Handshake from '../../../assets/Handshake.svg';
-import signout from '../../../assets/SignOut.svg';
-import ellipse1 from '../../../assets/Ellipse 27.svg';
-import ellipse2 from '../../../assets/Ellipse 28.svg';
 import { Link } from 'react-router-dom';
-
+import tick from '../../../assets/Frame 338.svg';
+import ellipse2 from '../../../assets/Ellipse 28.svg';
+import Tags from '../../../components/Tags/Tags';
+import logo from '../../../assets/image 1.png';
+import hamburger from '../../../assets/hamburger.png';
+import MobileTags from '../../../components/MobileTags/mobileTags';
 
 const Approved = () => {
-
+    const handleClick = (e) => {
+        e.preventDefault();
+        setStyle({hide : !style.hide, transformArrow : !style.transformArrow});
+    }
+    const [style, setStyle] = useState({
+        hide : false,
+        transformArrow : false,
+    });
+    const [ham, setHam] = useState(false);
+    const toggler = (e) => {
+        e.preventDefault();
+        setHam(!ham);
+    }
     return (
             <div className="dashboard create-ads">
             <div className="small-title">
-                <div className="title-text">
-                    <p>The Brand Hub</p>
-                    <img src={caretDown} alt="" />
+                <div className="title-text justify-content-between">
+                    <div className="logo">
+                        <img src={hamburger} alt="hamburger" width="25px" className="hamburger" onClick={toggler}/>
+                        <Link to='/'>
+                            <img src={logo} alt="moovit-logo" />
+                        </Link>
+                    </div>
+                    <div className="text d-flex align center">
+                        {/* <p>The Brand Hub</p>
+                        <img src={caretDown} alt="" /> */}
+                    </div>
                 </div>
                 <div className="dashboard-main-wrapper">
-                <div className="tabs">
-                        <div className="tab-item">
-                            <img src={squares} alt="" />
-                            <Link to='/dashboard'>Dashboard</Link>
-                        </div>
-                        <div className="tab-ads">
-                            <div className="tab-item">
-                                <img src={megaphone} alt="" />
-                                <p>Ads Management</p>
-                                <img src={caretDown2} alt="" />
-                            </div>
-                            <div className="sub-track">
-                                <Link to='/create-ads'>Create an Ad</Link>
-                                <Link to='/ads-history'>Ad History</Link>
-                            </div>
-                        </div>
-                        <div className="tab-item">
-                            <img src={bag} alt="" />
-                            <p>Packages</p>
-                        </div>
-                        <div className="tab-item">
-                            <img src={creditCard} alt="" />
-                            <Link to='/payment-history'>Payment History</Link>
-                        </div>
-                        <div className="tab-item">
-                            <img src={user} alt="" />
-                            <Link to='/profile'>Profile</Link>
-                        </div>
-                        <div className="tab-item">
-                            <img src={Handshake} alt="" />
-                            <Link to='/support'>Support</Link>
-                        </div>
-                        <div className="tab-item">
-                            <img src={signout} alt="" />
-                            <p>Logout</p>
-                        </div>
+                    <div className="tabs">
+                        <Tags style={style} handleClick={handleClick} />
+                    </div>
+                    <div className="mobile-tag">
+                        <MobileTags style={style} handleClick={handleClick} ham={ham}/>
                     </div>
                     <div className="dashboard-main">
                         <div className="pages-link">
-                            <Link>Home</Link>
+                            <Link to='#'>Home</Link>
                             <img src={caretRight} alt="caret right"/>
-                            <Link>Create an Ad</Link>
+                            <Link to='#'>Create an Ad</Link>
                         </div>
                         <div className="page-progress">
                             <div className="item first">
-                                <img src={check} alt="ellipse1" />
-                                <p>Ads details</p>
-                            </div>
-                            <div className="item">
-                                <img src={check} alt="ellipse1" />
+                                <img src={tick} alt="ellipse1" />
                                 <p>Select a budget</p>
                             </div>
                             <div className="item">
-                                <img src={check} alt="ellipse1" />
+                                <img src={tick} alt="ellipse1" />
+                                <p>Ads details</p>
+                            </div>
+                            <div className="item">
+                                <img src={tick} alt="ellipse1" />
+                                <p>Pick a template</p>
+                            </div>
+                            <div className="item">
+                                <img src={tick} alt="ellipse1" />
                                 <p>Have a call</p>
                             </div>
                             <div className="item last">
-                                <img src={ellipse1} alt="ellipse1" />
+                                <img src={ellipse2} alt="ellipse1" />
                                 <p>Make payment</p>
                             </div>
                         </div>
@@ -99,7 +85,7 @@ const Approved = () => {
                                 
                                 <div className="btn">
                                     <button>
-                                        <Link to='/payment'>Make Payment</Link>
+                                        <Link to='/create-ads'>Create new Ads</Link>
                                     </button><br></br>
                                     <Link to='/dashboard'>Back to dashboard</Link>
                                 </div>

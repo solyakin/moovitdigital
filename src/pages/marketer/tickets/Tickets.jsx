@@ -13,28 +13,55 @@ import signout from '../../../assets/SignOut.svg';
 import squares from '../../../assets/SquaresFour.svg';
 import bag from '../../../assets/BagSimple.svg';
 import plus from '../../../assets/Plus.svg';
+import logo from '../../../assets/image 1.png';
 
 const Tickets = () => {
 
+    const [state, setState] = useState({
+        show : true,
+        show1 : false,
+        show2 : false,
+        show3 : false
+    })
     const [hide, setHide] = useState("none");
-    const [alert, setAlert] = useState("none");
-    const [response, setResponse] = useState([]);
     const [adsList, setAdsList] = useState([]);
     const [notification, setNotification] = useState([]);
     const [user, setUser] = useState([]);
-    // const [assignedStaff, setAssignedStaff] = useState("");
     const history = useHistory();
     const token = localStorage.getItem("auth_token");
     const auth_id = localStorage.getItem("auth_id");
     const authAxios = axios.create({
-        baseURL : "https://api.moovitdigital.com",
+        baseURL : "https://test.canyousing.com.ng",
         headers : {
             Authorization : `Bearer ${token}`
         }
     })
    
-    useEffect( ()=> {
-        document.querySelector(".header").style.display = "none"    
+    const allClick = (e) => {
+        e.preventDefault();
+        setState({show : true, show1 : false, show2 : false, show3 : false})
+    }
+    const pendingClick = (e) => {
+        e.preventDefault();
+        setState({show : false, show1 : true, show2 : false, show3 : false})
+    }
+    const approvedClick =(e) => {
+        e.preventDefault();
+        setState({show : false, show1 : false, show2 : true, show3 : false})
+    }
+    const declineClick = (e) => {
+        e.preventDefault();
+        setState({show : false, show1 : false, show2 : false, show3 : true});
+    }
+
+    const newItems = adsList.filter(item => item.active != null);
+    console.log(newItems);
+    const ApprovedList = adsList.filter(item => item.approved == 1);
+    console.log(ApprovedList)
+    const unassignedList = adsList.filter(item => item.approved == 0);
+    console.log(unassignedList)
+
+    useEffect( ()=> {    
         const fetchData = async () =>{
             const allAds = await authAxios.get('/api/admin/ads');
             const response = allAds.data;
@@ -54,7 +81,7 @@ const Tickets = () => {
     },[])
     const handleLogout = (e) => {
         e.preventDefault();
-        authAxios.post('https://api.moovitdigital.com/api/admin/logout')
+        authAxios.post('https://test.canyousing.com.ng/api/admin/logout')
         .then(res => {
             if(res.status === 200){
                 localStorage.clear();
@@ -65,34 +92,10 @@ const Tickets = () => {
         .catch(err => console.log(err));
     }
     let notification_count = notification.length;
-    //grabbing the ticket via the id
-    // const assignClick = (e) => {
-    //     e.preventDefault();
-    //     const { id } = e.currentTarget.parentElement.parentElement;
-    //     console.log(id)
-    //     setHide("block");
-    //     setAssignedStaff(id)
-    // }
-
-    //handling the assign to marketer
-    // const handleClick = (e) => {
-    //     e.preventDefault();
-    //     const { id } = e.currentTarget;
-    //     const data = {
-    //         assigned : id
-    //     }
-    //     const assignTask = async () => {
-    //         const query = await authAxios.put(`/api/admin/assign-ads/${assignedStaff}`, data);
-    //         const res = query.data;
-    //         setResponse(res);
-    //     }
-    //     assignTask(); 
-    //     setAlert("block")
-    // }
     const newArray = adsList.filter(ele => {
-        return ele.assigned === auth_id;
+        return ele.assigned == auth_id;
     })
-    console.log(user)
+
     const handleClick_ = (e) => {
         const targetId = e.target.id;
         const targetData = adsList.filter(ele => {
@@ -104,9 +107,16 @@ const Tickets = () => {
     return (
         <div className="dashboard ads-ticket">
             <div className="small-title">
-                <div className="title-text">
-                    <p>The Brand Hub</p>
-                    <img src={caretDown} alt="caret down" />
+                <div className="title-text justify-content-between">
+                    <div className="logo">
+                        <Link to='/home'>
+                            <img src={logo} alt="moovit-logo" />
+                        </Link>
+                    </div>
+                    <div className="text d-flex align center">
+                        {/* <p>The Brand Hub</p>
+                        <img src={caretDown} alt="" /> */}
+                    </div>
                 </div>
                 <div className="dashboard-main-wrapper">
                     <div className="tabs">
@@ -116,7 +126,7 @@ const Tickets = () => {
                         </div>
                         <div className="tab-item">
                             <img src={bag} alt="" />
-                            <Link to='/message'>Message</Link>
+                            <Link to='#'>Message</Link>
                         </div>
                         <div className="tab-item">
                             <img src={plus} alt="" />
@@ -133,7 +143,11 @@ const Tickets = () => {
                         </div>
                         <div className="tab-item">
                             <img src={Handshake} alt="" />
-                            <Link to='/admin/profile'>Profile</Link>
+                            <Link to='/create-banner'>Create Banner</Link>
+                        </div>
+                        <div className="tab-item">
+                            <img src={Handshake} alt="" />
+                            <Link to='/marketer/profile'>Profile</Link>
                         </div>
                         <div className="tab-item">
                             <img src={signout} alt="" />
@@ -142,9 +156,12 @@ const Tickets = () => {
                     </div>
                     <div className="dashboard-main admin">
                         <div className="ads-heading">
-                            <p>My Tickets</p>
+                            <p onClick={allClick} style={{color : state.show ? "#EE315D" : "#333333"}}>All</p>
+                            <p onClick={pendingClick} style={{color : state.show1 ? "#EE315D" : "#333333"}}>Pending</p>
+                            <p onClick={declineClick} style={{color : state.show3 ? "#EE315D" : "#333333"}}>Decline</p>
+                            <p onClick={approvedClick} style={{color : state.show2 ? "#EE315D" : "#333333"}}>Approved</p>
                         </div>
-                        <div className="ads-wrapper">
+                        <div className="ads-wrapper" style={{display : state.show ? "block" : "none"}}>
                             <div className="ads-ticket-list">
                                 <div className="row">
                                     {
@@ -176,7 +193,104 @@ const Tickets = () => {
                                                             <p>Created by {userValue}</p>
                                                         </div>
                                                         <div className="instruct-btns">
-                                                        <Link to={`/marketer/preview-advert/${id}`} id={id} onClick={handleClick_}>Preview</Link>
+                                                            <Link to={`/marketer/preview-advert/`} id={id} onClick={handleClick_}>Preview</Link>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div className="assigned-list" style={{display
+                         : state.show1 ? "block" : "none"}}>
+                            <div className="ads-wrapper">
+                                <div className="row">
+                                    {
+                                        newItems.map(({id, title, content, image, createdBy}) => {
+                                            return(
+                                                <div className="col-lg-4" key={id}>
+                                                    <div className="ads-card" id={id}>
+                                                        <div className="card-title">
+                                                            <h5>{title}</h5>
+                                                            <div className="files">
+                                                                <img src={paperclip} alt="" />
+                                                                <span>2 files</span>
+                                                            </div>
+                                                        </div>
+                                                        <h6>TIER 2</h6>
+                                                        <p>{`${content} smet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim...`}</p>
+                                                        <div className="user-profile" id={createdBy}>
+                                                            <img src={userP} alt="" />
+                                                            <p>Created by <span>Jon Bellion</span></p>
+                                                        </div>
+                                                        <div className="instruct-btns">
+                                                            <Link to={`/marketer/preview-advert/`} id={id} onClick={handleClick_}>Preview</Link>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div className="approved-list" style={{display : state.show2 ? "block" : "none" }}>
+                            <div className="ads-wrapper">
+                                <div className="row">
+                                    {
+                                        ApprovedList.map(({id, title, content, image, createdBy}) => {
+                                            return(
+                                                <div className="col-lg-4" key={id}>
+                                                    <div className="ads-card" id={id}>
+                                                        <div className="card-title">
+                                                            <h5>{title}</h5>
+                                                            <div className="files">
+                                                                <img src={paperclip} alt="" />
+                                                                <span>2 files</span>
+                                                            </div>
+                                                        </div>
+                                                        <h6>TIER 2</h6>
+                                                        <p>{`${content} smet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim...`}</p>
+                                                        <div className="user-profile" id={createdBy}>
+                                                            <img src={userP} alt="" />
+                                                            <p>Created by <span>Jon Bellion</span></p>
+                                                        </div>
+                                                        <div className="instruct-btns">
+                                                            <Link to={`/marketer/preview-advert/`} id={id} onClick={handleClick_}>Preview</Link>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div className="unassigned" style={{display : state.show3 ? "block" : "none"}}>
+                            <div className="ads-wrapper">
+                                <div className="row">
+                                    {
+                                        unassignedList.map(({id, title, content, image, createdBy}) => {
+                                            return(
+                                                <div className="col-lg-4" key={id}>
+                                                    <div className="ads-card" id={id}>
+                                                        <div className="card-title">
+                                                            <h5>{title}</h5>
+                                                            <div className="files">
+                                                                <img src={paperclip} alt="" />
+                                                                <span>2 files</span>
+                                                            </div>
+                                                        </div>
+                                                        <h6>TIER 2</h6>
+                                                        <p>{`${content} smet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim...`}</p>
+                                                        <div className="user-profile" id={createdBy}>
+                                                            <img src={userP} alt="" />
+                                                            <p>Created by <span>Jon Bellion</span></p>
+                                                        </div>
+                                                        <div className="instruct-btns">
+                                                            <Link to={`/marketer/preview-advert/`} id={id} onClick={handleClick_}>Preview</Link>
                                                         </div>
                                                     </div>
                                                 </div>

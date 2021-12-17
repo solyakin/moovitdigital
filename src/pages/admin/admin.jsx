@@ -3,7 +3,6 @@ import '../dashboard/dashboard.scss';
 import '../admin/admin.scss';
 import Loader from "react-loader-spinner";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import caretDown from '../../assets/CaretDown.svg';
 import notificationIcon from '../../assets/notif.svg';
 import share from '../../assets/Frame 239.svg';
 import users from '../../assets/Frame 240.svg';
@@ -14,10 +13,10 @@ import frame3 from '../../assets/Frame 231.svg';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import AdminTags from '../../components/adminTags/adminTags';
+import logo from '../../assets/image 1.png';
 
 const Admin = () => {
 
-    // const [ads, setAds] = useState(0);
     const [adsList, setAdsList] = useState([]);
     const [adsCount, setAdsCount] =useState(0);
     const [pubCount, setpubCount] = useState(0);
@@ -27,11 +26,11 @@ const Admin = () => {
 
     const token = localStorage.getItem("auth_token");
     const authAxios = axios.create({
-        baseURL : "https://api.moovitdigital.com",
+        baseURL : "https://test.canyousing.com.ng",
         headers : {
             Authorization : `Bearer ${token}`,
             'Content-Type' : "applciation/json",
-            'Access-Control-Allow-Origin': '*',
+            // 'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods' : 'GET, POST, PUT, DELETE, OPTIONS',
             'Access-Control-Allow-Headers' : 'X-Requested-With, Content-Type, X-Token-Auth, Authorization',
             'Access-Control-Allow-Credentials' : 'true'
@@ -39,7 +38,6 @@ const Admin = () => {
     })
     
     useEffect(() => {
-        document.querySelector(".header").style.display = "none";
         const fetchData = async () => {
             // const allAds = await authAxios.get('/api/admin/ads/');
             // const response = allAds.data;
@@ -90,8 +88,11 @@ const Admin = () => {
             setAdsCount(allCount);
         })
         .catch( err => console.log(err))
-        fetchData();
-        setLoading(false);
+        fetchData()
+        .then(() => {
+            setLoading(false);
+        })
+        
     }, [])
 
     const handleClick = (e) => {
@@ -104,13 +105,19 @@ const Admin = () => {
         localStorage.setItem("targetId", targetId);
     }
     
-    console.log(staff);
+    console.log(adsList);
     return (
         <div className="dashboard">
             <div className="small-title">
-                <div className="title-text">
-                    <p>The Brand Hub</p>
-                    <img src={caretDown} alt="" />
+                <div className="title-text justify-content-between">
+                    <div className="logo">
+                        <Link to='/home'>
+                            <img src={logo} alt="moovit-logo" />
+                        </Link>
+                    </div>
+                    <div className="text d-flex align center">
+    
+                    </div>
                 </div>
                 <div className="dashboard-main-wrapper">
                     <div className="tabs">
@@ -136,18 +143,21 @@ const Admin = () => {
                                     <h6>Quick stats</h6>
                                     <div className="row">
                                         <div className="col">
-                                            <div className="content">
-                                                <div className="left-content">
-                                                    <img src={notificationIcon} alt="icoln" />
-                                                    <div className="content-text">
-                                                        <p>Total</p>
-                                                        <h5>Advertisers</h5>
+                                            <Link to='/admin/advertisers'>
+                                                <div className="content">
+                                                    <div className="left-content">
+                                                        <img src={notificationIcon} alt="icoln" />
+                                                        <div className="content-text">
+                                                            <p>Total</p>
+                                                            <h5>Advertisers</h5>
+                                                        </div>
                                                     </div>
+                                                    <p>{adsCount}</p>
                                                 </div>
-                                                <p>{adsCount}</p>
-                                            </div>
+                                            </Link>
                                         </div>
                                         <div className="col">
+                                            <Link to='/admin/publisher'>
                                             <div className="content">
                                                 <div className="left-content">
                                                     <img src={share} alt="" />
@@ -158,8 +168,10 @@ const Admin = () => {
                                                 </div>
                                                 <p>{pubCount}</p>
                                             </div>
+                                            </Link>
                                         </div>
                                         <div className="col">
+                                            <Link to='/admin/marketer'>
                                             <div className="content">
                                                 <div className="left-content">
                                                     <img src={users} alt="" />
@@ -170,6 +182,7 @@ const Admin = () => {
                                                 </div>
                                                 <p>{staff}</p>
                                             </div>
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>
@@ -207,32 +220,32 @@ const Admin = () => {
                                                     <img src={frame3} alt="" />
                                                 </div>
 
-                                                <Link to=''>view details</Link>
+                                                {/* <Link to=''>view details</Link> */}
                                             </div>
                                         </div>
                                         <div className="col-7">
                                             <div className="tickets">
                                                 <div className="ticket-title">
                                                     <h5>Tickets</h5>
-                                                    <div className="btns">
+                                                    {/* <div className="btns">
                                                         <button>Unassigned</button>
                                                         <button>Assigned</button>
-                                                    </div>
+                                                    </div> */}
                                                 </div>
                                                 <div className="history-table">
                                                     <table className="table admin-view">
                                                         <thead>
                                                             <tr>
                                                             <th scope="col"></th>
-                                                            <th scope="col">Title</th>
+                                                            <th scope="col">Campaign</th>
                                                             <th scope="col">Budget</th>
                                                             <th scope="col">Date</th>
-                                                            <th scope="col">Status</th>
+                                                            <th scope="col">Location</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             {
-                                                                adsList.filter((items, index) => (index < 5))
+                                                                adsList.filter((items, index) => (index < 4))
                                                                 .map(({title, start, location, id}) => {
                                                                     return (
                                                                         <tr key={id}>
@@ -244,7 +257,7 @@ const Admin = () => {
                                                                             <td className="text-left">{start}</td>
                                                                             <td className="text-left">{location}</td>
                                                                             <td>
-                                                                                <Link to={`/marketer/preview-advert/${id}`} id={id} onClick={handleClick}>Preview</Link>
+                                                                                <Link to='/admin/preview' id={id} onClick={handleClick}>Preview</Link>
                                                                             </td>
                                                                         </tr>
                                                                     )

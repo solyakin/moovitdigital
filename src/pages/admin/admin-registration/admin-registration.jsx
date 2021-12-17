@@ -1,9 +1,10 @@
 import React, {useState} from 'react'
 import { Link, useHistory } from 'react-router-dom';
 import '../../Login/Login.scss';
+import Header from '../../../components/header/header';
 import axios from 'axios';
 
-const AdminRegistration = () => {
+const AdminRegistration = ({navBackground}) => {
     const history = useHistory();
     const [register, setRegister] = useState({
         email : '',
@@ -33,7 +34,7 @@ const AdminRegistration = () => {
         newData.append('role', data.role);
 
         axios({
-            url : 'https://api.moovitdigital.com/api/admin/register',
+            url : 'https://test.canyousing.com.ng/api/admin/register',
             method : 'POST',
             data : newData,
             config: { headers: {'Content-Type': 'multipart/form-data' }}
@@ -52,6 +53,7 @@ const AdminRegistration = () => {
     }
     return (
         <div className="sign-up">
+        <Header navBackground={navBackground}/>
             <div className="container">
                 <div className="row justify-content-center">
                     <div className="col-md-4">

@@ -1,12 +1,25 @@
 import React, { useState } from 'react';
 import '../publisher-form/publisher.form.scss';
 import axios from 'axios';
+import { useHistory } from 'react-router-dom';
 import Loader from "react-loader-spinner";
+import Header from '../../components/header/header';
 import swal from 'sweetalert';
+import { Country }  from 'country-state-city';
 
-const PublisherForm = () => {
+const PublisherForm = ({navBackground}) => {
+
+    const history = useHistory();
     const [loading, setLoading] = useState(false);  
+    const [state1, setState1] = useState({
+        selectedOption1 : ""
+    })
+    const [state2, setState2] = useState({
+        selectedOption2 : ""
+    })
     const id = localStorage.getItem("auth_id")
+    const allCountries = Country.getAllCountries();
+    
     const [data, setData] = useState({
         firstName : '',
         lastName : '',
@@ -19,60 +32,84 @@ const PublisherForm = () => {
         duration_time : '',
         visit : '',
         role : "publisher",
-        agree : 1,
+        agree : '',
     })
-    const [value, setValue] = useState("");
+    const [value, setValue] = useState({
+        industry : "",
+        country : ""
+    });
     const handleChange = (e) => {
         e.persist();
         setData({...data, [e.target.name] : e.target.value});
     }
-    const handleClick = (e) => {
-        e.preventDefault();
-       setData({...data, duration_time : e.target.value});
-    }
+    // const handleClick = (e) => {
+    //     e.preventDefault();
+    //    setData({...data, duration_time : e.target.value});
+    // }
     const handleChange2 = (e) => {
         e.persist();
         setValue(e.target.value);
         setData({...data, industry : e.target.value});
     }
     const handleClick2 = (e) => {
-        e.preventDefault();
-        setData({...data, visit : e.target.value});
+        setState2({selectedOption2 : e.target.value});
+        setData({...data, visit : e.target.value })
     }
+    const __handleChange = (e) => {
+        e.persist();
+        const targetLocation = e.target.value;
+        setValue({country : targetLocation});
+        setData({...data, country : e.target.value})
+    }
+    const valueChange = (e) => {
+        setState1({selectedOption1 : e.target.value});
+        setData({...data, duration_time : e.target.value })
+    }
+    console.log(state1)
     const formSubmit = (e) => {
         e.preventDefault();
-        setLoading(true);
-        const newForm = new FormData();
-        newForm.append("firstName", data.firstName);
-        newForm.append("lastName", data.lastName);
-        newForm.append("email", data.email);
-        newForm.append("phone", data.phone);
-        newForm.append("company", data.company_name);
-        newForm.append("country", data.country);
-        newForm.append("industry", data.industry);
-        newForm.append("website", data.domain);
-        newForm.append("average_visit", data.visit);
-        newForm.append("website_timeline", data.duration_time);
-        newForm.append("role", data.role);
-        newForm.append("agree", data.agree);
-        axios({
-            url : `https://api.moovitdigital.com/api/user/publisher/${id}?firstName=${data.firstName}&lastName=${data.lastName}&phone=${data.phone}&country=${data.country}&company=${data.company_name}&industry=${data.industry}&role=${data.role}&agree=1&average_visit=${data.visit}&website_timeline=${data.duration_time}&website=${data.domain}&email=${data.email}`,
-            method : 'PUT',
-            data : newForm,
-            config: { headers: {'Content-Type': 'multipart/form-data' }}
-        })
-        .then(res => {
-            if(res.status === 200){
-                console.log(res.data);
-                setLoading(false)
-                swal("Great!", "Request has been sent successfully", "success");
-            }
-        })
-        .catch(error => console.log(error));
+        if(data.duration_time !== "" && data.visit !== "" && data.agree !== ""){
+            setLoading(true);
+            const newForm = new FormData();
+            newForm.append("firstName", data.firstName);
+            newForm.append("lastName", data.lastName);
+            newForm.append("email", data.email);
+            newForm.append("phone", data.phone);
+            newForm.append("company", data.company_name);
+            newForm.append("country", data.country);
+            newForm.append("industry", data.industry);
+            newForm.append("website", data.domain);
+            newForm.append("average_visit", data.visit);
+            newForm.append("website_timeline", data.duration_time);
+            newForm.append("role", data.role);
+            newForm.append("agree", data.agree);
+            axios({
+                url : `https://test.canyousing.com.ng/api/user/publisher/${id}?firstName=${data.firstName}&lastName=${data.lastName}&phone=${data.phone}&country=${data.country}&company=${data.company_name}&industry=${data.industry}&role=${data.role}&agree=1&average_visit=${data.visit}&website_timeline=${data.duration_time}&website=${data.domain}&email=${data.email}`,
+                method : 'PUT',
+                data : newForm,
+                config: { headers: {'Content-Type': 'multipart/form-data' }}
+            })
+            .then(res => {
+                if(res.status === 200){
+                    console.log(res.data);
+                    setLoading(false)
+                    swal("Great!", "Request has been sent successfully", "success")
+                    .then(() => {
+                     history.push('/home')
+                    })
+                    
+                }
+            })
+            .catch(error => console.log(error));
+        }else if(data.duration_time === "" || data.visit === "" || data.agree === ""){
+            swal("Ooops!", "Please select all fields", "warning");
+        }
+        
     }
     console.log(data)
     return (
         <div className="publisher-form">
+        <Header navBackground={navBackground}/> 
             <div className="container">
                 <div className="row justify-content-center">
                     <div className="col-md-8">
@@ -98,7 +135,11 @@ const PublisherForm = () => {
                                 </div> */}
                                 <div className="col-6">
                                     <label htmlFor="">Country</label>
-                                    <input type="text" placeholder="Nigeria" name="country" value={data.country} onChange={handleChange} required/>
+                                    <select value={value.country} onChange={__handleChange} required>
+                                        {allCountries.map(({name, isoCode}) =>
+                                            <option value={name} id={isoCode}>{name}</option>
+                                        )}
+                                    </select>
                                 </div>
                             </div>
                             <h5 className="mt-4">2. Company Details</h5>
@@ -108,7 +149,7 @@ const PublisherForm = () => {
                                     <input type="text" placeholder="The Brand Hub" name="company_name" value={data.company_name}onChange={handleChange} required/>
                                 </div>
                                 <div className="col-6">
-                                    <label htmlFor="">Email</label>
+                                    <label htmlFor="">Email</label><br></br>
                                     <input type="email" placeholder="jonbellion@gmail.com" name="email" value={data.email} onChange={handleChange} required/>
                                 </div>
                             </div>
@@ -120,7 +161,7 @@ const PublisherForm = () => {
                                 <div className="col-6">
                                     <div className="form-group star">
                                         <label htmlFor="">Business Type</label>
-                                        <select name="" id="" value={value} onChange={handleChange2} required>
+                                        <select name="" id="" value={value.industry} onChange={handleChange2} required>
                                             <option value="" className="first">Select Business Type</option>
                                             <option value="media">Media and Communication</option>
                                             <option value="hospitality">Hospitality </option>
@@ -141,11 +182,8 @@ const PublisherForm = () => {
                                 <div className="col-6">
                                     <label htmlFor="">Phone Number</label>
                                     <input type="text" placeholder="0912 342 3452" name="phone" value={data.phone} onChange={handleChange} required/>
+                                    {/* <input type="tel" name="phone" onChange={handleChange} value={data.phone} pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"required></input> */}
                                 </div>
-                                {/* <div className="col-6">
-                                    <label htmlFor="">Phone Number</label>
-                                    <input type="text" placeholder="12/01/01" name="dob" value={data.dob} onChange={handleChange}/>
-                                </div> */}
                             </div>
 
                             <div className="duration mt-4">
@@ -154,15 +192,15 @@ const PublisherForm = () => {
                                     <div className="col-8">
                                         <div className="duration-frame">
                                             <div className="form-group">
-                                                <input type="radio" name="duration_frame" value="6months" onChange={handleClick} id="1"/>
+                                                <input type="radio" name="duration_frame" value="less than 6 months" checked={state1.selectedOption1 === "less than 6 months"} onChange={valueChange}/>
                                                 <span>Less than 6 months</span>
                                             </div>
                                             <div className="form-group">
-                                                <input type="radio" name="duration_frame" value="6months-1year" onChange={handleClick} id="2"/>
+                                                <input type="radio" name="duration_frame" value="6 months - 1year" checked={state1.selectedOption1 === "6 months - 1year"} onChange={valueChange} />
                                                 <span>6 months - 1 Year</span>
                                             </div>
                                             <div className="form-group">
-                                                <input type="radio" name="duration_frame" value="1-5years" onChange={handleClick} id="3"/>
+                                                <input type="radio" name="duration_frame" value="1 - 5years" checked={state1.selectedOption1 === "1 - 5years"} onChange={valueChange}/>
                                                 <span>1 - 5 years</span>
                                             </div>
                                         </div>
@@ -171,16 +209,17 @@ const PublisherForm = () => {
                                 <div className="row">
                                     <div className="col-8">
                                         <div className="duration-frame">
+                                            
                                             <div className="form-group">
-                                                <input type="radio" name="duration_frame" value="5-10years" onChange={handleClick} id="4"/>
+                                                <input type="radio" name="duration_frame" value="5 - 10 years" checked={state1.selectedOption1 === "5 - 10 years"} onChange={valueChange} />
                                                 <span>5 -10 years</span>
                                             </div>
                                             <div className="form-group">
-                                                <input type="radio" name="duration_frame" value="10-15years" onChange={handleClick} id="5"/>
+                                                <input type="radio" name="duration_frame" value="10 - 15years" checked={state1.selectedOption1 === "10 - 15years"} onChange={valueChange}/>
                                                 <span>10-15 years</span>
                                             </div>
                                             <div className="form-group">
-                                                <input type="radio" name="duration_frame" value="over 15 years" onChange={handleClick} id="6"/>
+                                                <input type="radio" name="duration_frame" value="over 15years" checked={state1.selectedOption1 === "over 15years"}  onChange={valueChange}/>
                                                 <span>Over 15 years</span>
                                             </div>
                                         </div>
@@ -190,37 +229,37 @@ const PublisherForm = () => {
                             <div className="duration mt-4">
                                 <h5>What is the average visit your domain recieves monthly?</h5>
                                 <div className="row">
-                                    <div className="col-6">
+                                    <div className="col-lg-8">
                                         <div className="duration-frame">
                                             <div className="form-group">
-                                                <input type="radio"  name="visit" value="less than 100" onClick={handleClick2}/>
-                                                <span>Less than 100</span>
+                                                <input type="radio"  name="visit" value="less than 10000" checked={state2.selectedOption2 === "less than 10000"} onChange={handleClick2}/>
+                                                <span>Less than 10,000</span>
                                             </div>
                                             <div className="form-group">
-                                                <input type="radio"  name="visit" value="100-500" onClick={handleClick2}/>
-                                                <span>100-500</span>
+                                                <input type="radio"  name="visit" value="10000-50000" checked={state2.selectedOption2 === "10000-50000"} onChange={handleClick2}/>
+                                                <span>10,000-50,000</span>
                                             </div>
                                             <div className="form-group">
-                                                <input type="radio"  name="visit" value="500-2000" onClick={handleClick2}/>
-                                                <span>500-2000</span>
+                                                <input type="radio"  name="visit" value="50000-100000" checked={state2.selectedOption2 === "50000-100000"} onChange={handleClick2}/>
+                                                <span>50,000-100,000</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="row">
-                                    <div className="col-6">
+                                    <div className="col-lg-8">
                                         <div className="duration-frame">
                                             <div className="form-group">
-                                                <input type="radio"  name="visit" value="2000 - 4000" onClick={handleClick2}/>
-                                                <span>2000-4000</span>
+                                                <input type="radio"  name="visit" value="100000 - 500000" checked={state2.selectedOption2 === "100000 - 500000"} onChange={handleClick2}/>
+                                                <span>100,000-500,000</span>
                                             </div>
                                             <div className="form-group">
-                                                <input type="radio"  name="visit" value="4000 - 7000" onClick={handleClick2}/>
-                                                <span>4000-7000</span>
+                                                <input type="radio"  name="visit" value="500000 - 1000000" checked={state2.selectedOption2 === "500000 - 1000000"} onChange={handleClick2}/>
+                                                <span>500,000 - 1,000,000</span>
                                             </div>
                                             <div className="form-group">
-                                                <input type="radio"  name="visit" value="7000 and above" onClick={handleClick2}/>
-                                                <span>7000 and above</span>
+                                                <input type="radio"  name="visit" value="above 1000000" checked={state2.selectedOption2 === "above 1000000"} onChange={handleClick2}/>
+                                                <span>above 1,000,000</span>
                                             </div>
                                         </div>
                                     </div>
@@ -229,7 +268,7 @@ const PublisherForm = () => {
                             <div className="agree-policy">
                                 <div className="row">
                                     <div className="col-md-6">
-                                        <input type="checkbox" />
+                                        <input type="checkbox"  onClick={() =>setData({...data, 'agree' : 1})}/>
                                         <p>By continuing, you’re agreeing to our Customer Terms of 
                                         Service, Privacy Policy, and Cookie Policy.</p>
                                     </div>

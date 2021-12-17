@@ -24,7 +24,7 @@ const Dashboard = () => {
     const token = localStorage.getItem("auth_token");
     
     const authAxios = axios.create({
-        baseURL : "https://api.moovitdigital.com",
+        baseURL : "https://test.canyousing.com.ng",
         headers : {
             Authorization : `Bearer ${token}`
         }
@@ -36,7 +36,6 @@ const Dashboard = () => {
     
     }
     useEffect(() => {
-        document.querySelector(".header").style.display = "none";
         const fetchData = async () => {
             const allUserAds = await authAxios.get('/api/user/user-ads');
             const response = allUserAds.data;
@@ -64,13 +63,13 @@ const Dashboard = () => {
                 <div className="title-text justify-content-between">
                     <div className="logo">
                         <img src={hamburger} alt="hamburger" width="25px" className="hamburger" onClick={toggler}/>
-                        <Link to='/'>
-                            <img src={logo} alt="moovit-logo" />
+                        <Link to='/home'>
+                            <img src={logo} alt="moovit-logo" className="logo-img" />
                         </Link>
                     </div>
                     <div className="text d-flex align center">
-                        <p>The Brand Hub</p>
-                        <img src={caretDown} alt="" />
+                        {/* <p>The Brand Hub</p>
+                        <img src={caretDown} alt="" /> */}
                     </div>
                 </div>
                 <div className="dashboard-main-wrapper">

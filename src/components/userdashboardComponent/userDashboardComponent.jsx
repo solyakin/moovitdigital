@@ -17,8 +17,8 @@ const UserDashboardComponent = ({adsCount}) => {
             <div className="main-records">
                 <div className="funds-wrapper">
                     <div className="fund-balance">
-                        <p>Available Funds</p>
-                        <h3>#00.00 <span>TOP-UP</span></h3>
+                        <p>All Records</p>
+                        {/* <h3>#00.00 <span>TOP-UP</span></h3> */}
                     </div>
                     <div className="create-ads-btn">
                         <button>
@@ -26,9 +26,9 @@ const UserDashboardComponent = ({adsCount}) => {
                             <Link to='/create-ads'>Create an Ad</Link>
                         </button>
                     </div>
-                    <div className="mobile-plus">
-                        <Link to='/create-ads'>+</Link>
-                    </div>
+                    {/* <div className="mobile-plus">
+                        <Link to='/create-ads'>+ create Ads</Link>
+                    </div> */}
                 </div>
 
                 <div className="ads-records">

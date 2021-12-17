@@ -24,33 +24,20 @@ import logo from '../../../assets/image 1.png';
 const MarketerDashboard = () => {
 
     const history = useHistory();
-    // const [ads, setAds] = useState(0);
     const [adsList, setAdsList] = useState([]);
     const [notification, setNotification] = useState([]);
-    const [adsCount, setAdsCount] =useState(0);
-    const [pubCount, setpubCount] = useState(0);
-    const [staff, setStaff] = useState(0);
 
     const token = localStorage.getItem("auth_token");
     const auth_id = localStorage.getItem("auth_id");
     const auth_name = localStorage.getItem("auth_name");
     const authAxios = axios.create({
-        baseURL : "https://api.moovitdigital.com",
+        baseURL : "https://test.canyousing.com.ng",
         headers : {
             Authorization : `Bearer ${token}`
         }
     })
-    const [style, setStyle] = useState({
-        hide : false,
-        transformArrow : false,
-    });
-    const handleClick = (e) => {
-        e.preventDefault();
-        setStyle({hide : !style.hide, transformArrow : !style.transformArrow});
     
-    }
     useEffect(() => {
-        document.querySelector(".header").style.display = "none";
         const fetchData = async () => {
             const allAds = await authAxios.get('/api/admin/ads');
             const response = allAds.data;
@@ -60,35 +47,13 @@ const MarketerDashboard = () => {
             const allNotifications = await authAxios.get('/api/admin/notifications');
             const notification_array = allNotifications.data;
             setNotification(notification_array.data);
-            
-
-            // const allAdvertisers = await authAxios.get('/api/admin/advertiser');
-            // const res = allAdvertisers.data;
-            // const adsCount = res.wait data;
-            // for (const [key, value] of Object.entries(adsCount)) {
-            //     const allCount = key;
-            //     setAdsCount(allCount);
-            // }
-
-            // const allPublishers = await authAxios.get('/api/admin/publisher');
-            // const result = allPublishers.data;
-            // const pubData = result.data
-            // for(const[key, value] of Object.entries(pubData)){
-            //     const allPubCount = key;
-            //     setpubCount(allPubCount);
-            // }
-
-            // const allStaff = await authAxios.get('/api/admin/staff');
-            // const queryResponse = allStaff.data;
-            // const staffData = queryResponse.data.data.length;
-            // setStaff(staffData);
         }
         fetchData();
     }, [])
 
     const handleLogout = (e) => {
         e.preventDefault();
-        authAxios.post('https://api.moovitdigital.com/api/admin/logout')
+        authAxios.post('https://test.canyousing.com.ng/api/admin/logout')
         .then(res => {
             if(res.status === 200){
                 localStorage.clear();
@@ -99,18 +64,16 @@ const MarketerDashboard = () => {
         .catch(err => console.log(err));
     }
     const newArray = adsList.filter(ele => {
-        return ele.assigned === auth_id;
+        return ele.assigned == auth_id;
     })
 
     console.log(newArray);
+    console.log(auth_id);
     //for previewing
     const handleClick_ = (e) => {
         const targetId = e.target.id;
-        const targetData = adsList.filter(ele => {
-                return ele.id == targetId;
-            })
-        localStorage.setItem("targetData", JSON.stringify(targetData));
         localStorage.setItem("targetId", targetId);
+        // history.push(`/marketer/preview-advert`);
     }
     let notification_count = notification.length;
     console.log(adsList);
@@ -119,13 +82,13 @@ const MarketerDashboard = () => {
             <div className="small-title">
                 <div className="title-text justify-content-between">
                     <div className="logo">
-                        <Link to='/'>
+                        <Link to='/home'>
                             <img src={logo} alt="moovit-logo" />
                         </Link>
                     </div>
                     <div className="text d-flex align center">
-                        <p>The Brand Hub</p>
-                        <img src={caretDown} alt="" />
+                        {/* <p>The Brand Hub</p>
+                        <img src={caretDown} alt="" /> */}
                     </div>
                 </div>
                 <div className="dashboard-main-wrapper">
@@ -136,7 +99,7 @@ const MarketerDashboard = () => {
                         </div>
                         <div className="tab-item">
                             <img src={bag} alt="" />
-                            <Link to='/message'>Message</Link>
+                            <Link to='#'>Message</Link>
                         </div>
                         <div className="tab-item">
                             <img src={plus} alt="" />
@@ -257,7 +220,7 @@ const MarketerDashboard = () => {
                                             <img src={frame3} alt="" />
                                         </div>
 
-                                        <Link to=''>view details</Link>
+                                        {/* <Link to='#!'>view details</Link> */}
                                     </div>
                                 </div>
                                 <div className="col-7">
@@ -293,8 +256,8 @@ const MarketerDashboard = () => {
                                                                     <td>Tier 2</td>
                                                                     <td>{start}</td>
                                                                     <td>{location}</td>
-                                                                    <td>
-                                                                        <Link to={`/marketer/preview-advert/${id}`} id={id} onClick={handleClick_}>Preview</Link>
+                                                                    <td onClick={handleClick_} id={id}>
+                                                                        <Link to={'/marketer/preview-advert'} id={id} onClick={handleClick_}>Preview</Link>
                                                                     </td>
                                                                 </tr>
                                                             )

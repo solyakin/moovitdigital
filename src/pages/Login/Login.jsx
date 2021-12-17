@@ -1,13 +1,14 @@
 import React, {useState, useEffect} from 'react'
 import { Link, useHistory } from 'react-router-dom';
 import Loader from "react-loader-spinner";
+import Header from '../../components/header/header';
 import '../Login/Login.scss';
 import google from '../../assets/google.svg';
 import image from '../../assets/image 1.png';
 import facebook from '../../assets/facebook.png';
 import axios from 'axios';
 
-const Login = () => {
+const Login = ({navBackground}) => {
     const history = useHistory();
     const [error_msg, setError_msg] = useState([]);
     const [login, setLogin] = useState({
@@ -21,11 +22,6 @@ const Login = () => {
         setLogin({...login, [e.target.name] : e.target.value});
     }
 
-    // useEffect(()=> {
-    //     axios.get()
-    // }, [])
-    // api.moovitdigital.com/api/user/google/googlelogin
-    // api.moovitdigital.com/api/user/facebook/auth
     const fb_login = (e) => {
         e.preventDefault();
         axios.get('https://api.moovitdigital.com/facebook/auth')
@@ -55,7 +51,7 @@ const Login = () => {
         newData.append('password', data.password);
 
         axios({
-            url : 'https://api.moovitdigital.com/api/user/login',
+            url : 'http://test.canyousing.com.ng/api/user/login',
             method : 'POST',
             data : newData,
             config: { headers: {'Content-Type': 'multipart/form-data' }}
@@ -83,11 +79,13 @@ const Login = () => {
             } 
         })
         .catch(err => {
+            if(err){
+                setLogin({loading : false});
+                // window.location.reload()
+            }
             setError_msg(err.response.data.error)
-            setLogin({loading : false});
         })
     }
-    console.log(error_msg);
     let error_text = '';
     if (error_msg !== undefined){
         error_msg.map(res => {
@@ -99,6 +97,7 @@ const Login = () => {
     console.log(login)
     return (
         <div className="sign-up">
+                <Header navBackground={navBackground}/>
             <div className="container ">
                 <div className="row justify-content-center">
                     <div className="col-md-4">
@@ -117,29 +116,27 @@ const Login = () => {
                                 <input type="password" placeholder="Enter your password" name="password" onChange={handleChange} value={login.password} required/>
                             </div>
                             <div className="forget-password">
-                                <Link>Forgot Password?</Link>
+                                <Link to='/forget-password'>Forgot Password?</Link>
                             </div>
-                            <button type="submit" className="d-flex align-center justify-content-center">
-                                <span>Login</span>
-                                <div className="spinner" style={{display : login.loading ? "block" : "none"}}>
-                                    <Loader type="TailSpin" color="#FFFFFF" height={30} width={30} />
-                                </div>
+                            <button type="submit">
+                                <span>Login</span><br></br>
                             </button>
                         </form>
+                        <div className="spinner" style={{display : login.loading ? "block" : "none"}}>
+                            <Loader type="TailSpin" color="#EE315D" height={30} width={30} />
+                        </div>
                        <div className="signup">
                            <p>Don’t have an account? <Link to='/register'>Sign up</Link></p>
                        </div>
-                       <p className="or my-4">OR</p>
+                       {/* <p className="or my-4">OR</p>
                        <div className="google-btn" onClick={google_login} >
-                           {/* <a target="_blank" href='https://api.moovitdigital.com/google/googlelogin'> */}
-                                <img src={google} alt="google icon" />
-                                <p>Continue with Google</p>
-                           {/* </a> */}
-                       </div>
-                       <div className="google-btn" onClick={fb_login}>
+                            <img src={google} alt="google icon" />
+                            <p>Continue with Google</p>
+                       </div> */}
+                       {/* <div className="google-btn" onClick={fb_login}>
                             <img src={facebook} alt="google icon" />
                             <p>Continue with Facebbok</p>
-                        </div>
+                        </div> */}
                        <div className="policy">
                             <div className="tnc">
                                 <Link>Terms and Conditions</Link>

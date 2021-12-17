@@ -9,7 +9,6 @@ import Hamburger from '../Hamburger/hamburgerMenu';
 
 const Header = ({navBackground}) => {
 
-    console.log(navBackground)
     const history = useHistory();
     const [state, setState] = useState({
         initial : false,
@@ -19,27 +18,6 @@ const Header = ({navBackground}) => {
 
     const [disabled, setDisabled] = useState(false);
 
-    const handleLogout = (e) => {
-        e.preventDefault();
-        const authAxios = axios.create({
-            baseURL : "https://api.moovitdigital.com",
-            headers : {
-                Authorization : `Bearer ${token}`,
-            //    'Content-Type' : 'multipart/form-data',
-            }
-
-        })
-        authAxios .post('/api/user/logout')
-        .then(res => {
-            if(res.status == 200){
-                localStorage.removeItem('auth_token', res.data.token);
-                localStorage.removeItem('auth_name', res.data.firstName);
-                history.push('/');
-            }
-        })
-        .catch(err => console.log(err))
-    }
-    const token = localStorage.getItem("auth_token");
     let LoginBtns = "";
 
     const handleClick = () => {
@@ -50,19 +28,16 @@ const Header = ({navBackground}) => {
                 clicked : true,
                 setName : "Close"
             });
-            console.log(1)
         }else if(state.clicked === true){
             setState({
                 clicked : !state.clicked,
                 setName : "Menu"
             })
-            console.log(2)
         } else if(state.clicked === false){
             setState({
                 clicked : !state.clicked,
                 setName : "Close"
             })
-            console.log(3)
         }
          
     }
@@ -71,7 +46,7 @@ const Header = ({navBackground}) => {
     }else if(state.clicked === true){
         LoginBtns = <img src={close}  alt="close-icon" width="30px"/>
     }
-    console.log(state.clicked);
+   
     // if(!token){
     //     LoginBtns = (
     //         <div className="navbar">

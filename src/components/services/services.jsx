@@ -14,7 +14,7 @@ const Services = () => {
         <div className="services">
             {/* <div className="container"> */}
                 <div className ="service-text">
-                    <div className="row_">
+                    <div className="row__">
                         <Swiper className="desktop" slidesPerView={1}
                         spaceBetween={10}
                         navigation={true}

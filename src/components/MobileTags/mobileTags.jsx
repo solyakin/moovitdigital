@@ -15,7 +15,7 @@ const MobileTags = ({ style, handleClick, ham }) => {
         <div className="mobile-tags" style={{display : ham ? "block" : "none"}}>
             <div className="tab-item">
                 <img src={squares} alt="" />
-                <Link to='/dashboard'>Dashboard</Link>
+                <Link to='/dashboard/advertiser'>Dashboard</Link>
             </div>
             <div className="tab-item ">
                 <div className="tab-ads mb-2">

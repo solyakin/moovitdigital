@@ -8,6 +8,14 @@
         .row{
             padding-left: 7%;
             padding-top: 50px;
+            @media only screen and (max-width : 580px){
+                padding-left: 0;
+            }
+            .col-lg-6{
+                @media only screen and (max-width : 580px){
+                    padding: 20px;
+                }
+            }
             .form-group{
                 margin-bottom: 2rem;
                 h5{

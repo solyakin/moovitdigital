@@ -4,9 +4,10 @@ import Loader from "react-loader-spinner";
 import '../Login/Login.scss';
 import google from '../../assets/google.svg';
 import image from '../../assets/image 1.png';
+import Header from '../../components/header/header';
 import axios from 'axios';
 
-const Register = () => {
+const Register = ({navBackground}) => {
     const [error_msg, setError_msg] = useState([]);
     const history = useHistory();
     const [register, setRegister] = useState({
@@ -29,14 +30,13 @@ const Register = () => {
             password : register.password,
             password_confirmation : register.confirm_password
         }
-        console.log(data)
         const newData = new FormData();
         newData.append('email', data.email);
         newData.append('password', data.password);
         newData.append('password_confirmation', data.password_confirmation);
 
         axios({
-            url : 'https://api.moovitdigital.com/api/user/register',
+            url : 'http://test.canyousing.com.ng/api/user/register',
             method : 'POST',
             data : newData,
             config: { headers: {'Content-Type': 'multipart/form-data' }}
@@ -73,6 +73,7 @@ const Register = () => {
     }
     return (
         <div className="sign-up">
+            <Header navBackground={navBackground}/>
             <div className="container">
                 <div className="row justify-content-center">
                     <div className="col-md-4">
@@ -81,10 +82,6 @@ const Register = () => {
 
                             <h4>Create an account</h4>
                             <p>Set up a new account</p>
-
-                            <div className="error-box">
-                                
-                            </div>
                             <div className="form-group">
                                 <label>Email</label>
                                 <input type="text" placeholder="joe@gmail.com" name="email" onChange={handleChange} value={register.email}/>
@@ -113,11 +110,11 @@ const Register = () => {
                        <div className="signup">
                            <p>Already have an account? <Link to='/login'>Login </Link></p>
                        </div>
-                       <p>OR</p>
+                       {/* <p>OR</p>
                        <div className="google-btn">
                             <img src={google} alt="google icon" />
                             <p>Continue with Google</p>
-                       </div>
+                       </div> */}
                        <div className="policy">
                             <div className="tnc">
                                 <Link>Terms and Conditions</Link>

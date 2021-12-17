@@ -18,6 +18,7 @@ const Message = () => {
     const [adsCount, setAdsCount] =useState(0);
     const [pubCount, setpubCount] = useState(0);
     const [staff, setStaff] = useState(0);
+    const [notification, setNotification] = useState([]);
 
     const token = localStorage.getItem("auth_token");
     const authAxios = axios.create({
@@ -54,6 +55,10 @@ const Message = () => {
             const queryResponse = allStaff.data;
             const staffData = queryResponse.data.data.length;
             setStaff(staffData);
+
+            const allNotifications = await authAxios.get('/api/admin/notifications');
+            const notification_array = allNotifications.data;
+            setNotification(notification_array.data);
         }
 
         // authAxios.get('/api/admin/ads')
@@ -80,12 +85,12 @@ const Message = () => {
         <div className="dashboard">
             <div className="small-title">
                 <div className="title-text">
-                    <p>The Brand Hub</p>
-                    <img src={caretDown} alt="" />
+                    {/* <p>The Brand Hub</p>
+                    <img src={caretDown} alt="" /> */}
                 </div>
                 <div className="dashboard-main-wrapper">
                     <div className="tabs">
-                        <AdminTags />
+                        <AdminTags notification={notification}/>
                     </div>
                     <div className="dashboard-main message">
                         <div className="msg-container">

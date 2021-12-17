@@ -23,9 +23,6 @@ const PaymentHistory = () => {
         e.preventDefault();
         setStyle({hide : !style.hide, transformArrow : !style.transformArrow});
     }
-    useEffect(() => {
-        document.querySelector(".header").style.display = "none";
-    }, [])
     return (
         <div className="dashboard">
             <div className="small-title">
@@ -36,8 +33,8 @@ const PaymentHistory = () => {
                         </Link>
                     </div>
                     <div className="text d-flex align center">
-                        <p>The Brand Hub</p>
-                        <img src={caretDown} alt="" />
+                        {/* <p>The Brand Hub</p>
+                        <img src={caretDown} alt="" /> */}
                     </div>
                 </div>
                 <div className="dashboard-main-wrapper">

@@ -131,7 +131,16 @@
                                 border-radius: 5px;
                             }
                             .approve{
-                                background: rgb(214, 247, 165);
+                                background: #33C0CE;
+                            }
+                            .reject{
+                                color : rgb(226, 66, 66);
+                            }
+                            .approve-text{
+                                p{
+                                    font-weight: 500;
+                                    margin-right: 10px;
+                                }
                             }
                         }
                     }             

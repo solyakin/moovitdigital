@@ -19,7 +19,7 @@ const AdvertiserSteps = ({ show }) => {
                     <div className="count">
                         <p>STEP 1</p>
                         <h5>Create an account</h5>
-                        <p>Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui</p>
+                        <p>Quickly set up an account with your details in few simple steps.</p>
                     </div>
                     <img src={line1} alt="" className="line1" />
                 </div>
@@ -30,7 +30,7 @@ const AdvertiserSteps = ({ show }) => {
                     <div className="count">
                         <p>STEP 2</p>
                         <h5>Choose a budget</h5>
-                        <p>Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui</p>
+                        <p>Choose a budget that best suit your business need/advert campagin.</p>
                     </div>
                 </div>
                 <img src={line2} alt="" className="line2" />    
@@ -41,7 +41,7 @@ const AdvertiserSteps = ({ show }) => {
                     <div className="count">
                         <p>STEP 3</p>
                         <h5>Pick a template</h5>
-                        <p>Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui</p>
+                        <p>Select a template design that fit the campaign type you want.</p>
                     </div>
                     
                 </div> 
@@ -53,7 +53,7 @@ const AdvertiserSteps = ({ show }) => {
                     <div className="count">
                         <p>STEP 4</p>
                         <h5>Make payment</h5>
-                        <p>Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui</p>
+                        <p>Choose payment option suitable.</p>
                     </div>
                 </div>
                 <img src={line4} alt="" className="line4" />
@@ -64,7 +64,7 @@ const AdvertiserSteps = ({ show }) => {
                     <div className="count">
                         <p>STEP 5</p>
                         <h5>Publish advert</h5>
-                        <p>Aliqua id fugiat nostrud irure ex duis ea quis id quis ad et. Sunt qui</p>
+                        <p>Your adverts can now be seen by your intended audience.</p>
                     </div>
                 </div>
             </div>

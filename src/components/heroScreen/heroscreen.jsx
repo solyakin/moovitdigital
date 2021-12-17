@@ -130,13 +130,12 @@ const Heroscreen = () => {
             
             <div className="hero-btns">
                 <button>
-                    {loginBtn}
-                    {/* <Link to='/login' className="login">
-                       Login
-                    </Link> */}
+                    <Link to='/login' className="login">
+                        Login
+                    </Link>
                 </button>
                 <button>
-                    <Link to='/register'>
+                    <Link to='/register' className="register">
                         Get Started
                     </Link>
                 </button>

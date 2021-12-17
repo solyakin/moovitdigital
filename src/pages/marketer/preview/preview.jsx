@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
+import { useHistory } from 'react-router';
 import '../../dashboard/dashboard.scss';
 import '../preview/preview.scss';
 import swal from 'sweetalert';
-import caretDown from '../../../assets/CaretDown.svg';
 import squares from '../../../assets/SquaresFour.svg';
 import bag from '../../../assets/BagSimple.svg';
 import plus from '../../../assets/Plus.svg';
@@ -10,27 +10,38 @@ import user from '../../../assets/User.svg';
 import Handshake from '../../../assets/Handshake.svg';
 import signout from '../../../assets/SignOut.svg';
 import banner from '../../../assets/Rectangle 69.png';
+import tick from '../../../assets/Frame 338.svg';
 import axios from 'axios';
+import logo from '../../../assets/image 1.png';
+import icon4 from '../../../assets/Frame 3333.svg';
 import { Link } from 'react-router-dom';
 
 const MarketerPreview = () => {
 
-    const [users, setUsers] = useState([])
-    const ticketData = JSON.parse(localStorage.getItem("targetData"));
-    console.log(ticketData)
+    const [adsList, setAdslist] =useState([]);
+    const [users, setUsers] = useState([]);
+    const [notification, setNotification] = useState([]);
+    const targetId = localStorage.getItem("targetId")
     const token = localStorage.getItem("auth_token");
     const authAxios = axios.create({
-        baseURL : "https://api.moovitdigital.com",
+        baseURL : "https://test.canyousing.com.ng",
         headers : {
             Authorization : `Bearer ${token}`
         }
     })
+
+    const history = useHistory();
     useEffect(() => {
-        document.querySelector(".header").style.display = "none";
         const fetchingData = async() => {
             const allUsers = await authAxios.get('/api/admin/users')
             const users_data = allUsers.data
             setUsers(users_data.data.data);
+
+            const allAds = await authAxios.get('/api/admin/ads');
+            const ads_data = allAds.data;
+            const adsListData = ads_data.data.data;
+            const newArray = adsListData.filter(item => item.id == targetId)
+            setAdslist(newArray);
         }
         fetchingData()
     }, [])
@@ -49,12 +60,48 @@ const MarketerPreview = () => {
         }
         approveAds();
     }
+    const handleReject = (e) => {
+        e.preventDefault();
+        const { id } = e.currentTarget;
+        console.log(id)
+        const data = {
+            approved : 0
+        }
+        const rejectAds = async () => {
+            const query = await authAxios.put(`/api/admin/approve-ads/${id}`, data);
+            const res = query.data;
+            swal("Great!", "Ads Rejected successfully!", "success");
+            console.log(res);
+        }
+        rejectAds();
+    }
+    const handleLogout = (e) => {
+        e.preventDefault();
+        authAxios.post('https://test.canyousing.com.ng/api/admin/logout')
+        .then(res => {
+            if(res.status === 200){
+                localStorage.clear();
+                history.push('/home');
+            }
+            console.log(res.data);
+        })
+        .catch(err => console.log(err));
+    }
+    let notification_count = notification.length;
+    console.log(adsList)
     return (
         <div className="dashboard marketer-preview">
             <div className="small-title">
-                <div className="title-text">
-                    <p>The Brand Hub</p>
-                    <img src={caretDown} alt="" />
+                <div className="title-text justify-content-between">
+                    <div className="logo">
+                        <Link to='/home'>
+                            <img src={logo} alt="moovit-logo" />
+                        </Link>
+                    </div>
+                    <div className="text d-flex align center">
+                        {/* <p>The Brand Hub</p>
+                        <img src={caretDown} alt="" /> */}
+                    </div>
                 </div>
                 <div className="dashboard-main-wrapper">
                     <div className="tabs">
@@ -62,25 +109,18 @@ const MarketerPreview = () => {
                             <img src={squares} alt="" />
                             <Link to='/marketer/dashboard'>Dashboard</Link>
                         </div>
-                        {/* <div className="tab-item">
-                            <img src={megaphone} alt="" />
-                            <Link to='/add-staff'>Add staff</Link>
-                        </div> */}
                         <div className="tab-item">
                             <img src={bag} alt="" />
-                            <Link to='/message'>Message</Link>
+                            <Link to='#'>Message</Link>
                         </div>
-                        {/* <div className="tab-item">
-                            <img src={creditCard} alt="" />
-                            <Link to='/new-ads-ticket'>New ads ticket</Link>
-                        </div> */}
                         <div className="tab-item">
                             <img src={plus} alt="" />
                             <Link to='/marketer/tickets'>My Ticket</Link>
                         </div>
                         <div className="tab-item">
                             <img src={user} alt="" />
-                            <Link to='/notification'>Notification</Link>
+                            <Link to='/marketer/notification'>Notification <span style={{display
+                 : notification_count < 1 ? "none" : "flex"}}>{notification_count}</span></Link>
                         </div>
                         <div className="tab-item">
                             <img src={Handshake} alt="" />
@@ -88,11 +128,15 @@ const MarketerPreview = () => {
                         </div>
                         <div className="tab-item">
                             <img src={Handshake} alt="" />
-                            <Link to='/admin-profile'>Profile</Link>
+                            <Link to='/create-banner'>Create Banner</Link>
+                        </div>
+                        <div className="tab-item">
+                            <img src={Handshake} alt="" />
+                            <Link to='/marketer/profile'>Profile</Link>
                         </div>
                         <div className="tab-item">
                             <img src={signout} alt="" />
-                            <p>Logout</p>
+                            <p onClick={handleLogout} className="logout">Logout</p>
                         </div>
                     </div>
                     <div className="dashboard-main">
@@ -108,7 +152,7 @@ const MarketerPreview = () => {
                             </div>
                             <div className="preview-wrapper">
                                 {
-                                    ticketData.map(({id, title, content, start, end, area, location, budget_id, image, createdBy, phone}) => {
+                                    adsList.map(({id, title, approved, content, start, end, area, location, budget_id, image, createdBy, phone}) => {
                                         const target_region = area.split(",");
                                         let price = "";
                                         if(budget_id == 1){
@@ -118,7 +162,6 @@ const MarketerPreview = () => {
                                         }else if(budget_id = 3){
                                             price = "#100,000"
                                         }
-
                                         const getuser = users.filter(item => item.id == createdBy);
                                         let userValue = "";
                                         let user_email = "";
@@ -128,6 +171,29 @@ const MarketerPreview = () => {
                                             user_email = email;
                                             user_phone = phone;
                                         })
+
+                                        let approvedBtn = '';
+                                        if(approved == 0){
+                                                approvedBtn = <div className="approve-text d-flex align-item-center">
+                                                                <p className="reject">Rejected</p>
+                                                                <img src={icon4} alt="" width="25px"/>
+                                                            </div>
+                                        } else if(approved == 1) {
+                                            approvedBtn = <div className="approve-text d-flex align-item-center">
+                                                            <p>Approved</p>
+                                                            <img src={tick} alt="" width="15px"/>
+                                                        </div>
+                                        }else{
+                                            approvedBtn = <div className="row d-flex justify-content-between">
+                                                <div className="col-6">
+                                                    <button className="approve" id={id} onClick={handleApprove}>Approve</button>
+                                                </div>
+                                                <div className="col-6">
+                                                    <button id={id} onClick={handleReject}>Reject</button>
+                                                </div>
+                                            </div> 
+                                        }
+                                
                                         return <div className="prev-container" key={id}>
                                             <div className="ads-detail">
                                                 <div className="title mb-4">
@@ -196,14 +262,7 @@ const MarketerPreview = () => {
 
                                                 </div>
                                                 <div className="action-btns mt-5">
-                                                    <div className="row d-flex justify-content-between">
-                                                        <div className="col-6">
-                                                            <button className="approve" id={id} onClick={handleApprove}>Approve</button>
-                                                        </div>
-                                                        <div className="col-6">
-                                                            <button>Reject</button>
-                                                        </div>
-                                                    </div>
+                                                    { approvedBtn }
                                                 </div>
                                             </div>
                                         </div>

@@ -13,14 +13,13 @@ const Notifications = () => {
     const [notification, setNotification] = useState([]);
     const token = localStorage.getItem("auth_token");
     const authAxios = axios.create({
-        baseURL : "https://api.moovitdigital.com",
+        baseURL : "https://test.canyousing.com.ng",
         headers : {
             Authorization : `Bearer ${token}`
         }
     })
 
     useEffect(() => {
-        document.querySelector(".header").style.display = "none";
         const fetchData = async () => {
             const allNotifications = await authAxios.get('/api/admin/notifications');
             const notification_array = allNotifications.data;
@@ -28,12 +27,13 @@ const Notifications = () => {
         }
         fetchData();
     },[])
+    console.log(notification)
     return (
         <div className="dashboard notification">
             <div className="small-title">
                 <div className="title-text">
-                    <p>The Brand Hub</p>
-                    <img src={caretDown} alt="" />
+                    {/* <p>The Brand Hub</p>
+                    <img src={caretDown} alt="" /> */}
                 </div>
                 <div className="dashboard-main-wrapper">
                     <div className="tabs">

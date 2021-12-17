@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useHistory} from 'react-router-dom';
 import axios from 'axios';
 import '../../dashboard/dashboard.scss';
@@ -20,19 +20,24 @@ const PublisherDashboard = () => {
     const token = localStorage.getItem("auth_token");
 
     const history = useHistory();
-    useEffect(() => {
-        document.querySelector(".header").style.display = "none";
-    }, [])
-
+    const [notification, setNotification] = useState([]);
     const authAxios = axios.create({
-        baseURL : "https://api.moovitdigital.com",
+        baseURL : "https://test.canyousing.com.ng",
         headers : {
             Authorization : `Bearer ${token}`
         }
     })
+    useEffect(() => {
+        const fetchData = async () => {
+            const allNotifications = await authAxios.get('/api/user/notifications');
+            const notification_array = allNotifications.data;
+            setNotification(notification_array.data);
+        }
+        fetchData();
+    },[])
     const handleLogout = (e) => {
         e.preventDefault();
-        authAxios.post('https://api.moovitdigital.com/api/user/logout')
+        authAxios.post('https://test.canyousing.com.ng/api/user/logout')
         .then(res => {
             if(res.status === 200){
                 localStorage.clear();
@@ -42,18 +47,19 @@ const PublisherDashboard = () => {
         })
         .catch(err => console.log(err));
     }
+    let notification_count = notification.length;
     return (
         <div className="dashboard">
             <div className="small-title">
                 <div className="title-text justify-content-between">
                     <div className="logo">
-                        <Link to='/'>
+                        <Link to='/home'>
                             <img src={logo} alt="moovit-logo" />
                         </Link>
                     </div>
                     <div className="text d-flex align center">
-                        <p>The Brand Hub</p>
-                        <img src={caretDown} alt="" />
+                        {/* <p>The Brand Hub</p>
+                        <img src={caretDown} alt="" /> */}
                     </div>
                 </div>
                 <div className="dashboard-main-wrapper">
@@ -76,19 +82,26 @@ const PublisherDashboard = () => {
                         </div>
                         <div className="tab-item">
                             <img src={bag} alt="" />
-                            <p>Notifications</p>
+                            <p>
+                                <Link to='/publisher/notifications'>Notifications <span style={{display
+                 : notification_count < 1 ? "none" : "flex"}}>{notification_count}</span></Link>
+                            </p>
                         </div>
                         <div className="tab-item">
                             <img src={creditCard} alt="" />
                             <Link to='/publisher-payment-history'>Finance</Link>
                         </div>
                         <div className="tab-item">
+                            <img src={creditCard} alt="" />
+                            <Link to='/publisher/withdraw'>Request Withdrawal</Link>
+                        </div>
+                        <div className="tab-item">
                             <img src={user} alt="" />
-                            <Link to=''>Profile</Link>
+                            <Link to='/publisher/profile'>Profile</Link>
                         </div>
                         <div className="tab-item">
                             <img src={Handshake} alt="" />
-                            <Link to=''>Support</Link>
+                            <Link to='/publisher/support'>Support</Link>
                         </div>
                         <div className="tab-item">
                             <img src={signout} alt="" />
@@ -101,9 +114,9 @@ const PublisherDashboard = () => {
                                 <p>Welcome Back</p>
                                 <h4>{current_user}</h4>
                             </div>
-                            <div className="smm">
+                            {/* <div className="smm">
                                 <Link>Purchase SMM Package</Link>
-                            </div>
+                            </div> */}
                         </div>
                         <div className="main-records">
                             <div className="funds-wrapper">

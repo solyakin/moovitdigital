@@ -10,7 +10,7 @@ import signout from '../../../assets/SignOut.svg';
 import squares from '../../../assets/SquaresFour.svg';
 import bag from '../../../assets/BagSimple.svg';
 import plus from '../../../assets/Plus.svg';
-// import userP from '../../../assets/Ellipse 48.png'
+import logo from '../../../assets/image 1.png';
 import usericon from '../../../assets/User.svg';
 import swal from 'sweetalert';
 
@@ -55,7 +55,7 @@ const Adcodes = () => {
     const token = localStorage.getItem("auth_token");
     const auth_id = localStorage.getItem("auth_id");
     const authAxios = axios.create({
-        baseURL : "https://api.moovitdigital.com",
+        baseURL : "https://test.canyousing.com.ng",
         headers : {
             Authorization : `Bearer ${token}`
         }
@@ -86,7 +86,6 @@ const Adcodes = () => {
         setSendAdcode({...sendAdcode, [e.target.name] : e.target.value});
     }
     useEffect(() => {
-        document.querySelector('.header').style.display = "none";
         const fetchingData = async () => {
             const allNotifications = await authAxios.get('/api/admin/notifications');
             const notification_array = allNotifications.data;
@@ -111,19 +110,17 @@ const Adcodes = () => {
     }
     const handleLogout = (e) => {
         e.preventDefault();
-        authAxios.post('https://api.moovitdigital.com/api/admin/logout')
+        authAxios.post('https://test.canyousing.com.ng/api/admin/logout')
         .then(res => {
             if(res.status === 200){
                 localStorage.clear();
                 history.push('/home');
             }
-            console.log(res.data);
         })
         .catch(err => console.log(err));
     }
     const handle_ = (e) => {
         e.preventDefault();
-        console.log("click")
     }
     let notification_count = notification.length;
     const dimension = banner.filter(item => item.name == adcode.banner);
@@ -137,13 +134,19 @@ const Adcodes = () => {
     targetBanner.map(({id}) => {
         banner_id = id
     })
-    console.log(banner_id);
     return (
         <div className="dashboard">
             <div className="small-title">
-                <div className="title-text">
-                    <p>The Brand Hub</p>
-                    <img src={caretDown} alt="" />
+                <div className="title-text justify-content-between">
+                    <div className="logo">
+                        <Link to='/home'>
+                            <img src={logo} alt="moovit-logo" />
+                        </Link>
+                    </div>
+                    <div className="text d-flex align center">
+                        {/* <p>The Brand Hub</p>
+                        <img src={caretDown} alt="" /> */}
+                    </div>
                 </div>
                 <div className="dashboard-main-wrapper">
                     <div className="tabs">
@@ -153,7 +156,7 @@ const Adcodes = () => {
                         </div>
                         <div className="tab-item">
                             <img src={bag} alt="" />
-                            <Link to='/message'>Message</Link>
+                            <Link to='/#'>Message</Link>
                         </div>
                         <div className="tab-item">
                             <img src={plus} alt="" />
@@ -174,7 +177,7 @@ const Adcodes = () => {
                         </div>
                         <div className="tab-item">
                             <img src={Handshake} alt="" />
-                            <Link to='/admin/profile'>Profile</Link>
+                            <Link to='/marketer/profile'>Profile</Link>
                         </div>
                         <div className="tab-item">
                             <img src={signout} alt="" />
@@ -255,7 +258,8 @@ const Adcodes = () => {
                                                 let publisher_id = target_value;
                                                 let code = `<div id="ad" style="width:100%;height:90px;">
                                                         <iframe
-                                                        src="http://moovitdigital.com/adcode/${id}&0&2&${width}&7&59&${height}&${publisher_id}"
+                                                        src="http://test.canyousing.com.ng/adcode/${id}
+                                                        &0&2&${width}&7&59&${height}&${publisher_id}"
                                                         border="0"
                                                         scrolling="no"
                                                         allowtransparency="true"
@@ -265,7 +269,7 @@ const Adcodes = () => {
                                                         </iframe>
                                                     </div>`
                                                 return <div className="codes" style={{border: "1px solid #e5e5e5"}}>
-                                                    {code}
+                                                    <p>{code}</p>
                                                 </div>
                                             })
                                        }   

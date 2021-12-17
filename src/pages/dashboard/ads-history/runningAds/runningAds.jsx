@@ -42,7 +42,6 @@ const RunningAds = (props) => {
        setfbData(single_Ads);
     }
     useEffect(() => {
-        document.querySelector(".header").style.display = "none";
         const linkedin_token = 'AQUPpvEHfqb9Scg6TpPRgfEoqmeeuqLqCr5hUvxNYWV8ra9KpPJQrSvjHf0cUY7VPAdT3LOzIB2_bJDwB6t56p7EQVb2kkL73c4WmGTAEH7lcBTknnOm9qCa_IwpNaHFwF38KbVgq-M6dK5os7EMxm6rKv9bfjlZyLO-J2L3fvQ0dFFtbN2HQpOc6zYpx2FZQA1AyAj7NmwlG1o3_c7OwaM0WPKJj4g4pk9vgwJuYdwMuSkLb-FZ1DQPx2JZ2u-mHWAuBaHVmmYSJzwJwsaPE31Xn2KLWwr1_9oSCZeKaU1XNf69rr4xm8O1w9iTl8tfnYCLOgXp2yvSKP0ug9SpDQCm1AwhLw'
         const authAxios = axios.create({
             
@@ -50,14 +49,27 @@ const RunningAds = (props) => {
             headers : {
                 Authorization : `Bearer ${linkedin_token}`,
                 'Content-Type' : "applciation/json",
-                'Access-Control-Allow-Origin': '*'
+                'Access-Control-Allow-Origin': '*',
+                'x-linkedin-processing-colo' : 'prod-lva1',
+                'x-li-responseorigin' : 'RGW',
+                'x-linkedin-processing-machine' : 'lva1-app18420',
+                'x-restli-protocol-version' : '1.0.0',
+                'Content-Length' : "2213",
+                'Connection' : 'keep-alive',
+                'X-Li-Source-Fabric' : 'prod-lva1',
+                'X-Li-Pop' : 'prod-lva1-x',
+                'X-LI-Proto' : 'http/1.1',
+                'X-LI-UUID' : 'AAXSyVJcLEYOIH9jHPSTSQ==',
+                'Set-Cookie' : 'lidc="b=TB08:s=T:r=T:a=T:p=T:g=3779:u=519:x=1:i=1639136995:t=1639174989:v=2:sig=AQHvTn-msbsxM6fIsiDjtYkQo2FmThPP"',
+                'X-LI-Route-Key' : "b=TB08:s=T:r=T:a=T:p=T:g=3779:u=519:x=1:i=1639136995:t=1639174989:v=2:sig=AQHvTn-msbsxM6fIsiDjtYkQo2FmThPP",
+                'Accept-Encoding' : 'gzip, deflate, br'
             }
         })
-        authAxios.get('https://api.linkedin.com/v2/adCreativesV2?q=search&search.campaign.values[0]=urn:li:sponsoredCampaign:193773413&search.status.values[0]=ACTIVE&search.status.values[1]=CANCELED&sort.field=ID&sort.order=DESCENDING/')
+        authAxios.get('https://api.linkedin.com/v2/adCreativesV2?q=search&search.campaign.values[0]=urn:li:sponsoredCampaign:193773413&search.status.values[0]=ACTIVE&search.status.values[1]=CANCELED&sort.field=ID&sort.order=DESCENDING')
         .then(res => {
             // const data = res.header("Access-Control-Allow-Origin", "*")
-            const data = res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
-            console.log(data.data);
+            // const data = res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+            console.log(res.data);
         })
     }, [])
     return (
@@ -70,8 +82,8 @@ const RunningAds = (props) => {
                         </Link>
                     </div>
                     <div className="text d-flex align center">
-                        <p>The Brand Hub</p>
-                        <img src={caretDown} alt="" />
+                        {/* <p>The Brand Hub</p>
+                        <img src={caretDown} alt="" /> */}
                     </div>
                 </div>
                 <div className="dashboard-main-wrapper">
@@ -103,7 +115,7 @@ const RunningAds = (props) => {
                                         <thead>
                                             <tr>
                                             <th scope="col"></th>
-                                            <th scope="col">Title</th>
+                                            <th scope="col">Campaign</th>
                                             <th scope="col">Campaign Type</th>
                                             <th scope="col">Likes</th>
                                             <th scope="col">Views</th>

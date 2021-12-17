@@ -16,16 +16,17 @@ const AdminTags = ({notification}) => {
     const token = localStorage.getItem("auth_token");
     const history = useHistory();
     const authAxios = axios.create({
-        baseURL : "https://api.moovitdigital.com",
+        baseURL : "https://test.canyousing.com.ng",
         headers : {
             Authorization : `Bearer ${token}`
         }
     })
     const handleLogout = (e) => {
         e.preventDefault();
-        authAxios.post('https://api.moovitdigital.com/api/admin/logout')
+        authAxios.post('https://test.canyousing.com.ng/api/admin/logout')
         .then(res => {
             if(res.status === 200){
+                localStorage.clear();
                 history.push('/home');
             }
             console.log(res.data);

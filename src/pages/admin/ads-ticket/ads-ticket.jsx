@@ -1,16 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import swal from 'sweetalert';
 import '../../dashboard/dashboard.scss';
 import '../../admin/admin.scss';
 import '../../admin/ads-ticket/ads-ticket.scss';
-import caretDown from '../../../assets/CaretDown.svg';
 import paperclip from '../../../assets/Paperclip.svg';
 import userP from '../../../assets/Ellipse 48.png';
 import AdminTags from '../../../components/adminTags/adminTags';
+import logo from '../../../assets/image 1.png';
 
 const AdsTicket = () => {
 
+    const [state, setState] = useState({
+        show : true,
+        show1 : false,
+        show2 : false,
+        show3 : false
+    })
     const [hide, setHide] = useState("none");
     const [response, setResponse] = useState([]);
     const [adsList, setAdsList] = useState([]);
@@ -20,14 +27,13 @@ const AdsTicket = () => {
  
     const token = localStorage.getItem("auth_token");
     const authAxios = axios.create({
-        baseURL : "https://api.moovitdigital.com",
+        baseURL : "https://test.canyousing.com.ng",
         headers : {
             Authorization : `Bearer ${token}`
         }
     })
    
-    useEffect( ()=> {
-        document.querySelector(".header").style.display = "none";    
+    useEffect( ()=> {  
         const fetchData = async () =>{
             const allAds = await authAxios.get('/api/admin/ads');
             const response = allAds.data;
@@ -77,13 +83,42 @@ const AdsTicket = () => {
         assignTask(); 
         // setAlert("block")
     }
-    // console.log(assignedStaff)
+    const allClick = (e) => {
+        e.preventDefault();
+        setState({show : true, show1 : false, show2 : false, show3 : false})
+    }
+    const unassignedClick = (e) => {
+        e.preventDefault();
+        setState({show : false, show1 : true, show2 : false, show3 : false})
+    }
+    const approvedClick =(e) => {
+        e.preventDefault();
+        setState({show : false, show1 : false, show2 : true, show3 : false})
+    }
+    const assignedClick = (e) => {
+        e.preventDefault();
+        setState({show : false, show1 : false, show2 : false, show3 : true})
+    }
+    console.log(adsList)
+    const newItems = adsList.filter(item => item.assigned != null);
+    console.log(newItems);
+    const ApprovedList = adsList.filter(item => item.approved == 1);
+    console.log(ApprovedList)
+    const unassignedList = adsList.filter(item => item.assigned === null);
+    console.log(unassignedList)
+    console.log(staff)
     return (
         <div className="dashboard ads-ticket">
             <div className="small-title">
-                <div className="title-text">
-                    <p>The Brand Hub</p>
-                    <img src={caretDown} alt="caret down" />
+                <div className="title-text justify-content-between">
+                    <div className="logo">
+                        <Link to='/home'>
+                            <img src={logo} alt="moovit-logo" />
+                        </Link>
+                    </div>
+                    <div className="text d-flex align center">
+    
+                    </div>
                 </div>
                 <div className="dashboard-main-wrapper">
                     <div className="tabs">
@@ -91,11 +126,12 @@ const AdsTicket = () => {
                     </div>
                     <div className="dashboard-main admin">
                         <div className="ads-heading">
-                            <p>Unassigned</p>
-                            <p>Assigned</p>
-                            <p>Approved</p>
+                            <p onClick={allClick} style={{color : state.show ? "#EE315D" : "#333333"}}>All</p>
+                            <p onClick={unassignedClick} style={{color : state.show1 ? "#EE315D" : "#333333"}}>Unassigned</p>
+                            <p onClick={assignedClick} style={{color : state.show3 ? "#EE315D" : "#333333"}}>Assigned</p>
+                            <p onClick={approvedClick} style={{color : state.show2 ? "#EE315D" : "#333333"}}>Approved</p>
                         </div>
-                        <div className="ads-wrapper">
+                        <div className="ads-wrapper" style={{display : state.show ? "block" : "none"}}>
                             <div className="ads-ticket-list">
                                 <div className="row">
                                     {
@@ -117,7 +153,107 @@ const AdsTicket = () => {
                                                             <p>Created by <span>Jon Bellion</span></p>
                                                         </div>
                                                         <div className="instruct-btns">
+                                                            <a href='/#'></a>
+                                                            <button onClick={assignClick} id={id}>Assign</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div className="assigned-list" style={{display
+                         : state.show3 ? "block" : "none"}}>
+                            <div className="ads-wrapper">
+                                <div className="row">
+                                    {
+                                        newItems.map(({id, title, content, image, createdBy}) => {
+                                            return(
+                                                <div className="col-lg-4" key={id}>
+                                                    <div className="ads-card" id={id}>
+                                                        <div className="card-title">
+                                                            <h5>{title}</h5>
+                                                            <div className="files">
+                                                                <img src={paperclip} alt="" />
+                                                                <span>2 files</span>
+                                                            </div>
+                                                        </div>
+                                                        <h6>TIER 2</h6>
+                                                        <p>{`${content} smet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim...`}</p>
+                                                        <div className="user-profile" id={createdBy}>
+                                                            <img src={userP} alt="" />
+                                                            <p>Created by <span>Jon Bellion</span></p>
+                                                        </div>
+                                                        {/* <div className="instruct-btns">
                                                             <a href='/#'>view details</a>
+                                                            <button onClick={assignClick} id={id}>Assign</button>
+                                                        </div> */}
+                                                    </div>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div className="approved-list" style={{display : state.show2 ? "block" : "none" }}>
+                            <div className="ads-wrapper">
+                                <div className="row">
+                                    {
+                                        ApprovedList.map(({id, title, content, image, createdBy}) => {
+                                            return(
+                                                <div className="col-lg-4" key={id}>
+                                                    <div className="ads-card" id={id}>
+                                                        <div className="card-title">
+                                                            <h5>{title}</h5>
+                                                            <div className="files">
+                                                                <img src={paperclip} alt="" />
+                                                                <span>2 files</span>
+                                                            </div>
+                                                        </div>
+                                                        <h6>TIER 2</h6>
+                                                        <p>{`${content} smet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim...`}</p>
+                                                        <div className="user-profile" id={createdBy}>
+                                                            <img src={userP} alt="" />
+                                                            <p>Created by <span>Jon Bellion</span></p>
+                                                        </div>
+                                                        {/* <div className="instruct-btns">
+                                                            <a href='/#'>view details</a>
+                                                            <button onClick={assignClick} id={id}>Assign</button>
+                                                        </div> */}
+                                                    </div>
+                                                </div>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div className="unassigned" style={{display : state.show1 ? "block" : "none"}}>
+                            <div className="ads-wrapper">
+                                <div className="row">
+                                    {
+                                        unassignedList.map(({id, title, content, image, createdBy}) => {
+                                            return(
+                                                <div className="col-lg-4" key={id}>
+                                                    <div className="ads-card" id={id}>
+                                                        <div className="card-title">
+                                                            <h5>{title}</h5>
+                                                            <div className="files">
+                                                                <img src={paperclip} alt="" />
+                                                                <span>2 files</span>
+                                                            </div>
+                                                        </div>
+                                                        <h6>TIER 2</h6>
+                                                        <p>{`${content} smet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim...`}</p>
+                                                        <div className="user-profile" id={createdBy}>
+                                                            <img src={userP} alt="" />
+                                                            <p>Created by <span>Jon Bellion</span></p>
+                                                        </div>
+                                                        <div className="instruct-btns">
+                                                            <a href='/#'></a>
                                                             <button onClick={assignClick} id={id}>Assign</button>
                                                         </div>
                                                     </div>
@@ -146,7 +282,7 @@ const AdsTicket = () => {
                                             <img src={userP} alt="" />
                                             <div className="user-text">
                                                 <h6>{`${firstName} ${lastName}`}</h6>
-                                                <p>Unassigned</p>
+                                                <p>Available</p>
                                             </div>
                                         </div>
                                     )

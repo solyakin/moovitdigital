@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
+import { Link } from 'react-router-dom';
 import '../../dashboard/dashboard.scss';
 import '../../admin/admin.scss';
 import axios from 'axios';
-import caretDown from '../../../assets/CaretDown.svg';
+import logo from '../../../assets/image 1.png'
 import AdminTags from '../../../components/adminTags/adminTags';
 import swal from 'sweetalert';
 
@@ -18,7 +19,7 @@ const AddStaff = () => {
     })
 
     const authAxios = axios.create({
-        baseURL : "https://api.moovitdigital.com",
+        baseURL : "https://test.canyousing.com.ng",
         headers : {
             Authorization : `Bearer ${token}`,
            'Content-Type' : 'multipart/form-data',
@@ -26,7 +27,6 @@ const AddStaff = () => {
 
     })
     useEffect(() => {
-        document.querySelector(".header").style.display = "none";
         const fetching = async () => {
             const allNotifications = await authAxios.get('/api/admin/notifications');
             const notification_array = allNotifications.data;
@@ -57,13 +57,18 @@ const AddStaff = () => {
         })
         .catch(err => console.log(err))
     }
-    console.log(staff);
     return (
         <div className="dashboard">
             <div className="small-title">
-                <div className="title-text">
-                    <p>The Brand Hub</p>
-                    <img src={caretDown} alt="" />
+                <div className="title-text justify-content-between">
+                    <div className="logo">
+                        <Link to='/home'>
+                            <img src={logo} alt="moovit-logo" />
+                        </Link>
+                    </div>
+                    <div className="text d-flex align center">
+    
+                    </div>
                 </div>
                 <div className="dashboard-main-wrapper">
                     <div className="tabs">

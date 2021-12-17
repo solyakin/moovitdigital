@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Loader from "react-loader-spinner";
 import '../../dashboard/dashboard.scss';
 import '../../dashboard/ads-history/ads-history.scss';
-import caretDown from '../../../assets/CaretDown.svg';
+import '../../marketer/createBanner/createbanner.scss';
 import logo from '../../../assets/image 1.png';
 import user from '../../../assets/User.svg';
 import Handshake from '../../../assets/Handshake.svg';
@@ -33,7 +33,7 @@ const CreateBanner = () => {
     const auth_id = localStorage.getItem("auth_id");
     const auth_name = localStorage.getItem("auth_name");
     const authAxios = axios.create({
-        baseURL : "https://api.moovitdigital.com",
+        baseURL : "https://test.canyousing.com.ng",
         headers : {
             Authorization : `Bearer ${token}`
         }
@@ -42,9 +42,6 @@ const CreateBanner = () => {
         e.persist();
         setBanner({...banner, [e.target.name] : e.target.value});
     }
-    useEffect(() => {
-        document.querySelector(".header").style.display = "none";
-    }, [])
     const formSubmit = (e) => {
         e.preventDefault();
         setLoading(true)
@@ -56,15 +53,18 @@ const CreateBanner = () => {
         newData.append('description', banner.description);
         newData.append('url', banner.url);
 
-        authAxios.post('https://api.moovitdigital.com/api/admin/banners', newData)
+        authAxios.post('https://test.canyousing.com.ng/api/admin/banners', newData)
         .then(res => {
             if(res.status == 200){
                 console.log(res.data)
-                swal("Great!", "Adcode sent successfully!", "success");
+                swal("Great!", "Banner created successfully!", "success");
                 setLoading(false)
-                // if(res.data.email === admin)
-                // write a login which checks if the user email contains admin
-                // history.push('/admin');
+                setBanner({name : '',
+                banner : '',
+                width : '',
+                height : '',
+                description : '',
+                url : ''})
             }
         })
         .catch(err => console.log(err))
@@ -72,7 +72,7 @@ const CreateBanner = () => {
     
     const handleLogout = (e) => {
         e.preventDefault();
-        authAxios.post('https://api.moovitdigital.com/api/admin/logout')
+        authAxios.post('https://test.canyousing.com.ng/api/admin/logout')
         .then(res => {
             if(res.status === 200){
                 localStorage.clear();
@@ -88,13 +88,13 @@ const CreateBanner = () => {
             <div className="small-title">
                 <div className="title-text justify-content-between">
                     <div className="logo">
-                        <Link to='/'>
+                        <Link to='/home'>
                             <img src={logo} alt="moovit-logo" />
                         </Link>
                     </div>
                     <div className="text d-flex align center">
-                        <p>The Brand Hub</p>
-                        <img src={caretDown} alt="" />
+                        {/* <p>The Brand Hub</p>
+                        <img src={caretDown} alt="" /> */}
                     </div>
                 </div>
                 <div className="dashboard-main-wrapper">
@@ -105,7 +105,7 @@ const CreateBanner = () => {
                         </div>
                         <div className="tab-item">
                             <img src={bag} alt="" />
-                            <Link to='/message'>Message</Link>
+                            <Link to='#'>Message</Link>
                         </div>
                         <div className="tab-item">
                             <img src={plus} alt="" />
@@ -139,8 +139,6 @@ const CreateBanner = () => {
                                 <h4>Upload new banner</h4>
                             </div> 
                              <div className="support">
-                                {/* <h3></h3> */}
-                                {/* <p>Having an issues using our services? We are all ears.</p> */}
                                 <div className="row">
                                     <div className="col-lg-5">
                                         <form onSubmit={formSubmit}>
