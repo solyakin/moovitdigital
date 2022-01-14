@@ -5,7 +5,7 @@ import Tags from '../../../components/Tags/Tags';
 import '../../dashboard/dashboard.scss';
 import '../../dashboard/createAds/createAds.scss';
 import '../SMM/smm.scss';
-import caretDown from '../../../assets/CaretDown.svg';
+import hamburger from '../../../assets/hamburger.png';
 import logo from '../../../assets/image 1.png';
 import MobileTags from '../../../components/MobileTags/mobileTags';
 
@@ -23,18 +23,21 @@ const SMM = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
     }
+    const toggler = (e) => {
+        e.preventDefault();
+        setHam(!ham);
+    } 
     return (
         <div className="dashboard create-ads smm">
             <div className="small-title">
                 <div className="title-text justify-content-between">
                     <div className="logo">
-                        <Link to='/'>
+                        <img src={hamburger} alt="hamburger" width="25px" className="hamburger" onClick={toggler}/>
+                        <Link to='/home'>
                             <img src={logo} alt="moovit-logo" />
                         </Link>
                     </div>
                     <div className="text d-flex align center">
-                        {/* <p>The Brand Hub</p>
-                        <img src={caretDown} alt="" /> */}
                     </div>
                 </div>
                 <div className="dashboard-main-wrapper">

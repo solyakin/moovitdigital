@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import '../dashboard/dashboard.scss';
-import caretDown from '../../assets/CaretDown.svg';
 import Loader from "react-loader-spinner";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import UserDashboardComponent from '../../components/userdashboardComponent/userDashboardComponent';
@@ -13,6 +12,8 @@ import MobileTags from '../../components/MobileTags/mobileTags';
 
 const Dashboard = () => {
     
+    let impressionCount = 0;
+    let clickCount = 0
     const [style, setStyle] = useState({
         hide : false, 
         transformArrow : false,
@@ -20,6 +21,7 @@ const Dashboard = () => {
     const [ham, setHam] = useState(false);
     const [userAds, setUserAds] = useState([]);
     const [isLoading, setLoading] = useState(true);
+    const [publisherAds, setPublisherAds] = useState([]);
     const current_id = localStorage.getItem("auth_id");
     const token = localStorage.getItem("auth_token");
     
@@ -39,13 +41,15 @@ const Dashboard = () => {
         const fetchData = async () => {
             const allUserAds = await authAxios.get('/api/user/user-ads');
             const response = allUserAds.data;
-            console.log(response)
             const adsListData = response.data.data;
-            console.log(adsListData);
             const newArray = adsListData.filter(ele => {
                 return ele.createdBy == current_id;
             })
             setUserAds(newArray);
+
+            const publisherads = await authAxios.get('api/user/script/users')
+            const pub_res = publisherads.data;
+            setPublisherAds(pub_res.data)
         }
         fetchData();
         setLoading(false);
@@ -55,6 +59,17 @@ const Dashboard = () => {
         e.preventDefault();
         setHam(!ham);
     }
+    //ALL IMPRESSIONS AND CLICKS
+
+    // const arr = [1,3,4]
+    // let ite = 0;
+    // arr.forEach(item => ite += item)
+    // console.log(ite)
+    publisherAds.forEach(({impressions, clicks}) => {
+        impressionCount = impressionCount += impressions
+        clickCount = clickCount += clicks
+    })   
+
     const adsCount = userAds.length;
     console.log(userAds)
     return (
@@ -68,8 +83,7 @@ const Dashboard = () => {
                         </Link>
                     </div>
                     <div className="text d-flex align center">
-                        {/* <p>The Brand Hub</p>
-                        <img src={caretDown} alt="" /> */}
+                        
                     </div>
                 </div>
                 <div className="dashboard-main-wrapper">
@@ -85,7 +99,7 @@ const Dashboard = () => {
                             color="#EE315D"
                             height={30}
                             width={40}/> : (
-                                <UserDashboardComponent adsCount={adsCount} />
+                                <UserDashboardComponent adsCount={adsCount} impressionCount={impressionCount} clickCount={clickCount}/>
                             )
                         }
                         

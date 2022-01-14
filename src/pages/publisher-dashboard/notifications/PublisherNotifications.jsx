@@ -13,10 +13,13 @@ import Handshake from '../../../assets/Handshake.svg';
 import signout from '../../../assets/SignOut.svg';
 import logo from '../../../assets/image 1.png';
 import { Link, useHistory } from 'react-router-dom';
+import hamburger from '../../../assets/hamburger.png';
+import PublisherMobileTag from '../../../components/Pub-mobile-Tab/PubMobileTag';
 
 const PublisherNotifications = () => {
 
     const history = useHistory();
+    const [ham, setHam] = useState(false);
     const [notification, setNotification] = useState([]);
     const token = localStorage.getItem("auth_token");
     const authAxios = axios.create({
@@ -47,13 +50,20 @@ const PublisherNotifications = () => {
         })
         .catch(err => console.log(err));
     }
-    console.log(notification)
+
+    const toggler = (e) => {
+        e.preventDefault();
+        setHam(!ham);
+    } 
+
     let notification_count = notification.length;
+    console.log(notification)
     return (
         <div className="dashboard notification">
             <div className="small-title">
                 <div className="title-text justify-content-between">
                     <div className="logo">
+                        <img src={hamburger} alt="hamburger" width="25px" className="hamburger" onClick={toggler}/>
                         <Link to='/home'>
                             <img src={logo} alt="moovit-logo" />
                         </Link>
@@ -107,6 +117,9 @@ const PublisherNotifications = () => {
                             <img src={signout} alt="" />
                             <p onClick={handleLogout} className="logout">Logout</p>
                         </div>
+                    </div>
+                    <div className="mobile-tag">
+                        <PublisherMobileTag ham={ham} notification_count={notification_count} handleLogout={handleLogout} />
                     </div>
                     <div className="dashboard-main ">
                         <div className="notification-wrapper">

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios'
 import '../../dashboard/dashboard.scss';
@@ -11,8 +11,13 @@ import user from '../../../assets/User.svg';
 import Handshake from '../../../assets/Handshake.svg';
 import signout from '../../../assets/SignOut.svg';
 import logo from '../../../assets/image 1.png';
+import hamburger from '../../../assets/hamburger.png';
+import PublisherMobileTag from '../../../components/Pub-mobile-Tab/PubMobileTag';
 
 const PublisherPaymentHistory = () => {
+
+    const [ham, setHam] = useState(false);
+    const [notification, setNotification] = useState([]);
     const history = useHistory();
     const token = localStorage.getItem("auth_token");
     const auth_id = localStorage.getItem("auth_id");
@@ -34,11 +39,19 @@ const PublisherPaymentHistory = () => {
         })
         .catch(err => console.log(err));
     }
+
+    const toggler = (e) => {
+        e.preventDefault();
+        setHam(!ham);
+    } 
+    let notification_count = notification.length;
+
     return (
         <div className="dashboard">
             <div className="small-title">
                 <div className="title-text justify-content-between">
                     <div className="logo">
+                        <img src={hamburger} alt="hamburger" width="25px" className="hamburger" onClick={toggler}/>
                         <Link to='/home'>
                             <img src={logo} alt="moovit-logo" />
                         </Link>
@@ -91,6 +104,9 @@ const PublisherPaymentHistory = () => {
                             <p onClick={handleLogout} className="logout">Logout</p>
                         </div>
                     </div>
+                    <div className="mobile-tag">
+                        <PublisherMobileTag ham={ham} notification_count={notification_count} handleLogout={handleLogout} />
+                    </div>
                     <div className="dashboard-main">
                         <div className="ads-wrapper">
                             <div className="ads-heading">
@@ -101,7 +117,7 @@ const PublisherPaymentHistory = () => {
                                 </div>
                             
                             <div className="text-left mt-4">
-                                <input type="text"  placeholder="search"/>
+                                <input type="text" placeholder="search"/>
                             </div>
                             
                         </div> 
@@ -117,7 +133,7 @@ const PublisherPaymentHistory = () => {
                                     <th scope="col">Invoice</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                {/* <tbody>
                                     <tr>
                                         <th scope="row">
                                             <input type="checkbox" name="" id="" />
@@ -148,7 +164,7 @@ const PublisherPaymentHistory = () => {
                                         <td>-</td>
                                         <td className="invoice">view now</td>
                                     </tr>
-                                </tbody>
+                                </tbody> */}
                                 </table>
                             </div>
                         </div>              

@@ -66,6 +66,15 @@ const AdminLogin = ({navBackground}) => {
             )
         })
     }
+
+    let btnText = ""
+    if(login.loading === true){
+        btnText = <div className="spier" style={{display : login.loading ? "block" : "none"}}>
+        <Loader type="TailSpin" color="#ffffff" height={20} width={20} />
+        </div>
+    }else if(login.loading === false){
+        btnText = <span>Continue</span>
+    }
     return (
         <div className="sign-up">
             <Header navBackground={navBackground}/>
@@ -88,11 +97,8 @@ const AdminLogin = ({navBackground}) => {
                             <div className="forget-password">
                                 <Link>Forgot Password?</Link>
                             </div>
-                            <button type="submit">
-                                <span>Login</span>
-                                <div className="spinner" style={{display : login.loading ? "block" : "none"}}>
-                                    <Loader type="TailSpin" color="#FFFFFF" height={20} width={25} />
-                                </div>
+                            <button type="submit" style={{backgroundColor : login.loading ? "#333333" : "#EE315D"}}>
+                                {btnText}
                             </button>
                         </form>
                        <div className="signup">

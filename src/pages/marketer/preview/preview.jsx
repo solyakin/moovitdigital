@@ -152,7 +152,7 @@ const MarketerPreview = () => {
                             </div>
                             <div className="preview-wrapper">
                                 {
-                                    adsList.map(({id, title, approved, content, start, end, area, location, budget_id, image, createdBy, phone}) => {
+                                    adsList.map(({id, title, approved, content, start, end, area, location, budget_id, image, createdBy, awareness, conversions, app_installs, engagement, sales, reach, target, phone}) => {
                                         const target_region = area.split(",");
                                         let price = "";
                                         if(budget_id == 1){
@@ -172,6 +172,22 @@ const MarketerPreview = () => {
                                             user_phone = phone;
                                         })
 
+                                        let campaign_type = '';
+                                        if(awareness == 1){
+                                            campaign_type = <span>Awareness</span>
+                                        }else if(conversions == 1){
+                                            campaign_type = <span>Conversions</span>
+                                        }else if(app_installs == 1){
+                                            campaign_type = <span>App Installs</span>
+                                        }else if(engagement == 1){
+                                            campaign_type = <span>Engagement</span>
+                                        }else if(sales == 1){
+                                            campaign_type = <span>Sales</span>
+                                        }else if(reach == 1){
+                                            campaign_type = <span>Reach</span>
+                                        }else if(target == 1){
+                                            campaign_type = <span>Traffic</span>
+                                        }
                                         let approvedBtn = '';
                                         if(approved == 0){
                                                 approvedBtn = <div className="approve-text d-flex align-item-center">
@@ -202,15 +218,12 @@ const MarketerPreview = () => {
                                                 </div>
                                                 <div className="descritpion mb-4">
                                                     <h5>Description</h5>
-                                                    <p>{content} consectetur adipisicing elit. Numquam unde doloremque vero fuga, deserunt ipsam. Neque necessitatibus sunt at reiciendis labore perspiciatis</p>
+                                                    <p>{content}.</p>
                                                 </div>
                                                 <div className="campaign mb-4">
                                                     <h5>Campaign type</h5>
                                                     <div className="campaign-list">
-                                                        <span>Conversion</span>
-                                                        <span>Traffic</span>
-                                                        <span>Sales</span>
-                                                        <span>Engagement</span>
+                                                        {campaign_type}
                                                     </div>
                                                 </div>
                                                 <div className="budget mb-4">
@@ -271,7 +284,7 @@ const MarketerPreview = () => {
                             </div>    
                             <div className="lower-btns">
                                 <Link to='/marketer/dashboard'>Back</Link>
-                                <button>Confirmed</button>
+                                {/* <button>Confirmed</button> */}
                             </div>
                         </div>
                     </div>  

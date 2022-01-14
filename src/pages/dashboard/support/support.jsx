@@ -7,8 +7,11 @@ import '../../dashboard/ads-history/ads-history.scss';
 import logo from '../../../assets/image 1.png';
 import axios from 'axios';
 import swal from 'sweetalert';
+import MobileTags from '../../../components/MobileTags/mobileTags';
+import hamburger from '../../../assets/hamburger.png';
 
 const Support = () => {
+    const [ham, setHam] = useState(false);
     const [loading, setLoading] = useState(false);
     const [support, setSupport] = useState({
         name : '',
@@ -17,6 +20,10 @@ const Support = () => {
         subject : ''
     })
 
+    const toggler = (e) => {
+        e.preventDefault();
+        setHam(!ham);
+    } 
     const handleChange = (e) => {
         e.persist();
         setSupport({...support, [e.target.name] : e.target.value});
@@ -69,20 +76,22 @@ const Support = () => {
             <div className="small-title">
                 <div className="title-text justify-content-between">
                     <div className="logo">
-                        <Link to='/'>
+                        <img src={hamburger} alt="hamburger" width="25px" className="hamburger" onClick={toggler}/>
+                        <Link to='/home'>
                             <img src={logo} alt="moovit-logo" />
                         </Link>
                     </div>
                     <div className="text d-flex align center">
-                        {/* <p>The Brand Hub</p>
-                        <img src={caretDown} alt="" /> */}
                     </div>
                 </div>
                 <div className="dashboard-main-wrapper">
                     <div className="tabs">
                         <Tags style={style} handleClick={handleClick}/>
                     </div>
-                    <div className="dashboard-main">
+                    <div className="mobile-tag">
+                        <MobileTags style={style} handleClick={handleClick} ham={ham}/>
+                    </div>
+                    <div className="dashboard-main support-wrapper">
                         <div className="ads-wrapper mt-3">
                             <div className="ads-heading">
                                 <h4>Support</h4>

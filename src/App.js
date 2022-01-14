@@ -62,6 +62,13 @@ import Advertisers from './pages/admin/allAdvertisers/advertisers';
 import AllPublishers from './pages/admin/publishers/publishers';
 import AllMarketer from './pages/admin/markteter/marketer';
 import AdvertiserPreview from './pages/admin/advertiserPreview/advertiserPreview';
+import SMMHISTORY from './pages/dashboard/SMMHISTORY/SMMHISTORY';
+import PublisherPreview from './pages/admin/publisherPreview/PublisherPreview';
+import MarketerActivity from './pages/admin/activity/activity';
+import Packages from './pages/dashboard/packages/packages';
+import Package from './pages/Packages/Packages';
+import AdvertiserPage from './pages/AdvertiserPage/Advertiser';
+import PublisherPage from './pages/publisherPage/Publisher';
 
 // TODO
 // 1. display user name on admin all-ads page
@@ -76,14 +83,14 @@ import AdvertiserPreview from './pages/admin/advertiserPreview/advertiserPreview
 function App() {
 
   const [navBackground, setNavBackground] = useState("transparent");
-  const history = useHistory();
-  const token = localStorage.getItem("auth_token");
-  const currentID = localStorage.getItem("targetId");
-  const role = localStorage.getItem("auth_role");
+  // const history = useHistory();
+  // const token = localStorage.getItem("auth_token");
+  // const currentID = localStorage.getItem("targetId");
+  // const role = localStorage.getItem("auth_role");
 
   useEffect(() => {
     document.addEventListener("scroll", () => {
-      const backgroundcolor = window.scrollY < 150 ? "transparent" : "#FFFAEB";
+      const backgroundcolor = window.scrollY < 120 ? "transparent" : "#FFFAEB";
       setNavBackground(backgroundcolor);
     });
   },[])
@@ -112,7 +119,7 @@ function App() {
         <Route exact path='/dashboard/publisher' render={() => <PublisherDashboard/> }/>
         <Route exact path='/publisher-payment-history' component={PublisherPaymentHistory}/>
         <Route exact path='/publisher-ads-history' component={PublisherAdHistory}/>
-        <Route exact path='/publisher-form' component={PublisherForm}/>
+        <Route exact path='/publisher-form' render={() => <PublisherForm navBackground={navBackground}/>} />
         <Route exact path='/admin' component={Admin}/>
         <Route exact path='/add-staff' component={AddStaff}/>
         <Route exact path='/new-ads-ticket' component={AdsTicket}/>
@@ -131,11 +138,14 @@ function App() {
         <Route path='/contact' render={() => <Contact navBackground={navBackground}/>}/>
         <Route exact path='/forget-password' render={() => <ForgetPassword navBackground={navBackground}/>}/>
         <Route exact path='/reset-password' render={() => <ResetPassword navBackground={navBackground}/>}/>
+        <Route exact path='/advertiser' render={() => <AdvertiserPage navBackground={navBackground}/>}/>
+        <Route exact path='/publisher' render={() => <PublisherPage navBackground={navBackground}/>}/>
         <Route path='/new-budget' component={AddBudget}/>
         <Route path='/new-graphic' component={AddGraphic}/>
         <Route exact path='/marketer/tickets' component={Tickets}/>
         <Route exact path='/create-adcode' component={Adcodes}/>
         <Route exact path='/smm' component={SMM}/>
+        <Route exact path='/smm-history' component={SMMHISTORY}/>
         <Route exact path='/publisher/adcode' component={PublisherAdcode}/>
         <Route exact path='/create-banner' component={CreateBanner}/>
         <Route exact path='/marketer/profile' component={MarketerProfile}/>
@@ -151,6 +161,10 @@ function App() {
         <Route exact path='/admin/publisher' component={AllPublishers}/>
         <Route exact path='/admin/marketer' component={AllMarketer}/>
         <Route exact path='/admin/advertiser/preview' component={AdvertiserPreview}/>
+        <Route exact path='/admin/publisher/preview' component={PublisherPreview}/>
+        <Route exact path='/admin/marketer/activity' component={MarketerActivity}/>
+        <Route exact path='/advertiser/packages' component={Packages}/>
+        <Route exact path='/packages' render={() => <Package navBackground={navBackground}/>}/>
       </Switch>
     </div>
   );

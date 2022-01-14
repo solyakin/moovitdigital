@@ -2,8 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {useHistory} from 'react-router-dom';
 import axios from 'axios';
 import '../../dashboard/dashboard.scss';
-import caretDown from '../../../assets/CaretDown.svg';
-import caretDown2 from '../../../assets/CaretDown2.svg';
+import PublisherMobileTag from '../../../components/Pub-mobile-Tab/PubMobileTag';
 import squares from '../../../assets/SquaresFour.svg';
 import megaphone from '../../../assets/MegaphoneSimple.svg';
 import bag from '../../../assets/BagSimple.svg';
@@ -12,6 +11,7 @@ import user from '../../../assets/User.svg';
 import Handshake from '../../../assets/Handshake.svg';
 import signout from '../../../assets/SignOut.svg';
 import { Link } from 'react-router-dom';
+import hamburger from '../../../assets/hamburger.png';
 import logo from '../../../assets/image 1.png';
 
 const PublisherDashboard = () => {
@@ -20,7 +20,9 @@ const PublisherDashboard = () => {
     const token = localStorage.getItem("auth_token");
 
     const history = useHistory();
+    const [ham, setHam] = useState(false);
     const [notification, setNotification] = useState([]);
+    const [adsScript, setAdscript] = useState([]);
     const authAxios = axios.create({
         baseURL : "https://test.canyousing.com.ng",
         headers : {
@@ -32,6 +34,10 @@ const PublisherDashboard = () => {
             const allNotifications = await authAxios.get('/api/user/notifications');
             const notification_array = allNotifications.data;
             setNotification(notification_array.data);
+
+            const fetching_all_adcodes = await authAxios.get('/api/user/scripts');
+            const fetched_data = fetching_all_adcodes.data;
+            setAdscript(fetched_data.data)
         }
         fetchData();
     },[])
@@ -47,19 +53,24 @@ const PublisherDashboard = () => {
         })
         .catch(err => console.log(err));
     }
+    const toggler = (e) => {
+        e.preventDefault();
+        setHam(!ham);
+    } 
     let notification_count = notification.length;
+    const count = adsScript.length;
+
     return (
         <div className="dashboard">
             <div className="small-title">
                 <div className="title-text justify-content-between">
                     <div className="logo">
+                        <img src={hamburger} alt="hamburger" width="25px" className="hamburger" onClick={toggler}/>
                         <Link to='/home'>
                             <img src={logo} alt="moovit-logo" />
                         </Link>
                     </div>
                     <div className="text d-flex align center">
-                        {/* <p>The Brand Hub</p>
-                        <img src={caretDown} alt="" /> */}
                     </div>
                 </div>
                 <div className="dashboard-main-wrapper">
@@ -108,38 +119,39 @@ const PublisherDashboard = () => {
                             <p onClick={handleLogout} className="logout">Logout</p>
                         </div>
                     </div>
+                    <div className="mobile-tag">
+                        <PublisherMobileTag ham={ham} notification_count={notification_count} handleLogout={handleLogout} />
+                    </div>
                     <div className="dashboard-main">
                         <div className="main-heading">
                             <div className="welcome">
                                 <p>Welcome Back</p>
                                 <h4>{current_user}</h4>
                             </div>
-                            {/* <div className="smm">
-                                <Link>Purchase SMM Package</Link>
-                            </div> */}
+                            
                         </div>
                         <div className="main-records">
                             <div className="funds-wrapper">
                                 <div className="fund-balance">
                                     <p>Available Funds</p>
-                                    <h3>#70,000.00</h3>
+                                    <h3>0.00</h3>
                                 </div>
                             </div>
                             <div className="ads-records">
                                 <div className="total">
-                                    <h4>#90,000</h4>
+                                    <h4>0.00</h4>
                                     <p>Amount earned</p>
                                 </div>
                                 <div className="impression">
-                                    <h4>#50,000</h4>
+                                    <h4>0</h4>
                                     <p>Amount recieved</p>
                                 </div>
                                 <div className="clicks">
-                                    <h4>3</h4>
+                                    <h4>0</h4>
                                     <p>Running Ads</p>
                                 </div>
                                 <div className="clicks">
-                                    <h4>12</h4>
+                                    <h4>{count}</h4>
                                     <p>Total Ads</p>
                                 </div>
                             </div>
@@ -149,7 +161,7 @@ const PublisherDashboard = () => {
                             <div className="ads-graph">
                                 <div className="graph-heading">
                                     <p>Ads chart</p>
-                                    <p><span></span>RUNNING</p>
+                                    {/* <p><span></span>RUNNING</p> */}
                                 </div>
                                 <div className="graph-view"></div>
                             </div>
@@ -157,10 +169,10 @@ const PublisherDashboard = () => {
                                 <div className="smm-heading">
                                     <div className="item">
                                         <p>SMM Package</p>
-                                        <h5>Premium <span>View details</span></h5>
+                                        {/* <h5>Premium <span>View details</span></h5> */}
                                     </div>
                                     <div className="cancel-plan">
-                                        <p>Cancel plan</p>
+                                        {/* <p>Cancel plan</p> */}
                                     </div>
                                 </div>
                                 <div className="running-smm">

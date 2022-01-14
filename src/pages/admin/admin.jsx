@@ -30,31 +30,11 @@ const Admin = () => {
         headers : {
             Authorization : `Bearer ${token}`,
             'Content-Type' : "applciation/json",
-            // 'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods' : 'GET, POST, PUT, DELETE, OPTIONS',
-            'Access-Control-Allow-Headers' : 'X-Requested-With, Content-Type, X-Token-Auth, Authorization',
-            'Access-Control-Allow-Credentials' : 'true'
         }
     })
     
     useEffect(() => {
         const fetchData = async () => {
-            // const allAds = await authAxios.get('/api/admin/ads/');
-            // const response = allAds.data;
-            // const adsListData = response.data.data;
-            // setAdsList(adsListData);
-
-            // const allAdvertisers = await authAxios.get('/api/admin/advertiser/');
-            // const res = allAdvertisers.data;
-            // const adsCount = res.data;
-            // const allCount = Object.keys(adsCount).length;
-            // setAdsCount(allCount);
-            // setAdsCount(adsCount.length);
-            // for (const [key, value] of Object.entries(adsCount)) {
-            //     const allCount = value;
-            //     console.log(allCount.length);
-            //     setAdsCount(allCount);
-            // }
 
             const allPublishers = await authAxios.get('/api/admin/publisher');
             const result = allPublishers.data;
@@ -68,9 +48,13 @@ const Admin = () => {
             setStaff(staffData);
 
             const allNotifications = await authAxios.get('/api/admin/notifications');
-            const notification_array = allNotifications;
+            const notification_array = allNotifications.data;
             console.log(notification_array);
             setNotification(notification_array);
+
+            const linkedinAds = await authAxios.get('/api/admin/linkedin');
+            const res = linkedinAds.data;
+            console.log(res)
         }
 
         authAxios.get('/api/admin/ads')
@@ -245,8 +229,11 @@ const Admin = () => {
                                                         </thead>
                                                         <tbody>
                                                             {
-                                                                adsList.filter((items, index) => (index < 4))
+                                                                adsList.filter((items, index) => (index < 3))
                                                                 .map(({title, start, location, id}) => {
+                                                                    let newDate = '';
+                                                                    const data_ = start.split("00");
+                                                                    newDate = data_[0];
                                                                     return (
                                                                         <tr key={id}>
                                                                             <th scope="row">
@@ -254,7 +241,7 @@ const Admin = () => {
                                                                             </th>
                                                                             <td className="text-left">{title}</td>
                                                                             <td>Tier 2</td>
-                                                                            <td className="text-left">{start}</td>
+                                                                            <td className="text-left">{newDate}</td>
                                                                             <td className="text-left">{location}</td>
                                                                             <td>
                                                                                 <Link to='/admin/preview' id={id} onClick={handleClick}>Preview</Link>

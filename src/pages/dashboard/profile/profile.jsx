@@ -5,8 +5,11 @@ import '../../dashboard/dashboard.scss';
 import '../../dashboard/ads-history/ads-history.scss';
 import Tags from '../../../components/Tags/Tags';
 import logo from '../../../assets/image 1.png';
+import MobileTags from '../../../components/MobileTags/mobileTags';
+import hamburger from '../../../assets/hamburger.png';
 
 const Profile = () => {
+    const [ham, setHam] = useState(false);
     const history = useHistory();
     const [profile, setProfile] = useState([])
 
@@ -30,6 +33,10 @@ const Profile = () => {
         setStyle({hide : !style.hide, transformArrow : !style.transformArrow});
     
     }
+    const toggler = (e) => {
+        e.preventDefault();
+        setHam(!ham);
+    }
     useEffect(()=> {
         const fetching = async () => {
             const profileData = await authAxios.get('/api/user/profile');
@@ -38,24 +45,26 @@ const Profile = () => {
         }
         fetching()
     },[])
-    console.log(profile.firstName)
     return (
         <div className="dashboard">
             <div className="small-title">
                 <div className="title-text justify-content-between">
                     <div className="logo">
-                        <Link to='/'>
+                        <img src={hamburger} alt="hamburger" width="25px" className="hamburger" onClick={toggler}/>
+                        <Link to='/home'>
                             <img src={logo} alt="moovit-logo" />
                         </Link>
                     </div>
                     <div className="text d-flex align center">
-                        {/* <p>The Brand Hub</p>
-                        <img src={caretDown} alt="" /> */}
+                        
                     </div>
                 </div>
                 <div className="dashboard-main-wrapper">
                     <div className="tabs">
                         <Tags style={style} handleClick={handleClick}/>
+                    </div>
+                    <div className="mobile-tag">
+                        <MobileTags style={style} handleClick={handleClick} ham={ham}/>
                     </div>
                     <div className="dashboard-main">
                         <div className="ads-wrapper">

@@ -1,10 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import '../../pages/userReg/userReg.scss';
 import axios from 'axios';
 import Header from '../../components/header/header';
 import Loader from "react-loader-spinner";
-import { Country}  from 'country-state-city';
 import swal from 'sweetalert';
 
 const UserRegistration = ({navBackground}) => {
@@ -12,6 +11,7 @@ const UserRegistration = ({navBackground}) => {
     const history = useHistory();
    const [personal, setPersonal] =  useState(false);
    const [loading, setLoading]= useState(false);
+   const [locations, setLocation] = useState([]);
 //    const [value_, setValue] = useState("");
    const [value, setValue] = useState({
         type : "",
@@ -38,6 +38,15 @@ const UserRegistration = ({navBackground}) => {
        other : 'nil',
        agree : 1
    })
+
+   useEffect(() => {
+    axios.get('https://restcountries.com/v3.1/all')
+    .then(response => {
+        const result = response.data;
+        setLocation(result)
+    })
+    .catch(error => console.log(error))
+    },[])
 
     const handleClick = (e) =>{
         e.preventDefault();
@@ -77,7 +86,7 @@ const UserRegistration = ({navBackground}) => {
         setValue({role : e.target.value});
         setUser({...user, role : e.target.value})
     }
-    const allCountries = Country.getAllCountries();
+    
     const __handleChange = (e) => {
         e.persist();
         const targetLocation = e.target.value;
@@ -147,12 +156,12 @@ const UserRegistration = ({navBackground}) => {
             <Header navBackground={navBackground}/>
             <div className="container">
                 <div className="row justify-content-center">
-                    <div className="col-lg-6">
+                    <div className="col__">
                         <div className="form-wrapper">
                             <div className="form-heading">
                                 <h5 style={{color : personal ? "grey" : "blue"}}>1. Personal Details</h5>
                                 <h5 style={{color : personal ? "blue" : "grey"}}>2. Business Details</h5>
-                                <span className="indicator" style={{transform : personal ? "translateX(160px)" : "initial"}}></span>
+                                <span className="indicator" style={{transform : personal ? "translateX(140px)" : "initial"}}></span>
                             </div>
                             <form onSubmit={profileSubmit} style={{height : personal ? "620px" : "370px"}}>
                                 <div className="personal-detail" style={{transform : personal ? "translateX(-630px)" : "initial"}}>
@@ -163,7 +172,7 @@ const UserRegistration = ({navBackground}) => {
                                                 <input type="text" placeholder="John" required name="firstName" onChange={handleChange} value={user.firstName} />
                                             </div>
                                         </div>
-                                        <div className="col">
+                                        <div className="col end">
                                             <div className="form-group">
                                                 <label htmlFor="">Last Name</label>
                                                 <input type="text" placeholder="Doe" name="lastName" required onChange={handleChange} value={user.lastName}/>
@@ -177,7 +186,7 @@ const UserRegistration = ({navBackground}) => {
                                                 <input type="text" placeholder="DD/MM/YY" name="dob" required onChange={handleChange} value={user.dob}/>
                                             </div>
                                         </div>
-                                        <div className="col">
+                                        <div className="col end">
                                             <div className="form-group">
                                                 <label htmlFor="">Phone Number</label>
                                                 <input type="text" placeholder="+234 814 555 345 33" required name="phone" onChange={handleChange} value={user.phone}/>
@@ -191,10 +200,16 @@ const UserRegistration = ({navBackground}) => {
                                                 <label>Country</label>
                                                 <input list="data" value={value.country} onChange={__handleChange} required />
                                                 <datalist id="data">
+                                                    {locations.map(({name, index}) =>
+                                                        <option value={name.common} id={index}>{name.common}</option>
+                                                    )}
+                                                </datalist>
+                                                {/* <input list="data" value={value.country} onChange={__handleChange} required />
+                                                <datalist id="data">
                                                     {allCountries.map(({name, isoCode}) =>
                                                         <option value={name} id={isoCode}>{name}</option>
                                                     )}
-                                                </datalist>
+                                                </datalist> */}
                                             </div>
                                         </div>
                                         <div className="col-lg-6">

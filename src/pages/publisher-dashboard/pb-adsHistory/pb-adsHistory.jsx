@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import { Link, useHistory } from 'react-router-dom';
 import '../../dashboard/dashboard.scss';
@@ -11,11 +11,15 @@ import user from '../../../assets/User.svg';
 import Handshake from '../../../assets/Handshake.svg';
 import signout from '../../../assets/SignOut.svg';
 import logo from '../../../assets/image 1.png';
+import hamburger from '../../../assets/hamburger.png';
+import PublisherMobileTag from '../../../components/Pub-mobile-Tab/PubMobileTag';
 
 const PublisherAdHistory = () => {
 
     const history = useHistory();
     const token = localStorage.getItem("auth_token");
+    const [ham, setHam] = useState(false);
+    const [notification, setNotification] = useState([]);
     const auth_id = localStorage.getItem("auth_id");
     const authAxios = axios.create({
         baseURL : "https://test.canyousing.com.ng",
@@ -35,18 +39,25 @@ const PublisherAdHistory = () => {
         })
         .catch(err => console.log(err));
     }
+
+    const toggler = (e) => {
+        e.preventDefault();
+        setHam(!ham);
+    } 
+    let notification_count = notification.length;
+    console.log(notification)
+
     return (
         <div className="dashboard">
             <div className="small-title">
                 <div className="title-text justify-content-between">
                     <div className="logo">
+                        <img src={hamburger} alt="hamburger" width="25px" className="hamburger" onClick={toggler}/>
                         <Link to='/home'>
                             <img src={logo} alt="moovit-logo" />
                         </Link>
                     </div>
                     <div className="text d-flex align center">
-                        {/* <p>The Brand Hub</p>
-                        <img src={caretDown} alt="" /> */}
                     </div>
                 </div>
                 <div className="dashboard-main-wrapper">
@@ -94,6 +105,9 @@ const PublisherAdHistory = () => {
                             <p onClick={handleLogout} className="logout">Logout</p>
                         </div>
                     </div>
+                    <div className="mobile-tag">
+                        <PublisherMobileTag ham={ham} notification_count={notification_count} handleLogout={handleLogout} />
+                    </div>
                     <div className="dashboard-main">
                         <div className="ads-wrapper">
                             <div className="ads-heading">
@@ -125,7 +139,7 @@ const PublisherAdHistory = () => {
                                     <th scope="col">Spent</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                {/* <tbody>
                                     <tr>
                                     <th scope="row">
                                         <input type="checkbox" name="" id="" />
@@ -162,7 +176,7 @@ const PublisherAdHistory = () => {
                                     <td>Running</td>
                                     <td>10,000</td>
                                     </tr>
-                                </tbody>
+                                </tbody> */}
                                 </table>
                             </div>
                         </div>              

@@ -48,13 +48,13 @@ const Tags = ({ style, handleClick }) => {
                 </div>
                 <div className="sub-track" style={{display : style.hide ? "block" : "none"}}>
                     <p className="mb-2"><Link to='/create-ads'>Create an Ad</Link></p>
-                    <p className="mb-2"><Link to='/ads-history'>Ad History</Link></p>
-                    <p className="mb-2"><Link to='/running-ads'>Running Ads</Link></p>
+                    <p className="mb-2"><Link to='/ads-history'>Publisher Ads</Link></p>
+                    <p className="mb-2"><Link to='/running-ads'>Social Media Ads</Link></p>
                 </div>
             </div>
             <div className="tab-item">
                 <img src={bag} alt="" />
-                <p>Packages</p>
+                <Link to='/advertiser/packages'>Packages</Link>
             </div>
             <div className="tab-item">
                 <img src={creditCard} alt="" />

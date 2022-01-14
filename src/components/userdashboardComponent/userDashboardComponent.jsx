@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
-const UserDashboardComponent = ({adsCount}) => {
+const UserDashboardComponent = ({adsCount, impressionCount, clickCount}) => {
     const current_user = localStorage.getItem("auth_name");
     return (
         <div>
@@ -25,23 +25,20 @@ const UserDashboardComponent = ({adsCount}) => {
                             <span>+</span>
                             <Link to='/create-ads'>Create an Ad</Link>
                         </button>
-                    </div>
-                    {/* <div className="mobile-plus">
-                        <Link to='/create-ads'>+ create Ads</Link>
-                    </div> */}
+                    </div>                    
                 </div>
 
                 <div className="ads-records">
                     <div className="total">
                         <h4>{adsCount}</h4>
-                        <p>Total Ads</p>
+                        <p>Total Campaign</p>
                     </div>
                     <div className="impression">
-                        <h4>0</h4>
+                        <h4>{impressionCount}</h4>
                         <p>Impressions</p>
                     </div>
                     <div className="clicks">
-                        <h4>0</h4>
+                        <h4>{clickCount}</h4>
                         <p>Total Clicks</p>
                     </div>
                     <div className="clicks">
@@ -55,18 +52,18 @@ const UserDashboardComponent = ({adsCount}) => {
                 <div className="ads-graph">
                     <div className="graph-heading">
                         <p>Ads chart</p>
-                        <p><span></span>RUNNING</p>
+                        {/* <p><span></span>RUNNING</p> */}
                     </div>
                     <div className="graph-view"></div>
                 </div>
                 <div className="smm-package">
                     <div className="smm-heading">
                         <div className="item">
-                            <p>SMM Package</p>
-                            <h5>Premium <span>View details</span></h5>
+                            <Link to='/smm-history'> SMM Package</Link>
+                            <h5>Premium</h5>
                         </div>
                         <div className="cancel-plan">
-                            <p>Cancel plan</p>
+                            {/* <p>Cancel plan</p> */}
                         </div>
                     </div>
                     <div className="running-smm">

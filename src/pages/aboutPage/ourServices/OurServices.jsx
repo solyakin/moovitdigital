@@ -1,6 +1,8 @@
 import React from 'react';
 import '../ourServices/OurServices.scss';
-import stand from '../../../assets/stand.svg';
+import icon3 from '../../../assets/icon 3.svg';
+import icon2 from '../../../assets/icon 2.svg';
+import icon5 from '../../../assets/icon 5.svg';
 import wink from '../../../assets/wing.svg';
 import smile from '../../../assets/smile.svg';
 
@@ -27,7 +29,7 @@ const OurServices = () => {
                 <div className="row">
                     <div className="col second">
                         <div className="content text-center">
-                            <img src={smile} alt="smile-icon" />
+                            <img src={wink} alt="smile-icon" />
                         </div>
                     </div>
                     <div className="col">
@@ -39,14 +41,14 @@ const OurServices = () => {
                     </div>
                     <div className="col bottom">
                         <div className="content text-center">
-                            <img src={smile} alt="smile-icon" />
+                            <img src={icon3} alt="smile-icon" />
                         </div>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col">
                         <div className="content">
-                            <img src={smile} alt="smile-icon" />
+                            <img src={icon2} alt="smile-icon" />
                         </div>
                     </div>
                     <div className="col">
@@ -69,7 +71,7 @@ const OurServices = () => {
                     </div>
                     <div className="col">
                         <div className="content text-center">
-                            <img src={smile} alt="smile-icon" />
+                            <img src={icon5} alt="smile-icon" />
                         </div>
                     </div>
                 </div>

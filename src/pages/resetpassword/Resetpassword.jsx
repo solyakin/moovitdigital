@@ -3,6 +3,7 @@ import { useLocation, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import swal from 'sweetalert';
 import '../resetpassword/reset.scss';
+import Loader from "react-loader-spinner";
 import Header from '../../components/header/header';
 import logo from '../../assets/image 1.png';
 
@@ -17,10 +18,12 @@ const ResetPassword = ({navBackground}) => {
         email : '',
         password : '',
         password_confirmation : '',
-        token : url_token
+        token : url_token,
+        loading : false
     })
     const handleSubmit = (e) => {
         e.preventDefault();
+        setData({loading : true})
         if(data.password !== data.password_confirmation){
             swal("Ooops!", "Password confirmation does not match", "warning")
         }
@@ -31,7 +34,7 @@ const ResetPassword = ({navBackground}) => {
             newData.append('token', data.token);
             newData.append('email', data.email);
             axios({
-                url : 'https://api.moovitdigital.com/api/reset-password',
+                url : 'https://test.canyousing.com.ng/api/reset-password',
                 method : 'POST',
                 data : newData,
                 config: { headers: {'Content-Type': 'multipart/form-data'}}
@@ -43,21 +46,35 @@ const ResetPassword = ({navBackground}) => {
                     history.push('/login')
                    })
             })
-            .catch(err => setError(err.response.data.error));
+            .catch(err => {
+                setError(err.response.data.error)
+                setData({loading : false})
+            });
         }
-        if(data.token === ''){
+        if(data.token == '' || data.token == undefined){
             swal("Ooops!", "Something went wrong. Try again", "warning")
+            setData({laoding : false});
         }
     }
     const handleChange = (e) => {
         e.persist();
         setData({...data, [e.target.name] : e.target.value});
     }
+    
     let password_error = '';
     if(error.password){
         let newArray = error.password;
         password_error = newArray;
     }
+    let btnText = ""
+    if(data.loading === true){
+        btnText = <div className="spier" style={{display : data.loading ? "block" : "none"}}>
+        <Loader type="TailSpin" color="#ffffff" height={20} width={20} />
+        </div>
+    }else if(data.loading === false){
+        btnText = <span>Submit</span>
+    }
+
     return (
         <div className="reset_pass">
             <Header navBackground={navBackground}/>
@@ -86,7 +103,9 @@ const ResetPassword = ({navBackground}) => {
                                 <label>Confirm Password</label>
                                 <input type="password" name="password_confirmation" value={data.password_confirmation} required onChange={handleChange}/>
                             </div>
-                            <button type="submit">Submit</button>
+                            <button type="submit" style={{backgroundColor : data.loading ? "#333333" : "#EE315D"}}>
+                                {btnText}
+                            </button>
                         </form>
                     </div>
                 </div>

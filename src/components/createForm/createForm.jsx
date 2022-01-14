@@ -1,9 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import { Link } from 'react-router-dom';
 import '../../components/createForm/createform.scss';
 import axios from 'axios';
-import NaijaStates from 'naija-state-local-government';
-import { Country, City }  from 'country-state-city';
+import swal from 'sweetalert'
 import caretRight from '../../assets/CaretRight.svg';
 import ellipse1 from '../../assets/Ellipse 27.svg';
 import ellipse2 from '../../assets/Ellipse 28.svg';
@@ -11,24 +10,115 @@ import tick from '../../assets/Frame 338.svg';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import subDays from "date-fns/subDays";
+import ReactSlider from 'react-slider';
+import IntlTelInput from 'react-intl-tel-input';
+import 'react-intl-tel-input/dist/main.css';
 
-const CreateForm = ({createAds, setCreateAds, setShowNext, state, setState, start, setStart, setFile, showNext2, setShowNext2, setShowNext3, handleChange}) => {    
+let autoComplete;
+
+const loadScript = (url, callback) => {
+  let script = document.createElement("script");
+  script.type = "text/javascript";
+
+  if (script.readyState) {
+    script.onreadystatechange = function() {
+      if (script.readyState === "loaded" || script.readyState === "complete") {
+        script.onreadystatechange = null;
+        callback();
+      }
+    };
+  } else {
+    script.onload = () => callback();
+  }
+
+  script.src = url;
+  document.getElementsByTagName("head")[0].appendChild(script);
+};
+
+const CreateForm = ({createAds, setCreateAds, setShowNext, state, setState, start, setStart, setFile, showNext2, setShowNext2, setShowNext3, handleChange}) => {   
+    const [newPhone, setPhone] = useState(false);
+    const [query, setQuery] = useState("");
+    const autoCompleteRef = useRef(null);
+    const [allArea, setAllArea] = useState([]);
+    const apiKey = PROCESS.ENV.token
+
+    function handleScriptLoad(updateQuery, autoCompleteRef) {
+        autoComplete = new window.google.maps.places.Autocomplete(
+          autoCompleteRef.current
+          // { types: ["geocode"] }
+        );
+        autoComplete.setFields(["address_components", "formatted_address"]);
+        autoComplete.addListener("place_changed", () =>
+          handlePlaceSelect(updateQuery)
+        );
+      }
+      
+      const handlePlaceSelect = async (updateQuery) => {
+        const addressObject = autoComplete.getPlace();
+        const query = addressObject.formatted_address;
+        updateQuery(query);
+        const alteredString = query + '='
+        setAllArea(prevState => [...prevState, alteredString]);
+        setQuery("");
+      }
+      
+    const [value, setValue] = useState([16, 60])
+    const handleValue = (values) => {
+        setValue(values)
+      }
+    const [interest, setInterest] = useState({
+        music : '',
+        travel : "",
+        movies : "",
+        education : "",
+        information : "",
+        technology : "",
+        vacation : ""
+    })
+    const [demograph, setDemograph] = useState({
+        under_12_years : "",
+        high_school : "",
+        employ_under_12_years : "",
+        under_50000 : "",
+        age_13_21 : "",
+        bachelor_degree : "",
+        employ_13_21_years : "",
+        income_50000_200000 : "",
+        age_21_40 : "",
+        master_degree : "",
+        employ_21_40_years : "",
+        income_200000_1000000 : "",
+        age_41_60 : "",
+        post_graduate : "",
+        employ_41_60years : "",
+        income_1000000_10000000 : "",
+        above_60years : "",
+        professional : "",
+        employ_above_60years : "",
+        above_10000000 : ""
+    })
+    const __handleChange3 = (e) => {
+        const targetValue = e.target.value + '='
+        if(e.target.checked === true){
+            setInterest({...interest, [e.target.name] : targetValue}) 
+        }else if(e.target.checked === false){
+            setInterest({...interest, [e.target.name] : ''})   
+        }   
+    }
+    const __handleChange4 = (e) => {
+        const targetValue = e.target.value + '='
+        if(e.target.checked === true){
+            setDemograph({...demograph, [e.target.name] : targetValue})
+        }else if(e.target.checked === false){
+            setDemograph({...demograph, [e.target.name] : ""})
+        }
+    }
     
-    // const handleChange3 =(data) => {
-    //     let newDate = data.toLocaleString().split(',')[0];
-    //     setStart(newDate);
-    //     setCreateAds({...createAds, start : newDate})
-    // }
-    // const initialValue = () => {
-    //     const value = "Nigeria";
-    //     return value;
-    //   };
     const [value_, setValue_] = useState({
         locate : "",
-        region : ""
+        region : "",
     });
     const [locations, setLocation] = useState([]);
-    const [allArea, setAllArea] = useState([]);
     const [option, setOption] = useState({
         gender : '',
         show : false
@@ -41,10 +131,7 @@ const CreateForm = ({createAds, setCreateAds, setShowNext, state, setState, star
     const handlePop = (e) => { 
         e.preventDefault();
         const preferedLocation = e.target.value;
-        if(e.target.value !== ''){
-            setAllArea(prevState => [...prevState, preferedLocation])
-        }
-        setLocation([]);
+        setQuery(preferedLocation)
     }
     const closePop = (e) => {
         e.preventDefault();
@@ -57,43 +144,56 @@ const CreateForm = ({createAds, setCreateAds, setShowNext, state, setState, star
         setOption({gender : e.target.value})
         setCreateAds({...createAds, gender : e.target.value})
     }
-    // const handleChange_2 = (e) => {
-    //     e.persist();
-    //     setOption({ageRange : e.target.value});
-    //     setCreateAds({...createAds, ageRange : e.target.value})
-    // }
 
-    const allCountries = Country.getAllCountries();
-    const allCities = City.getCitiesOfCountry(value_.region);
-    const filteredArea = allCountries.filter(item => item.name === value_.locate);
-    filteredArea.map(({isoCode}) => {
-        setValue_({region : isoCode})
-    })
     const __handleChange = (e) => {
         e.persist();
         const targetLocation = e.target.value;
         setValue_({locate : targetLocation});
         setCreateAds({...createAds, location : e.target.value})
-        // setAllArea(prevState => [...prevState, targetLocation])
     }
-    const __handleChange2 =(e) => {
-        const targetArea = e.target.value;
-        setOption({show : true})
-        setLocation(targetArea)
-        // setLocation(prevState2 => [...prevState2, targetArea]);
-    }
+    const scrollToTop3 = ()=>{
+        document.getElementById('temp').scrollIntoView(0,0);
+      }
     const handleSave = (e) =>{
         e.preventDefault();
-        setCreateAds({...createAds, area : allArea, [state.selectedOption] : "1" });
+        const newArray = Object.values(interest)
+        const finalArray = newArray.filter(item => item !== "")
+        const demoArray = Object.values(demograph);
+        const finalDemo = demoArray.filter(item => item !== "");
+        setCreateAds({...createAds, area : allArea, [state.selectedOption] : "1", ageRange: value, interests : finalArray, demographics : finalDemo })
         setShowNext2("none");
         setShowNext3("block")
+        scrollToTop3();
+        // if(newPhone !== true){
+        
+        // }else{
+        //     swal("enter valid phone number")
+        // }
     }
+
+
+    let anyRef = useRef(null)
+
+    useEffect(() => {
+        loadScript(
+          `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`,
+          () => handleScriptLoad(setQuery, autoCompleteRef)
+        );
+        axios.get('https://restcountries.com/v3.1/all')
+        .then(response => {
+            const result = response.data;
+            setLocation(result)
+        })
+        .catch(error => console.log(error))
+    }, []);
+
+
     const valueChange = (e) => {
         setState({selectedOption : e.target.value});
     }
-    console.log(allArea)
+
     return (
-        <div style={{display : showNext2}}>
+        <div style={{display : showNext2}} ref={anyRef } id="wrapper">
             <div className="pages-link">
                 <Link to='#'>Home</Link>
                 <img src={caretRight} alt="caret right"/>
@@ -146,21 +246,29 @@ const CreateForm = ({createAds, setCreateAds, setShowNext, state, setState, star
                             </div>
                             <div className="row dates mb-4">
                                 <div className="col">
-                                    <div className="form-group start">
+                                    <div className="form-group start mr-3" style={{zIndex : "100000"}}> 
                                         <label htmlFor="">Start date</label><br></br>
-                                        {/* <DatePicker
+                                        <DatePicker
                                         selected={createAds.start}
-                                        onChange={(data) => handleChange3(data)}
-                                        minDate={new Date(), 1}
+                                        onChange={(date) => setCreateAds({...createAds, start : date})}
+                                        minDate={subDays(new Date(), 0)}
                                         placeholderText="Select a day"
-                                        /> */}
-                                        <input type="date" required  placeholder="(DD/MM/YY) e.g 10/2/2021" name="start" onChange={handleChange} value={createAds.start}/>
+                                        required
+                                        />
+                                        {/* <input type="date" required  placeholder="(DD/MM/YY) e.g 10/2/2021" name="start" onChange={handleChange} value={createAds.start}/> */}
                                     </div>
                                 </div>
                                 <div className="col">
-                                    <div className="form-group end">
+                                    <div className="form-group end" style={{zIndex : "100000"}}>
                                     <label htmlFor="">End date</label><br></br>
-                                    <input type="date" required  placeholder="(DD/MM/YY) e.g 20/3/2022" name="end" onChange={handleChange} value={createAds.end}/>
+                                        <DatePicker
+                                        selected={createAds.end}
+                                        onChange={(date) => setCreateAds({...createAds, end : date})}
+                                        minDate={subDays(new Date(), 0)}
+                                        placeholderText="Select a day"
+                                        required
+                                        />
+                                    {/* <input type="date" required  placeholder="(DD/MM/YY) e.g 20/3/2022" name="end" onChange={handleChange} value={createAds.end}/> */}
                                 </div>
                             </div>
                             <div className="row dates mb-3">
@@ -177,25 +285,74 @@ const CreateForm = ({createAds, setCreateAds, setShowNext, state, setState, star
                                 </div>
                                 <div className="col">
                                     <div className="form-group end">
-                                        <label htmlFor="">Age range</label><br></br>
-                                        {/* <select name="" id="" value={option.ageRange} onChange={handleChange_2} required>
-                                            <option value="" selected disabled>select age range</option>
-                                            <option value="18-30">18-30</option>
-                                            <option value="31-50">31-50</option>
-                                            <option value="51-70">51-70</option>
-                                            <option value="above 70">Above 70</option>
-                                        </select> */}
-                                        <input type="text"  placeholder="18-60" required name="ageRange" onChange={handleChange} value={createAds.ageRange}/>
+                                    <label htmlFor="">Phone</label><br></br>
+                                        <IntlTelInput
+                                        containerClassName="intl-tel-input"
+                                        inputClassName="form-control"
+                                        preferredCountries={['ng']}
+                                        format
+                                        onPhoneNumberChange={(status, value, countryData, number, disabled) => {
+                                            console.log(status)
+                                            const formatedNumber = value.replace(/\D+/g, '');
+                                            if(status === true){
+                                                setCreateAds({...createAds, phone : formatedNumber})  
+                                                setPhone(false)
+                                            }else if(value.length > 13){
+                                                swal("wrong number")
+                                                setPhone(true)
+                                            } 
+                                        }}
+                                        onPhoneNumberBlur={(status, value, countryData, number) => {
+                                            console.log('onPhoneNumberBlur value', value);
+                                            console.log('onPhoneNumberBlur number', status);
+                                        }}
+                                        // value={state}
+                                        fieldName='phone'
+                                        // onPhoneNumberBlur={onBlur()}
+                                        required
+                                        />
+                                        {/* <input type="text" required placeholder="+234 816 911 4001" name="phone" onChange={handleChange} value={createAds.phone}/> */}
                                     </div>
                                 </div>
                             </div>
                             <div className="row dates">
                                 <div className="col-lg-6">
                                     <div className="form-group start">
-                                        <label htmlFor="">phone</label><br></br>
-                                        <input type="text" required placeholder="+234 816 911 4001" name="phone" onChange={handleChange} value={createAds.phone}/>
+                                        <label htmlFor="">Facebook Business Page</label><br></br>
+                                        <input type="text" required placeholder="Brand hub page" name="fbPage" onChange={handleChange} value={createAds.fbPage}/>
                                     </div>
                                 </div>
+                                <div className="col-lg-6">
+                                    <div className="form-group end">
+                                        <label htmlFor="">Instagram Account</label><br></br>
+                                        <input type="text" required placeholder="Brand hub page" name="instagram" onChange={handleChange} value={createAds.instagram}/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row dates">
+                                <div className="col-lg-6">
+                                    <div className="form-group start">
+                                        <label htmlFor="">Linkedin Business Page</label><br></br>
+                                        <input type="text" required placeholder="Brand hub page" name="linkedin" onChange={handleChange} value={createAds.linkedin}/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row mt-4 mb-5">
+                                <div className="col-lg-8">
+                                    <label htmlFor="" className="mb-3">Age range</label><br></br>
+                                    <ReactSlider
+                                    value={value}
+                                    min={16}
+                                    max={100}
+                                    minDistance={10}
+                                    onChange={handleValue}
+                                    className="horizontal-slider"
+                                    thumbClassName="example-thumb"
+                                    trackClassName="example-track"
+                                    renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
+                                />
+                                </div>
+                            
                             </div>
                             <div className="row">
                                 <div className="col-lg-8">
@@ -231,83 +388,35 @@ const CreateForm = ({createAds, setCreateAds, setShowNext, state, setState, star
                                             <input type="radio" value="reach" name="type" checked={state.selectedOption === "reach"} onChange={valueChange} />
                                             <span>Reach</span>
                                         </div>
-                                        {/* <div className="form-group">
-                                            <input type="checkbox" name="awareness" id="" onClick={() =>setCreateAds({...createAds, 'awareness' : 1})}/>
-                                            <span>Awareness</span>
-                                        </div>
-                                        <div className="form-group">
-                                            <input type="checkbox" name="traffic" id="" onClick={() =>setCreateAds({...createAds, 'traffic' : 1})}/>
-                                            <span>Traffic</span>
-                                        </div>
-                                        <div className="form-group">
-                                            <input type="checkbox" name="engagement" id="" onClick={() =>setCreateAds({...createAds, 'engagement' : 1})}/>
-                                            <span>Enagagement</span>
-                                        </div>
-                                        <div className="form-group">
-                                            <input type="checkbox" name="conversions" id="" onClick={() =>setCreateAds({...createAds, 'conversions' : 1})}/>
-                                            <span>Conversions</span>
-                                        </div>
-                                        <div className="form-group">
-                                            <input type="checkbox" name="sales" id="" onClick={() =>setCreateAds({...createAds, 'sales' : 1})}/>
-                                            <span>Sales</span>
-                                        </div>
-                                        <div className="form-group">
-                                            <input type="checkbox" name="apps" id="" onClick={() =>setCreateAds({...createAds, 'apps' : 1})}/>
-                                            <span>App installs</span>
-                                        </div>
-                                        <div className="form-group">
-                                            <input type="checkbox" name="reach" id="" onClick={() =>setCreateAds({...createAds, 'reach' : 1})}/>
-                                            <span>Reach</span>
-                                        </div> */}
                                     </div>
                                 </div>
                                 </div>
                             </div>
                             </div>
                             <div className="row dates">
-                                <div className="col-lg-6">
-                                    <div className="form-group mr-3">
-                                        <label htmlFor="">Enter Target area</label><br></br>
+                                <div className="col-lg-7">
+                                    <div className="form-group">
+                                        <label htmlFor="">Select Target Country</label><br></br>
                                         <input list="data" value={value_.locate} onChange={__handleChange} required />
                                         <datalist id="data">
-                                            {allCountries.map(({name, isoCode}) =>
-                                                <option value={name} id={isoCode}>{name}</option>
+                                            {locations.map(({name, index}) =>
+                                                <option value={name.common} id={index}>{name.common}</option>
                                             )}
                                         </datalist>
-                                        {/* <select value={value} required onChange={__handleChange}>
-                                            {
-                                                allCountries.map(({ name,code }) => {
-                                                    return(
-                                                        <option key={name} value={name}>{name}</option>
-                                                    )   
-                                                })
-                                            }
-                                        </select> */}
                                     </div>
                                 </div>
-                                {/* <div className="col">
-                                    <div className="form-group end">
-                                        <label htmlFor="">Pick location</label><br></br>
-                                        <select  required style={{height : "41.5px"}}>
-                                            {
-                                                allCities.map(({name, stateCode}) => {
-                                                    return(
-                                                        <option value={name}>{name} </option>
-                                                    )   
-                                                })
-                                            }
-                                        </select>
-                                    </div>
-                                </div> */}
                             </div>
-                            <div className="preferred-location mb-5">
-                                <div className="row mt-4">
-                                    <div className="col-md-6" style={{position: "relative"}}>
-                                        <label htmlFor="">Enter preferred Locations</label>
-                                        <input type="text" name="prefer-location" value={locations} onChange={__handleChange2}  />
-                                        <div className="board" style={{display : option.show ? "block" : "none"}}>
-                                            <input type="text" defaultValue={locations} onClick={handlePop} readonly="readOnly"/>
-                                        </div>
+                            
+                            <div className="row">
+                                <div className="col-lg-7">
+                                    <div className="search-location-input">
+                                        <label htmlFor="">Select Target Areas</label>
+                                        <input
+                                            ref={autoCompleteRef}
+                                            onChange={handlePop}
+                                            placeholder="Enter target location"
+                                            value={query}
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -330,183 +439,215 @@ const CreateForm = ({createAds, setCreateAds, setShowNext, state, setState, star
                             </div>
                         </div>
                         <div className="row demographic">
-                                <div className="col">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                        <th scope="col">Age-Group</th>
-                                        <th scope="col">Education</th>
-                                        <th scope="col">Employment</th>
-                                        <th scope="col">Income(Naira)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                            <td>
-                                                <div className="form-group">
-                                                    <input type="checkbox" name="apps" id="" onClick={() =>setCreateAds({...createAds, 'apps' : 1})}/>
-                                                    <span>Under 12 years</span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="form-group">
-                                                    <input type="checkbox" name="apps" id="" onClick={() =>setCreateAds({...createAds, 'apps' : 1})}/>
-                                                    <span>12 - 20 years</span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="form-group">
-                                                    <input type="checkbox" name="apps" id="" onClick={() =>setCreateAds({...createAds, 'apps' : 1})}/>
-                                                    <span>21 - 40 years</span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="form-group">
-                                                    <input type="checkbox" name="apps" id="" onClick={() =>setCreateAds({...createAds, 'apps' : 1})}/>
-                                                    <span>41 - 60years</span>
-                                                </div>
-                                            </td>
-                                         {/* </tr> */}
-                                        <tr>
-                                            <td>
-                                                <div className="form-group">
-                                                    <input type="checkbox" name="apps" id="" onClick={() =>setCreateAds({...createAds, 'apps' : 1})}/>
-                                                    <span>12 - 20 years</span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="form-group">
-                                                    <input type="checkbox" name="apps" id="" onClick={() =>setCreateAds({...createAds, 'apps' : 1})}/>
-                                                    <span> Above 60years</span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="form-group">
-                                                    <input type="checkbox" name="apps" id="" onClick={() =>setCreateAds({...createAds, 'apps' : 1})}/>
-                                                    <span>App installs</span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="form-group">
-                                                    <input type="checkbox" name="apps" id="" onClick={() =>setCreateAds({...createAds, 'apps' : 1})}/>
-                                                    <span>App installs</span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div className="form-group">
-                                                    <input type="checkbox" name="apps" id="" onClick={() =>setCreateAds({...createAds, 'apps' : 1})}/>
-                                                    <span>App installs</span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="form-group">
-                                                    <input type="checkbox" name="apps" id="" onClick={() =>setCreateAds({...createAds, 'apps' : 1})}/>
-                                                    <span>App installs</span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="form-group">
-                                                    <input type="checkbox" name="apps" id="" onClick={() =>setCreateAds({...createAds, 'apps' : 1})}/>
-                                                    <span>App installs</span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="form-group">
-                                                    <input type="checkbox" name="apps" id="" onClick={() =>setCreateAds({...createAds, 'apps' : 1})}/>
-                                                    <span>App installs</span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div className="form-group">
-                                                    <input type="checkbox" name="apps" id="" onClick={() =>setCreateAds({...createAds, 'apps' : 1})}/>
-                                                    <span>App installs</span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="form-group">
-                                                    <input type="checkbox" name="apps" id="" onClick={() =>setCreateAds({...createAds, 'apps' : 1})}/>
-                                                    <span>App installs</span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="form-group">
-                                                    <input type="checkbox" name="apps" id="" onClick={() =>setCreateAds({...createAds, 'apps' : 1})}/>
-                                                    <span>App installs</span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="form-group">
-                                                    <input type="checkbox" name="apps" id="" onClick={() =>setCreateAds({...createAds, 'apps' : 1})}/>
-                                                    <span>App installs</span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div className="form-group">
-                                                    <input type="checkbox" name="apps" id="" onClick={() =>setCreateAds({...createAds, 'apps' : 1})}/>
-                                                    <span>App installs</span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="form-group">
-                                                    <input type="checkbox" name="apps" id="" onClick={() =>setCreateAds({...createAds, 'apps' : 1})}/>
-                                                    <span>App installs</span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="form-group">
-                                                    <input type="checkbox" name="apps" id="" onClick={() =>setCreateAds({...createAds, 'apps' : 1})}/>
-                                                    <span>App installs</span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="form-group">
-                                                    <input type="checkbox" name="apps" id="" onClick={() =>setCreateAds({...createAds, 'apps' : 1})}/>
-                                                    <span>App installs</span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div className="form-group">
-                                                    <input type="checkbox" name="apps" id="" onClick={() =>setCreateAds({...createAds, 'apps' : 1})}/>
-                                                    <span>App installs</span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="form-group">
-                                                    <input type="checkbox" name="apps" id="" onClick={() =>setCreateAds({...createAds, 'apps' : 1})}/>
-                                                    <span>App installs</span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="form-group">
-                                                    <input type="checkbox" name="apps" id="" onClick={() =>setCreateAds({...createAds, 'apps' : 1})}/>
-                                                    <span>App installs</span>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div className="form-group">
-                                                    <input type="checkbox" name="apps" id="" onClick={() =>setCreateAds({...createAds, 'apps' : 1})}/>
-                                                    <span>App installs</span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div className="col">
+                                <h4>Demographics(Optional)</h4>
+                                <div className="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                            <th scope="col">Age-Group</th>
+                                            <th scope="col">Education</th>
+                                            <th scope="col">Employment</th>
+                                            <th scope="col">Income(Naira)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="under_12_years" value="under 12 years" onClick={__handleChange4}/>
+                                                        <span>Under 12 years</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="high_school" value="high school" onClick={__handleChange4}/>
+                                                        <span>High School</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="employ_under_12_years" value="employ under 12 years" onClick={__handleChange4}/>
+                                                        <span>under 12 years</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="under_50000" value="under 50,000" onClick={__handleChange4}/>
+                                                        <span>Under 50,000</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="age_13_21" value="13 - 21 years" onClick={__handleChange4}/>
+                                                        <span>13 - 21 years</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="bachelor_degree" value="bachelor's degree" onClick={__handleChange4}/>
+                                                        <span> Bachelor’s degree </span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="employ_13_21_years" value="employ 13 - 21 years" onClick={__handleChange4}/>
+                                                        <span>13 -21 years</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="income_50000_200000" value="50,000 - 200,000" onClick={__handleChange4}/>
+                                                        <span>50,000 - 200,000</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="age_21_40" value="21 - 40 years" onClick={__handleChange4}/>
+                                                        <span>21 - 40 years</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="master_degree" value="master's degree" onClick={__handleChange4}/>
+                                                        <span>Master's Degree</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="employ_21_40_years" value="employ 21 - 40 years" onClick={__handleChange4}/>
+                                                        <span>21 - 40 years</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="income_200000_1000000" value="200,000 - 1,000,000" onClick={__handleChange4}/>
+                                                        <span>200,000-1,000,000</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="age_41_60" value="41 - 60years" onClick={__handleChange4}/>
+                                                        <span>41 - 60years</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="post_graduate" value="post graduate" onClick={__handleChange4}/>
+                                                        <span>Post graduate</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="employ_41_60years" value="employ 41 - 60years" onClick={__handleChange4}/>
+                                                        <span>41 - 60years</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="income_1000000_10000000" value="1,000,000 - 10,000,000" onClick={__handleChange4}/>
+                                                        <span>1,000,000 - 10,000,000</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="above_60years" value="above 60years" onClick={__handleChange4}/>
+                                                        <span>Above 60years</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="professional" value="Professional/doctorate" onClick={__handleChange4}/>
+                                                        <span>Doctorate</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="employ_above_60years" value="employ above 60years" onClick={__handleChange4}/>
+                                                        <span>Above 60years</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="above_10000000" value="above 10,000,000" onClick={__handleChange4}/>
+                                                        <span>Above 10,000,000</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                            <div className="lower-btn">
-                                <p className="" onClick={handleBack}>Back</p>
-                                <button onClick={handleSave}>
-                                    Save and continue
-                                </button>
+                        </div>
+                        <div className="interest">
+                            <h4>Interest</h4>
+                            <div className="row">
+                                <div className="col-lg-6">
+                                    <div className="row mb-3">
+                                        <div className="col">
+                                            <div className="form-group">
+                                                <input type="checkbox" name="music" value="music" onChange={__handleChange3} />
+                                                <span>Music</span>
+                                            </div>
+                                        </div>
+                                        <div className="col">
+                                            <div className="form-group">
+                                                <input type="checkbox" name="travel" value="travel" id="" onChange={__handleChange3}/>
+                                                <span>Travel</span>
+                                            </div>
+                                        </div>
+                                        <div className="col">
+                                            <div className="form-group">
+                                                <input type="checkbox" name="education" value="education" onClick={__handleChange3} id=""/>
+                                                <span>Education</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row mb-3">
+                                        <div className="col">
+                                            <div className="form-group">
+                                                <input type="checkbox" name="technology" value="technology" onClick={() => {setInterest({...interest, technology : "technology"})}} id=""/>
+                                                <span>Technology</span>
+                                            </div>
+                                        </div>
+                                        <div className="col">
+                                            <div className="form-group">
+                                                <input type="checkbox" name="movies" value="movies" onClick={__handleChange3} id=""/>
+                                                <span>Movies</span>
+                                            </div>
+                                        </div>
+                                        <div className="col">
+                                            <div className="form-group">
+                                                <input type="checkbox" name="vacation" value="vacation" onClick={__handleChange3} id=""/>
+                                                <span>Vacation</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row mb-3">
+                                        <div className="col">
+                                        <div className="form-group">
+                                                <input type="checkbox" name="information" value="information" onClick={__handleChange3} id=""/>
+                                                <span>Information</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                    {/* </form> */}
+                        </div>
+                        <div className="lower-btn">
+                            <p className="" onClick={handleBack}>Back</p>
+                            <button onClick={handleSave}>
+                                Save and continue
+                            </button>
+                        </div>
                 </div>
             </div>
         </div>

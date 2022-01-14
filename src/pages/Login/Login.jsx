@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+ import React, {useState, useEffect} from 'react'
 import { Link, useHistory } from 'react-router-dom';
 import Loader from "react-loader-spinner";
 import Header from '../../components/header/header';
@@ -22,22 +22,22 @@ const Login = ({navBackground}) => {
         setLogin({...login, [e.target.name] : e.target.value});
     }
 
-    const fb_login = (e) => {
-        e.preventDefault();
-        axios.get('https://api.moovitdigital.com/facebook/auth')
-        .then(res => {
-            console.log(res);
-        })
-        .catch(err => console.log(err));
-    }
-    const google_login = (e) => {
-        e.preventDefault();
-        axios.get('https://api.moovitdigital.com/google/googlelogin')
-        .then(res => {
-            console.log(res.data);
-        })
-        .catch(err => console.log(err))
-    }
+    // const fb_login = (e) => {
+    //     e.preventDefault();
+    //     axios.get('https://test.canyousing.com.ng/user/facebook/auth')
+    //     .then(res => {
+    //         console.log(res);
+    //     })
+    //     .catch(err => console.log(err));
+    // }
+    // const google_login = (e) => {
+    //     e.preventDefault();
+    //     axios.get('https://test.canyousing.com.ng/google/googlelogin')
+    //     .then(res => {
+    //         console.log(res.data);
+    //     })
+    //     .catch(err => console.log(err))
+    // }
     const formSubmit = (e) => {
         e.preventDefault();
         setLogin({loading : true});
@@ -51,7 +51,7 @@ const Login = ({navBackground}) => {
         newData.append('password', data.password);
 
         axios({
-            url : 'http://test.canyousing.com.ng/api/user/login',
+            url : 'https://test.canyousing.com.ng/api/user/login',
             method : 'POST',
             data : newData,
             config: { headers: {'Content-Type': 'multipart/form-data' }}
@@ -79,6 +79,7 @@ const Login = ({navBackground}) => {
             } 
         })
         .catch(err => {
+            console.log(err)
             if(err){
                 setLogin({loading : false});
                 // window.location.reload()
@@ -93,6 +94,15 @@ const Login = ({navBackground}) => {
                 error_text = <p>{res}</p>
             )
         })
+    }
+
+    let btnText = ""
+    if(login.loading === true){
+        btnText = <div className="spier" style={{display : login.loading ? "block" : "none"}}>
+        <Loader type="TailSpin" color="#ffffff" height={20} width={20} />
+        </div>
+    }else if(login.loading === false){
+        btnText = <span>Continue</span>
     }
     console.log(login)
     return (
@@ -118,24 +128,25 @@ const Login = ({navBackground}) => {
                             <div className="forget-password">
                                 <Link to='/forget-password'>Forgot Password?</Link>
                             </div>
-                            <button type="submit">
-                                <span>Login</span><br></br>
+                            <button type="submit" style={{backgroundColor : login.loading ? "#333333" : "#EE315D"}}>
+                                {btnText}
                             </button>
                         </form>
-                        <div className="spinner" style={{display : login.loading ? "block" : "none"}}>
-                            <Loader type="TailSpin" color="#EE315D" height={30} width={30} />
-                        </div>
                        <div className="signup">
                            <p>Don’t have an account? <Link to='/register'>Sign up</Link></p>
                        </div>
                        {/* <p className="or my-4">OR</p>
-                       <div className="google-btn" onClick={google_login} >
-                            <img src={google} alt="google icon" />
-                            <p>Continue with Google</p>
+                       <div className="google-btn"  >
+                           <a href="https://test.canyousing.com.ng/google/googlelogin" className="d-flex align-item-center">
+                                <img src={google} alt="google icon" />
+                                <p>Continue with Google</p>
+                           </a>
                        </div> */}
-                       {/* <div className="google-btn" onClick={fb_login}>
-                            <img src={facebook} alt="google icon" />
-                            <p>Continue with Facebbok</p>
+                       {/* <div className="google-btn">
+                           <a href="https://test.canyousing.com.ng/facebook/auth" className="d-flex align-item-center">
+                                <img src={facebook} alt="google icon" />
+                                <p>Continue with Facebbok</p>
+                           </a>
                         </div> */}
                        <div className="policy">
                             <div className="tnc">

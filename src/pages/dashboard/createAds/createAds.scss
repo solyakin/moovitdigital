@@ -64,7 +64,10 @@
             margin-top: 2rem;
             .row{
                 --bs-gutter-x: 0rem;
-                
+                max-width: 100%;
+                @media only screen and (max-width: 480px){
+                    display: block;
+                }
                 // form{
                     h5{
                         padding: 15px 20px;
@@ -76,7 +79,7 @@
                     .form-wrapper{
                         padding: 15px 20px;
                         width: 60%;
-                        @media only screen and (max-width: 678px){
+                        @media only screen and (max-width: 920px){
                             width: 80%;
                         }
                         @media only screen and (max-width: 480px){
@@ -92,7 +95,7 @@
                             font-size: 13px;
                             padding: 10px;
                             margin-bottom: 10px;
-                            border: 1px solid #bdbcbc;
+                            border: 1px solid #fae1a7;
                             outline: none;
                             width: 100%;
                         }
@@ -100,14 +103,14 @@
                             font-size: 14px;
                             padding: 10px 20px;
                             margin-bottom: 10px;
-                            border: 1px solid #bdbcbc;
+                            border: 1px solid #fae1a7;
                             outline: none;
                             width: 100%;
                         }
                         .dSXVwH{
                             display: block;
                             text-align: center;
-                            border: 1px dashed #808080;
+                            border: 1px dashed #fae1a7;
                             height: 110px;
                             max-width: 100%;
                             width: 100%;
@@ -120,15 +123,18 @@
                             }
                         }
                         .dates{
+                            .react-datepicker-popper{
+                                z-index: 10;
+                            }
                             .start{
                                 margin-right: 20px;
-                                @media only screen and (max-width : 768px){
-                                    margin-right: 0;
+                                @media only screen and (max-width : 920px){
+                                    margin-right: 0!important;
                                 }
                             }
                             .end{
                                 margin-left: 20px;
-                                @media only screen and (max-width : 768px){
+                                @media only screen and (max-width : 920px){
                                     margin-left: 0;
                                 }
                             }
@@ -142,7 +148,7 @@
                             }
                             select{
                                 width: 100%;
-                                border: 1px solid #bdbcbc;
+                                border: 1px solid #fae1a7;
                                 padding: 7px 15px;
                                 outline: none;
                                 font-size: 14px;
@@ -155,6 +161,12 @@
                             p{
                                 font-size: 12px;
                                 color: #808080;
+                            }
+                            .intl-tel-input{
+                                width: 100%;
+                                input{
+                                    padding-left: 50px;
+                                }
                             }
                         }
                         .col-lg-8{
@@ -218,50 +230,127 @@
                     .demographic{
                         width : 80%;
                         padding : 15px 20px;
-                        display: none;
+                        @media screen and (max-width: 768px){
+                            width: 100%;
+                        }
+                        .col{
+                            @media screen and (max-width: 480px){
+                                max-width: 280px;
+                                width: 100%;
+                            }
+                        }
+                        .table{
+                            @media screen and (max-width: 568px){
+                                overflow-x: scroll;
+                                width : 100%;
+                            }
+                            @media screen and (max-width: 480px){
+                                max-width: 280px!important;
+                                width: 100%;
+                            }
+                        }
+                        h4{
+                            font-size: 15px;
+                            color: #484848;
+                        }
                         th{
                             font-size : 14px;
                             font-weight : 400;
+                            @media screen and (max-width: 768px){
+                                font-size: 11px;
+                            }
                         }
                         td{
                             font-size: 13px;
+                            @media screen and (max-width: 768px){
+                                font-size: 9px;
+                            }
                         }
                         .form-group{
                             display : flex;
                             align-items : center;
+                            input{
+                                margin-right: 10px;
+                                @media screen and (max-width: 568px){
+                                    margin-right: 5px;
+                                    // width: 10px;
+                                    // height: 10px;
+                                }
+                            }
                         }
-                        input{
-                            margin-right: 10px;
-                        }
+                        
                     }
-                    
+                    .interest{
+                        padding: 15px 20px;
+                        @media screen and (max-width: 768px){
+                            width: 80%!important;
+                        }
+                        @media screen and (max-width: 480px){
+                            width: 100%!important;
+                        }
+                        .row{
+                            @media only screen and (max-width: 480px){
+                                display: flex;
+                            }
+                        }
+                        h4{
+                            font-size: 15px;
+                            color: #484848;
+                        }
+                        .form-group{
+                            span{
+                                font-size: 13px;
+                                margin-left: 10px;
+                            }
+                        }
+                        
+                    }
                     .price-list{
-                        display: flex;
-                        flex-wrap : wrap;
+                        display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(300px, 3fr));
                         padding: 20px;
                         justify-content: center;
+                        @media only screen and (max-width : 480px){
+                            width: 280px!important;
+                            margin-left: auto;
+                            margin-right: auto;
+                         }
                         .tier{
                             border: 1px solid #f1efef;
                             margin-right: 15px;
                             padding: 10px 15px;
-                            height: 300px;
+                            min-height: 350px;
                             position: relative;
-                            @media only screen and (max-width: 1108px){
-                                margin-bottom: 20px;
-                            }
+                            margin-top: 20px;
                             @media only screen and (max-width: 580px){
                                 margin-right: 0px;
                             }
-                            p{
-                                font-size: 13px;
-                                color: #333333;
-                                text-transform: uppercase;
-                                margin-bottom: 10px;
-                            }
+                            @media only screen and (max-width : 480px){
+                                width: 260px!important;
+                                margin-left: auto;
+                                margin-right: auto;
+                             }
                             h4{
-                                font-size: 18px;
-                                font-weight: 600;
-                                color: #333333;
+                                font-size: 26px;
+                                font-weight: 700;
+                                color: #EE315D;
+                                span{
+                                    font-size: 15px;
+                                    color: #333333;
+                                }
+                            }
+                            p{
+                                font-size: 15px;
+                                font-weight: 500;
+                            }
+                            .title{
+                                color: #666666;
+                                font-size: 16px;
+                            }
+                            h6{
+                                text-decoration: none;
+                                font-size: 13px;
+                                font-weight: 500;
                             }
                             ul{
                                 padding-left: 1.5rem;
@@ -269,7 +358,7 @@
                                 list-style-image: url('../../../assets/Check.svg');
                         
                                 li{
-                                    font-size: 12px;
+                                    font-size: 13px;
                                     color: #333333;
                                     font-style: normal;
                                     font-weight: normal;
@@ -278,21 +367,24 @@
                                 &::marker{
                                     width: 10px;
                                 }
-                                button{
-                                    position: absolute;
-                                    bottom: 20px;
-                                    left: 10px;
-                                    right: 10px;
-                                    padding: 7px 10px;
-                                    width: 80%;
-                                    border: none;
-                                    color: white;
-                                    background: #484848;
-                                    font-size: 14px;
-                                    margin: auto;
-                                }
+                                
                             }
-
+                            .btn-wrapper{
+                                margin-top: 1.5rem;
+                                margin-left: auto;
+                                margin-right: auto;
+                                width: 90%;
+                                margin-bottom: 1.3rem;
+                                button{
+                                     padding: 7px 10px;
+                                     width: 100%;
+                                     border: none;
+                                     color: white;
+                                     background: #484848;
+                                     font-size: 14px;
+                                 }
+                            }
+  
                         }
                     }
                     .target-area{

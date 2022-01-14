@@ -14,22 +14,27 @@ const Advertisers = () => {
     const [adsCount, setAdscount] = useState([]);
     const [isLoading, setLoading] = useState(true);
 
+    const [state, setState] = useState({
+        search : [],
+        searchField : ""
+    })
+
     const token = localStorage.getItem("auth_token");
     const authAxios = axios.create({
         baseURL : "https://test.canyousing.com.ng",
         headers : {
             Authorization : `Bearer ${token}`,
             'Content-Type' : "applciation/json",
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods' : 'GET, POST, PUT, DELETE, OPTIONS',
-            'Access-Control-Allow-Headers' : 'X-Requested-With, Content-Type, X-Token-Auth, Authorization',
-            'Access-Control-Allow-Credentials' : 'true'
         }
     })
     const handleClick = (e) => {
         // e.preventDefault();
         const targetId = e.target.id;
         localStorage.setItem("tg_id", targetId);
+    }
+    const handleSearch = (e) => {
+        e.persist();
+        setState({searchField : e.target.value})
     }
     useEffect(() => {
        const fetching = async () => {
@@ -54,6 +59,10 @@ const Advertisers = () => {
 
     let valuesArray = Object.values(adsCount);
     console.log(valuesArray)
+
+    // const { search, searchField} = state;
+    const searchedArray = valuesArray.filter(item => item.firstName.toLowerCase().includes(state.searchField.toLowerCase()))
+    console.log(searchedArray);
     
     return (
         <div className="dashboard preview">
@@ -84,7 +93,7 @@ const Advertisers = () => {
                                         <h4>Advertisers List</h4>
                                     </div>
                                     <div className="smm">
-                                        <input type="text" placeholder="search"/>
+                                        <input type="text" onChange={handleSearch} placeholder="search advertiser"/>
                                     </div>
                                 </div>
                                 <div className="history-table">
@@ -102,7 +111,7 @@ const Advertisers = () => {
                                     </thead>
                                     <tbody>
                                         {
-                                           valuesArray.map(({id, firstName, lastName, email, phone, business_bio, company, turnover}) => {
+                                           searchedArray.map(({id, firstName, lastName, email, phone, business_bio, company, turnover}) => {
                                                return(
                                                 <tr key={id}>
                                                 <th scope="row">
@@ -118,7 +127,6 @@ const Advertisers = () => {
                                                         <Link to='/admin/advertiser/preview' id={id} onClick={handleClick}>Preview</Link>
                                                     </td>
                                                 </tr>
-
                                                )
                                             })
                                         }

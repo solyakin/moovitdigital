@@ -2,19 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../../dashboard/dashboard.scss';
 import '../../dashboard/ads-history/ads-history.scss';
-import caretDown from '../../../assets/CaretDown.svg';
-import caretDown2 from '../../../assets/CaretDown2.svg';
-import squares from '../../../assets/SquaresFour.svg';
-import megaphone from '../../../assets/MegaphoneSimple.svg';
-import bag from '../../../assets/BagSimple.svg';
-import creditCard from '../../../assets/CreditCard.svg';
-import user from '../../../assets/User.svg';
-import Handshake from '../../../assets/Handshake.svg';
-import signout from '../../../assets/SignOut.svg';
 import logo from '../../../assets/image 1.png';
 import Tags from '../../../components/Tags/Tags';
+import MobileTags from '../../../components/MobileTags/mobileTags';
+import hamburger from '../../../assets/hamburger.png';
 
 const PaymentHistory = () => {
+    const [ham, setHam] = useState(false);
     const [style, setStyle] = useState({
         hide : false,
         transformArrow : false,
@@ -23,23 +17,30 @@ const PaymentHistory = () => {
         e.preventDefault();
         setStyle({hide : !style.hide, transformArrow : !style.transformArrow});
     }
+    const toggler = (e) => {
+        e.preventDefault();
+        setHam(!ham);
+    } 
     return (
         <div className="dashboard">
             <div className="small-title">
                 <div className="title-text justify-content-between">
                     <div className="logo">
-                        <Link to='/'>
+                        <img src={hamburger} alt="hamburger" width="25px" className="hamburger" onClick={toggler}/>
+                        <Link to='/home'>
                             <img src={logo} alt="moovit-logo" />
                         </Link>
                     </div>
                     <div className="text d-flex align center">
-                        {/* <p>The Brand Hub</p>
-                        <img src={caretDown} alt="" /> */}
+                        
                     </div>
                 </div>
                 <div className="dashboard-main-wrapper">
                     <div className="tabs">
                         <Tags style={style} handleClick={handleClick}/>
+                    </div>
+                    <div className="mobile-tag">
+                        <MobileTags style={style} handleClick={handleClick} ham={ham}/>
                     </div>
                     <div className="dashboard-main">
                         <div className="ads-wrapper">

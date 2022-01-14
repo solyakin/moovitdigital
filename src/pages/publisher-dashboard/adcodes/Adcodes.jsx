@@ -11,11 +11,15 @@ import user from '../../../assets/User.svg';
 import Handshake from '../../../assets/Handshake.svg';
 import signout from '../../../assets/SignOut.svg';
 import logo from '../../../assets/image 1.png';
+import hamburger from '../../../assets/hamburger.png';
+import PublisherMobileTag from '../../../components/Pub-mobile-Tab/PubMobileTag';
 
 const PublisherAdcode = () => {
 
     const [adcodes, setAdcodes] = useState([]);
-
+    const [banner, setBanner] = useState([]);
+    const [ham, setHam] = useState(false);
+    const [notification, setNotification] = useState([]);
     const history = useHistory();
     const token = localStorage.getItem("auth_token");
     const auth_id = localStorage.getItem("auth_id");
@@ -29,10 +33,17 @@ const PublisherAdcode = () => {
         const dataFetching = async() => {
             const fetching_all_adcodes = await authAxios.get('/api/user/scripts');
             const fetched_data = fetching_all_adcodes.data;
-            console.log(fetched_data)
             if(fetched_data !== null){
                 setAdcodes(fetched_data.data);
             }
+
+            const banners = await authAxios.get('/api/user/all-banners')
+            const res = banners.data;
+            setBanner(res.data)
+
+            const allNotifications = await authAxios.get('/api/user/notifications');
+            const notification_array = allNotifications.data;
+            setNotification(notification_array.data);
         }
         dataFetching();
     }, []);
@@ -48,19 +59,25 @@ const PublisherAdcode = () => {
         })
         .catch(err => console.log(err));
     }
-    console.log(adcodes)
+    const toggler = (e) => {
+        e.preventDefault();
+        setHam(!ham);
+    } 
+
+    let notification_count = notification.length;
+
     return(
         <div className="dashboard">
             <div className="small-title">
                 <div className="title-text justify-content-between">
                     <div className="logo">
+                        <img src={hamburger} alt="hamburger" width="25px" className="hamburger" onClick={toggler}/>
                         <Link to='/home'>
                             <img src={logo} alt="moovit-logo" />
                         </Link>
                     </div>
                     <div className="text d-flex align center">
-                        {/* <p>The Brand Hub</p>
-                        <img src={caretDown} alt="" /> */}
+                        
                     </div>
                 </div>
                 <div className="dashboard-main-wrapper">
@@ -108,37 +125,40 @@ const PublisherAdcode = () => {
                             <p onClick={handleLogout} className="logout">Logout</p>
                         </div>
                     </div>
+                    <div className="mobile-tag">
+                        <PublisherMobileTag ham={ham} notification_count={notification_count} handleLogout={handleLogout} />
+                    </div>
                     <div className="dashboard-main">
-                        <div className="ads-wrapper mt-3">
+                        <div className="ads-wrapper mt-3 mt--3">
                             <div className="ads-heading">
                                 <h4>My Adcode</h4>
                             </div> 
                             <div className="support">
                                 <div className="row">
-                                    <div className="col-lg-5">
-                                        <div className="form-group">
-                                            
-                                            {
-                                                adcodes ?
-                                                <div className="code-wrapper">
-                                                    <div className="title">
-                                                        <p>Title</p>
+                                    {               
+                                        adcodes.map(({id, script, created_at}) => {
+                                            const adcode_id = id;
+                                            let validDate = created_at.split('T');
+                                            let validTime = validDate[1].split('.')
+
+                                            return <div className="col-lg-4 col-md-6 mb-5" key={adcode_id}>
+                                                <div className="form-group">
+                                                    <div className="code-wrapper" >
+                                                        {
+                                                            banner.map(({id, name, banner}) => {
+                                                                if(id == adcode_id ){
+                                                                    return <p style={{color : "#484848", fontWeight : "500"}}>{name}</p>
+                                                                }
+                                                            }) 
+                                                        }
+                                                        <p style={{color: "#484848", fontSize : "12px", marginBottom : ".6rem"}}>Created At : {validDate[0]} | {validTime[0]}</p>
+                                                        <textarea style={{border : "1px solid #e1e1e1", paddingLeft : "10px", paddingRight: "10px"}}  name="" id="" cols="30" rows="10" defaultValue={script}>
+                                                        </textarea>
                                                     </div>
-                                                    <textarea  name="" id="" cols="30" rows="10" style={{width: "100%", border : "1px solid #e5e5e5"}} defaultValue={adcodes.script}>
-                                                        {adcodes.script}
-                                                    </textarea>
-                                                </div> : <></>
-                                                   
-                                                // adcodes.map(({id, script}) => {
-                                                //     return <div className="code-wrapper" key={id}>
-                                                //         <textarea  name="" id="" cols="30" rows="10" defaultValue={script}>
-                                                //             {script}
-                                                //         </textarea>
-                                                //     </div>
-                                                // })
-                                            }   
-                                        </div>
-                                    </div>
+                                                </div>
+                                            </div>
+                                        })
+                                    }    
                                 </div>           
                             </div>
                         </div>

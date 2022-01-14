@@ -32,7 +32,7 @@ const Call = () => {
                 <div className="title-text justify-content-between">
                     <div className="logo">
                         <img src={hamburger} alt="hamburger" width="25px" className="hamburger" onClick={toggler}/>
-                        <Link to='/'>
+                        <Link to='/home'>
                             <img src={logo} alt="moovit-logo" />
                         </Link>
                     </div>
@@ -86,7 +86,7 @@ const Call = () => {
                                 <button>
                                     <Link to='/review'>Proceed to call</Link>
                                 </button>
-                                <p>Not ready yet? <span>schedule for later</span></p>
+                                {/* <p>Not ready yet? <span>schedule for later</span></p> */}
 
                                 <div className="notice">
                                     <p>Beware of scammers. Our representative will not ask for your bank details, password or any confidential information.</p>

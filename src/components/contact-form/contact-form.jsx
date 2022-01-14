@@ -39,7 +39,13 @@ const ContactForm = () => {
         .then(res => {
             if(res.status == 200){
                 console.log(res.data)
-                swal("Great!", "Message sent successfully added!", "success");
+                swal("Great!", "Message sent successfully added!", "success")
+                .setSupport({
+                    name : '',
+                    email : '',
+                    description : '',
+                    subject : ''
+                })
             }
         })
         .catch(err => console.log(err))
@@ -64,11 +70,15 @@ const ContactForm = () => {
                                 <label htmlFor="">Subject</label>
                                 <input type="text" name="subject" value={support.subject} onChange={handleChange} />
                             </div>
-                            <div className="form-group">
+                            <div className="form-group mt-3">
                                 <label htmlFor="">Message</label>
                                 <textarea name="description" id="" cols="10" rows="3" placeholder="enter message here" value={support.description} onChange={handleChange}></textarea>
                             </div>
-                            <button type="submit" className="mb-5">Submit</button>
+                            <div className="row justify-content-center">
+                                <div className="col-lg-5 col-sm-10">
+                                    <button type="submit" className="mb-5 mt-4">Submit</button>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>

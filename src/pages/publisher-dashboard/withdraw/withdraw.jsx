@@ -12,10 +12,13 @@ import Loader from "react-loader-spinner";
 import swal from 'sweetalert';
 import axios from 'axios';
 import logo from '../../../assets/image 1.png';
+import hamburger from '../../../assets/hamburger.png';
+import PublisherMobileTag from '../../../components/Pub-mobile-Tab/PubMobileTag';
 
 const Withdraw = () => {
 
     const history = useHistory;
+    const [ham, setHam] = useState(false);
     const [file_, setFile_] = useState(null);
     const [loading, setLoading] = useState(false);
     const [notification, setNotification] = useState([]);
@@ -60,10 +63,6 @@ const Withdraw = () => {
             headers : {
                 Authorization : `Bearer ${token}`,
                 'Content-Type' : "applciation/json",
-                // 'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Methods' : 'GET, POST, PUT, DELETE, OPTIONS',
-                'Access-Control-Allow-Headers' : 'X-Requested-With, Content-Type, X-Token-Auth, Authorization',
-                'Access-Control-Allow-Credentials' : 'true'
             }
         })
         authAxios.post('/api/user/withdraw', newForm)
@@ -89,7 +88,7 @@ const Withdraw = () => {
 
     const handleLogout = (e) => {
         e.preventDefault();
-        authAxios.post('https://api.moovitdigital.com/api/user/logout')
+        authAxios.post('https://test.canyousing.com.ng/api/user/logout')
         .then(res => {
             if(res.status === 200){
                 localStorage.clear();
@@ -99,12 +98,19 @@ const Withdraw = () => {
         })
         .catch(err => console.log(err));
     }
+
+    const toggler = (e) => {
+        e.preventDefault();
+        setHam(!ham);
+    }
     let notification_count = notification.length;
+
     return (
         <div className="dashboard">
             <div className="small-title">
                 <div className="title-text justify-content-between">
                     <div className="logo">
+                        <img src={hamburger} alt="hamburger" width="25px" className="hamburger" onClick={toggler}/>
                         <Link to='/home'>
                             <img src={logo} alt="moovit-logo" />
                         </Link>
@@ -159,8 +165,11 @@ const Withdraw = () => {
                             <p onClick={handleLogout} className="logout">Logout</p>
                         </div>
                     </div>
+                    <div className="mobile-tag">
+                        <PublisherMobileTag ham={ham} notification_count={notification_count} handleLogout={handleLogout} />
+                    </div>
                     <div className="dashboard-main">
-                        <div className="ads-wrapper mt-3">
+                        <div className="ads-wrapper mt-3 mt--3">
                             <div className="ads-heading">
                                 <h4>Withdrawal Request form</h4>
                             </div>

@@ -113,7 +113,7 @@ const MarketerNotification = () => {
                                                     <div className="notification-card" >
                                                         <img src={avatar} alt="" />
                                                         <div className="list-text">
-                                                            <h5>{data.firstName} requested to put up a {dynamic_text}</h5>
+                                                            <h5>{data.title} requested to put up a {dynamic_text}</h5>
                                                             <p>{date_} | {time_value}</p>
                                                         </div>
                                                     </div>

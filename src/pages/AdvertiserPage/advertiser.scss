@@ -1,0 +1,194 @@
+.advertiser{
+    .row{
+        --bs-gutter-x: 0rem;
+    }
+    // .hero{
+    //     display: flex;
+    //     align-items: center;
+    //     img{
+    //         flex: 1;
+    //         height: 500px;
+    //     }
+    // }
+    h2{
+        font-weight: 700;
+        background: #333333;
+        color : white;
+        font-size: 42px;
+        height: 100%;
+        padding-bottom: 2rem;
+        flex: 1;
+    }
+    
+    .content{
+        .cpc{
+            margin-bottom: 0!important;
+            .inner-wrapper{
+                h4{
+                    font-weight: 600;
+                    font-size: 16px;
+                }
+                &:first-child{
+                    margin-right: 20px;
+                }
+            }
+        }
+        p{
+            font-size: 16px;
+            line-height: 2;
+        }
+        .why{
+            font-size: 32px;
+        }
+        .bullets{
+            margin-left: 25%;
+            p{
+                background: #EE315D;
+                padding: 10px;
+                font-size: 20px;
+                font-weight: 500;
+                color: white;
+                text-align: center;
+                border-radius: 5px;
+            }
+        }
+    }
+    .where{
+        h3{
+            font-size: 40px;
+        }
+        h5{
+            color: #5955A4;
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+    }
+    .place{
+        background: #33C0CE;
+        color: #f1f1f1;
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+        text-align: center;
+        .content{
+            max-width: 70%;
+            margin: auto;
+            h2{
+                background: none;
+            }
+            button{
+             width: 33%;   
+             padding: 10px;
+             border-radius: 4px;
+             margin-bottom: 20px;
+             a{
+                 text-decoration: none;
+                 color: white;
+                 font-size: 18px;
+                 font-weight: 500;
+             }
+            }
+            p{
+                font-size: 18px;
+                line-height: 1.4;
+                width: 80%;
+                margin: auto;
+            }
+        }
+        
+    }
+    .advertising{
+        display: flex;
+        align-items : center;
+        margin-bottom: 3rem;
+        @media only screen and (max-width: 768px){
+            flex-wrap: wrap;
+        }
+        .row-content{
+            padding: 20px;
+            .img-wrap{
+                background: #333333;
+                border-radius: 50%;
+                width: 100px;
+                padding: 20px 15px;
+                text-align: center;
+                margin: 20px auto;
+                img{
+                    width: 60px;
+                    margin: auto;
+                }
+            }
+        }
+    }
+    
+}
+.publisher{
+    .our-services{
+        .content{
+            h3{
+                font-size: 35px;
+                margin-bottom: 40px;
+            }
+            .inner-wrapper{
+                h4{
+                    font-size: 20px;
+                }
+            }
+           
+        }
+    }
+    .note{
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        p{
+            font-size: 17px;
+        }
+    }
+    .place{
+        background: #5955A4;
+        img{
+            width: 100px;
+            margin-bottom: 2rem;
+        }
+        .content{
+            p{
+                width: 90%;
+            }
+        }
+    }
+    .where-wrapper{
+        text-align: left;
+        margin: 100px auto;
+        .type{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 300px;
+            .content{
+                p{
+                    font-weight: 600;
+                    text-align: center;
+                }
+                img{
+                    width: 100px;
+                }
+            }
+        }
+    }
+    .advertising{
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat( 4, 1fr);
+        @media only screen and (max-width: 768px){
+            grid-template-columns: repeat( 2, 1fr);
+        }
+        @media only screen and (max-width: 480px){
+            display: block;
+        }
+    }
+    .pbtn{
+        background: none;
+        padding-top: 0px;
+    }
+}

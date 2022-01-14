@@ -4,16 +4,22 @@ import Loader from "react-loader-spinner";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 import '../../../dashboard/dashboard.scss';
 import '../../../dashboard/ads-history/ads-history.scss';
-import caretDown from '../../../../assets/CaretDown.svg';
 import Tags from '../../../../components/Tags/Tags';
 import ReportModal from '../../Report-Modal/report-modal';
+import hamburger from '../../../../assets/hamburger.png';
 import logo from '../../../../assets/image 1.png';
-axios.defaults.headers.post['Content-Type'] ='application/x-www-form-urlencoded';
+import MobileTags from '../../../../components/MobileTags/mobileTags';
+
 const RunningAds = (props) => {
+    const [ham, setHam] = useState(false);
     const [isLoading, setLoading] = useState(false);
     const [fbData, setfbData] = useState([]);
+    const [linkedinData, setLinkedinData] = useState([]);
+
     const [show, setShow] = useState("none");
     const [style, setStyle] = useState({
         hide : false,
@@ -41,54 +47,58 @@ const RunningAds = (props) => {
         let single_Ads = insightData.filter(item => item.id === targetId)
        setfbData(single_Ads);
     }
+
+    const token = localStorage.getItem("auth_token");
     useEffect(() => {
-        const linkedin_token = 'AQUPpvEHfqb9Scg6TpPRgfEoqmeeuqLqCr5hUvxNYWV8ra9KpPJQrSvjHf0cUY7VPAdT3LOzIB2_bJDwB6t56p7EQVb2kkL73c4WmGTAEH7lcBTknnOm9qCa_IwpNaHFwF38KbVgq-M6dK5os7EMxm6rKv9bfjlZyLO-J2L3fvQ0dFFtbN2HQpOc6zYpx2FZQA1AyAj7NmwlG1o3_c7OwaM0WPKJj4g4pk9vgwJuYdwMuSkLb-FZ1DQPx2JZ2u-mHWAuBaHVmmYSJzwJwsaPE31Xn2KLWwr1_9oSCZeKaU1XNf69rr4xm8O1w9iTl8tfnYCLOgXp2yvSKP0ug9SpDQCm1AwhLw'
         const authAxios = axios.create({
-            
-            // baseURL : 'https://api.linkedin.com/v2/',
+            baseURL : "https://test.canyousing.com.ng",
             headers : {
-                Authorization : `Bearer ${linkedin_token}`,
                 'Content-Type' : "applciation/json",
-                'Access-Control-Allow-Origin': '*',
-                'x-linkedin-processing-colo' : 'prod-lva1',
-                'x-li-responseorigin' : 'RGW',
-                'x-linkedin-processing-machine' : 'lva1-app18420',
-                'x-restli-protocol-version' : '1.0.0',
-                'Content-Length' : "2213",
-                'Connection' : 'keep-alive',
-                'X-Li-Source-Fabric' : 'prod-lva1',
-                'X-Li-Pop' : 'prod-lva1-x',
-                'X-LI-Proto' : 'http/1.1',
-                'X-LI-UUID' : 'AAXSyVJcLEYOIH9jHPSTSQ==',
-                'Set-Cookie' : 'lidc="b=TB08:s=T:r=T:a=T:p=T:g=3779:u=519:x=1:i=1639136995:t=1639174989:v=2:sig=AQHvTn-msbsxM6fIsiDjtYkQo2FmThPP"',
-                'X-LI-Route-Key' : "b=TB08:s=T:r=T:a=T:p=T:g=3779:u=519:x=1:i=1639136995:t=1639174989:v=2:sig=AQHvTn-msbsxM6fIsiDjtYkQo2FmThPP",
-                'Accept-Encoding' : 'gzip, deflate, br'
+                Authorization : `Bearer ${token}`,
             }
         })
-        authAxios.get('https://api.linkedin.com/v2/adCreativesV2?q=search&search.campaign.values[0]=urn:li:sponsoredCampaign:193773413&search.status.values[0]=ACTIVE&search.status.values[1]=CANCELED&sort.field=ID&sort.order=DESCENDING')
-        .then(res => {
-            // const data = res.header("Access-Control-Allow-Origin", "*")
-            // const data = res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
-            console.log(res.data);
-        })
+
+        const fetchingData = async () => {
+            const linkedinAds = await authAxios.get('/api/linkedin');
+            const res = linkedinAds.data;
+            setLinkedinData(res.elements)
+        }
+        fetchingData()
     }, [])
+
+    const toggler = (e) => {
+        e.preventDefault();
+        setHam(!ham);
+    } 
+    const exportPdf = (e) => {
+        var doc= new jsPDF();
+        doc.autoTable({ html: '#table-fb' })
+        doc.save('facebook.pdf')
+    }
+    const exportPdf_2 = (e) => {
+        var doc= new jsPDF();
+        doc.autoTable({ html: '#table-linkedin' })
+        doc.save('linkedin.pdf')
+    }
     return (
         <div className="dashboard">
             <div className="small-title">
                 <div className="title-text justify-content-between">
                     <div className="logo">
-                        <Link to='/'>
+                        <img src={hamburger} alt="hamburger" width="25px" className="hamburger" onClick={toggler}/>
+                        <Link to='/home'>
                             <img src={logo} alt="moovit-logo" />
                         </Link>
                     </div>
                     <div className="text d-flex align center">
-                        {/* <p>The Brand Hub</p>
-                        <img src={caretDown} alt="" /> */}
                     </div>
                 </div>
                 <div className="dashboard-main-wrapper">
                     <div className="tabs">
                         <Tags style={style} handleClick={handleClick}/>
+                    </div>
+                    <div className="mobile-tag">
+                        <MobileTags style={style} handleClick={handleClick} ham={ham}/>
                     </div>
                     <div className="dashboard-main">
                         {
@@ -98,11 +108,11 @@ const RunningAds = (props) => {
                             width={40}/> : (
                                 <div className="ads-wrapper">
                                     <div className="ads-heading">
-                                        <h4>Running Ads</h4>
+                                        <h4>Social Media Ads</h4>
                                     </div>
                                     <div className="history-wrapper">
                                         <div className="text-right">
-                                            <button>
+                                            <button className='hide-btn'>
                                                 <Link to='/create-ads'>+ <span>Create Ads</span></Link>
                                             </button>
                                         </div>
@@ -110,65 +120,143 @@ const RunningAds = (props) => {
                                         <input type="text"  placeholder="search"/>
                                     </div> 
                                 </div> 
-                                <div className="history-table">
-                                    <table className="table table-striped">
+                                <div className="history-table social">
+                                    <h4 className="text-linkedin">Facebook Ads</h4>
+                                    <table className="table table-striped" id="table-fb">
                                         <thead>
                                             <tr>
                                             <th scope="col"></th>
                                             <th scope="col">Campaign</th>
-                                            <th scope="col">Campaign Type</th>
                                             <th scope="col">Likes</th>
-                                            <th scope="col">Views</th>
+                                            <th scope="col">Impressions</th>
                                             <th scope="col">Clicks</th>
-                                            <th scope="col">Status</th>
                                             <th scope="col">Spent</th>
-                                            <th scope="col">Ads Detail</th>
+                                            <th scope="col">Post Engagement</th>
+                                            <th scope="col">Video View</th>
+                                            <th scope="col">Page Engagement</th>
+                                            <th scope="col">Post Reaction</th>
+                                            {/* <th scope="col">Start Date</th> */}
+                                            <th scope="col">Status</th>
+                                            {/* <th scope="col">End Date</th> */}
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {                 
                                             insightData.map(item => {
+                                                
                                                 const itemData = item.insights.data;
                                                 let clickAction = "";
                                                 let likeAction = "";
-                                        
+                                                let videoView = "";
+                                                let engagementAction = "";
+                                                let postReaction = "";
+                                                let pageAction = "";
+
                                                 itemData.map(({actions}) => {
-                                                    const Allclicks = actions[0];
-                                                    if(Allclicks.action_type === "link_click"){
-                                                        clickAction = Allclicks;
-                                                    }else if(Allclicks.action_type === "like"){
-                                                        likeAction = Allclicks;
-                                                    }
+                                                    actions.map(item => {
+                                                        if(item.action_type == "link_click"){
+                                                            clickAction = item;
+                                                        }else if(item.action_type == "like"){
+                                                            likeAction = item;
+                                                        }else if(item.action_type == "video_view"){
+                                                            videoView = item;
+                                                        }else if(item.action_type == "post_reaction"){
+                                                            postReaction = item;
+                                                        }else if(item.action_type == "post_engagement"){
+                                                            engagementAction = item;
+                                                        }else if(item.action_type == "page_engagement"){
+                                                            pageAction = item;
+                                                        }
+                                                    })
                                                 })
-                                                
-                                                let TotalClicks = Number(clickAction.value);
-                                                let TotalLikes = Number(likeAction.value);
-                                                
-                                                //cleaning ads title
-                                                const adTitle = item.name;
-                                                const newSplit = adTitle.split(" ");
-                                                const neededItem = newSplit.shift();
-                                                const newTitle = newSplit.join(" ");
+
+                                                const TotalpostReaction = Number(postReaction.value);
+                                                const TotalengagementAction = Number(engagementAction.value);
+                                                const TotalpageAction = Number(pageAction.value);
+                                                const TotalvideoView = Number(videoView.value);
+                                                const TotalClicks = Number(clickAction.value);
+                                                const TotalLikes = Number(likeAction.value);
                                                 
                                                 return (
                                                     <tr key={item.id} id={item.id}>
                                                         <th scope="row text-left">
                                                             <input type="checkbox" name="" id="" />
                                                         </th>
-                                                        <td>{newTitle}</td>
-                                                        <td>Conversion</td>
+                                                        <td>{item.name}</td>
                                                         <td>{(!TotalLikes) ? "-" : TotalLikes }</td>
-                                                        <td>{itemData[0].impressions}</td>
+                                                        <td className='text-center'>{itemData[0].impressions}</td>
                                                         <td>{(!TotalClicks) ? "-" : TotalClicks }</td>
-                                                        <td>Running</td>
                                                         <td>{itemData[0].spend}</td>
-                                                        <td><p className="view-detail" onClick={modalClick} id={item.id}>view details</p></td>
+                                                        <td className='text-center'>{(!TotalengagementAction) ? "-" : TotalengagementAction}</td>
+                                                        <td className='text-center'>{(!TotalvideoView) ? "-" : TotalvideoView}</td>
+                                                        <td className='text-center'>{TotalpageAction}</td>
+                                                        <td className='text-center'>{TotalpostReaction}</td>
+                                                        {/* <td>{itemData[0].date_start}</td> */}
+                                                        <td>Running</td>
+                                                        {/* <td>{itemData[0].date_stop}</td> */}
+                                                        {/* <td><p className="view-detail" onClick={modalClick} id={item.id}>view details</p></td> */}
                                                     </tr>
                                                 )
                                             })
                                             }
                                         </tbody>
                                         </table>
+                                        <div className="row justify-content-center">
+                                            <div className="col-lg-4 export">
+                                                <button style={{padding : "7px 20px", width: "100%", borderRadius:"5px", marginBottom : "2rem", marginTop : "3rem"}} onClick={exportPdf}>Export Pdf</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h4 className="text-linkedin">LinkedIn Ads</h4>
+                                    <div className="history-table">
+                                        <table className="table table-striped" id="table-linkedin">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col"></th>
+                                                    <th scope="col">Campaign</th>
+                                                    <th scope="col">Campaign Type</th>
+                                                    <th scope="col">Impressions</th>
+                                                    <th scope="col">Click</th>
+                                                    <th scope="col">Likes</th>
+                                                    <th scope="col">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {                 
+                                                    linkedinData.map((item, index) => {
+                                                        
+                                                        const array_list = item.variables.data;
+                                                        const newItem = Object.values(array_list)
+                                                        console.log(newItem)
+                                                        let titleText = "";
+                                                        let textVal = "";
+                                                        newItem.map(({title, text}) => {
+                                                            titleText = title;
+                                                            textVal = text;
+                                                        })
+                                                        console.log(titleText)
+                                                        return(
+                                                            <tr key={index}>
+                                                                <th scope="row text-left">
+                                                                    <input type="checkbox" name="" id="" />
+                                                                </th>
+                                                                <td>{titleText}</td>
+                                                                <td>{textVal}</td>
+                                                                <td className='text-center'>0</td>
+                                                                <td>0</td>
+                                                                <td>0</td>
+                                                                <td>-</td>
+                                                            </tr>
+                                                        )
+                                                    })
+                                                }
+                                            </tbody>
+                                        </table>
+                                        <div className="row justify-content-center">
+                                            <div className="col-lg-4 export">
+                                                <button style={{padding : "7px 20px", width: "100%", borderRadius:"5px", marginBottom : "2rem", marginTop : "3rem"}} onClick={exportPdf_2}>Export Pdf</button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             )

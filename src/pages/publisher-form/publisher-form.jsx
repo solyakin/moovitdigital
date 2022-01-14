@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../publisher-form/publisher.form.scss';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import Loader from "react-loader-spinner";
 import Header from '../../components/header/header';
 import swal from 'sweetalert';
-import { Country }  from 'country-state-city';
 
 const PublisherForm = ({navBackground}) => {
 
@@ -17,14 +16,19 @@ const PublisherForm = ({navBackground}) => {
     const [state2, setState2] = useState({
         selectedOption2 : ""
     })
+    const [locations, setLocation] = useState([]);
     const id = localStorage.getItem("auth_id")
-    const allCountries = Country.getAllCountries();
     
+    const [value, setValue] = useState({
+        industry : "",
+        country : ""
+    });
     const [data, setData] = useState({
         firstName : '',
         lastName : '',
-        country : '',
+        country : "Nigeria",
         company_name : '',
+        business_bio : '',
         email : '',
         domain : '',
         industry : '',
@@ -34,10 +38,7 @@ const PublisherForm = ({navBackground}) => {
         role : "publisher",
         agree : '',
     })
-    const [value, setValue] = useState({
-        industry : "",
-        country : ""
-    });
+    
     const handleChange = (e) => {
         e.persist();
         setData({...data, [e.target.name] : e.target.value});
@@ -65,10 +66,18 @@ const PublisherForm = ({navBackground}) => {
         setState1({selectedOption1 : e.target.value});
         setData({...data, duration_time : e.target.value })
     }
-    console.log(state1)
+    
+    useEffect(() => {
+        axios.get('https://restcountries.com/v3.1/all')
+        .then(response => {
+            const result = response.data;
+            setLocation(result)
+        })
+        .catch(error => console.log(error))
+    },[])
     const formSubmit = (e) => {
         e.preventDefault();
-        if(data.duration_time !== "" && data.visit !== "" && data.agree !== ""){
+        if(data.duration_time !== "" && data.visit !== "" && data.agree !== "" && data.country !== ""){
             setLoading(true);
             const newForm = new FormData();
             newForm.append("firstName", data.firstName);
@@ -80,11 +89,12 @@ const PublisherForm = ({navBackground}) => {
             newForm.append("industry", data.industry);
             newForm.append("website", data.domain);
             newForm.append("average_visit", data.visit);
+            newForm.append("busainess_bio", data.business_bio);
             newForm.append("website_timeline", data.duration_time);
             newForm.append("role", data.role);
             newForm.append("agree", data.agree);
             axios({
-                url : `https://test.canyousing.com.ng/api/user/publisher/${id}?firstName=${data.firstName}&lastName=${data.lastName}&phone=${data.phone}&country=${data.country}&company=${data.company_name}&industry=${data.industry}&role=${data.role}&agree=1&average_visit=${data.visit}&website_timeline=${data.duration_time}&website=${data.domain}&email=${data.email}`,
+                url : `https://test.canyousing.com.ng/api/user/publisher/${id}?firstName=${data.firstName}&lastName=${data.lastName}&phone=${data.phone}&country=${data.country}&company=${data.company_name}&industry=${data.industry}&role=${data.role}&agree=1&average_visit=${data.visit}&business_bio=${data.business_bio}&website_timeline=${data.duration_time}&website=${data.domain}&email=${data.email}`,
                 method : 'PUT',
                 data : newForm,
                 config: { headers: {'Content-Type': 'multipart/form-data' }}
@@ -93,7 +103,7 @@ const PublisherForm = ({navBackground}) => {
                 if(res.status === 200){
                     console.log(res.data);
                     setLoading(false)
-                    swal("Great!", "Request has been sent successfully", "success")
+                    swal("Great!", "Request has been sent successfully. One of our representative will contact you shortly via email", "success")
                     .then(() => {
                      history.push('/home')
                     })
@@ -103,6 +113,8 @@ const PublisherForm = ({navBackground}) => {
             .catch(error => console.log(error));
         }else if(data.duration_time === "" || data.visit === "" || data.agree === ""){
             swal("Ooops!", "Please select all fields", "warning");
+        }else if(data.country === ""){
+            swal("Ooops!", "Please select Country field", "warning");   
         }
         
     }
@@ -112,18 +124,18 @@ const PublisherForm = ({navBackground}) => {
         <Header navBackground={navBackground}/> 
             <div className="container">
                 <div className="row justify-content-center">
-                    <div className="col-md-8">
+                    <div className="col-md-8 col-sm-10">
                         <div className="heading">
                             <h4>Publisher request form</h4>
                         </div>
                         <form onSubmit={formSubmit}>
                             <h5>1. Personal Details</h5>
                             <div className="row justify-content-between">
-                                <div className="col-6">
+                                <div className="col-lg-6 col-sm-12">
                                     <label htmlFor="">First Name</label>
                                     <input type="text" placeholder="Joe" name="firstName" value={data.firstName} onChange={handleChange} required />
                                 </div>
-                                <div className="col-6">
+                                <div className="col-lg-6 col-sm-12">
                                     <label htmlFor="">Last Name</label>
                                     <input type="text" placeholder="Bullion" name="lastName" value={data.lastName} onChange={handleChange} required/>
                                 </div>
@@ -133,32 +145,32 @@ const PublisherForm = ({navBackground}) => {
                                     <label htmlFor="">State</label>
                                     <input type="text" placeholder="Lagos" name="state" value={data.state} onChange={handleChange}/>
                                 </div> */}
-                                <div className="col-6">
+                                <div className="col-lg-6 col-sm-12">
                                     <label htmlFor="">Country</label>
                                     <select value={value.country} onChange={__handleChange} required>
-                                        {allCountries.map(({name, isoCode}) =>
-                                            <option value={name} id={isoCode}>{name}</option>
-                                        )}
+                                        {locations.map(({name, index}) =>
+                                                <option value={name.common} key={index}>{name.common}</option>
+                                            )}
                                     </select>
                                 </div>
                             </div>
                             <h5 className="mt-4">2. Company Details</h5>
                             <div className="row">
-                                <div className="col-6">
+                                <div className="col-lg-6 col-sm-12">
                                     <label htmlFor="">Name of company/organisation</label>
                                     <input type="text" placeholder="The Brand Hub" name="company_name" value={data.company_name}onChange={handleChange} required/>
                                 </div>
-                                <div className="col-6">
+                                <div className="col-lg-6 col-sm-12">
                                     <label htmlFor="">Email</label><br></br>
                                     <input type="email" placeholder="jonbellion@gmail.com" name="email" value={data.email} onChange={handleChange} required/>
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="col-6">
+                                <div className="col-lg-6 col-sm-12">
                                     <label htmlFor="">Domain name</label>
                                     <input type="text" placeholder="www.name.com" name="domain" value={data.domain} onChange={handleChange} required/>
                                 </div>
-                                <div className="col-6">
+                                <div className="col-lg-6 col-sm-12">
                                     <div className="form-group star">
                                         <label htmlFor="">Business Type</label>
                                         <select name="" id="" value={value.industry} onChange={handleChange2} required>
@@ -179,17 +191,23 @@ const PublisherForm = ({navBackground}) => {
                                 </div>
                             </div>
                             <div className="row">
-                                <div className="col-6">
+                                <div className="col-lg-6 col-sm-12">
                                     <label htmlFor="">Phone Number</label>
                                     <input type="text" placeholder="0912 342 3452" name="phone" value={data.phone} onChange={handleChange} required/>
                                     {/* <input type="tel" name="phone" onChange={handleChange} value={data.phone} pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"required></input> */}
+                                </div>
+                            </div>
+                            <div className="row">
+                                <div className="col-lg-6 col-sm-12">
+                                    <label htmlFor="">Company Bio</label><br></br>
+                                    <textarea cols="30" rows="5" placeholder="about company" name="business_bio" value={data.business_bio} onChange={handleChange} required></textarea>
                                 </div>
                             </div>
 
                             <div className="duration mt-4">
                                 <h5>How long have your used this domain?</h5>
                                 <div className="row">
-                                    <div className="col-8">
+                                    <div className="col-lg-8 col-sm-12">
                                         <div className="duration-frame">
                                             <div className="form-group">
                                                 <input type="radio" name="duration_frame" value="less than 6 months" checked={state1.selectedOption1 === "less than 6 months"} onChange={valueChange}/>
@@ -207,7 +225,7 @@ const PublisherForm = ({navBackground}) => {
                                     </div>
                                 </div>
                                 <div className="row">
-                                    <div className="col-8">
+                                    <div className="col-lg-8 col-sm-12">
                                         <div className="duration-frame">
                                             
                                             <div className="form-group">
@@ -229,7 +247,7 @@ const PublisherForm = ({navBackground}) => {
                             <div className="duration mt-4">
                                 <h5>What is the average visit your domain recieves monthly?</h5>
                                 <div className="row">
-                                    <div className="col-lg-8">
+                                    <div className="col-lg-8 col-sm-12">
                                         <div className="duration-frame">
                                             <div className="form-group">
                                                 <input type="radio"  name="visit" value="less than 10000" checked={state2.selectedOption2 === "less than 10000"} onChange={handleClick2}/>
@@ -247,7 +265,7 @@ const PublisherForm = ({navBackground}) => {
                                     </div>
                                 </div>
                                 <div className="row">
-                                    <div className="col-lg-8">
+                                    <div className="col-lg-8 col-sm-12">
                                         <div className="duration-frame">
                                             <div className="form-group">
                                                 <input type="radio"  name="visit" value="100000 - 500000" checked={state2.selectedOption2 === "100000 - 500000"} onChange={handleClick2}/>
@@ -267,7 +285,7 @@ const PublisherForm = ({navBackground}) => {
                             </div>
                             <div className="agree-policy">
                                 <div className="row">
-                                    <div className="col-md-6">
+                                    <div className="col-lg-6 col-sm-12">
                                         <input type="checkbox"  onClick={() =>setData({...data, 'agree' : 1})}/>
                                         <p>By continuing, you’re agreeing to our Customer Terms of 
                                         Service, Privacy Policy, and Cookie Policy.</p>

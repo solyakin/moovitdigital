@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import icon4 from '../../../assets/Frame 3333.svg';
 import logo from '../../../assets/image 1.png';
 import tick from '../../../assets/Frame 338.svg';
+import { findByLabelText } from '@testing-library/react';
 
 const AdminPreview = () => {
 
@@ -37,7 +38,6 @@ const AdminPreview = () => {
     const handleApprove = (e) => {
         e.preventDefault();
         const { id } = e.currentTarget;
-        console.log(id)
         const data = {
             approved : 1
         }
@@ -52,7 +52,6 @@ const AdminPreview = () => {
     const handleReject = (e) => {
         e.preventDefault();
         const { id } = e.currentTarget;
-        console.log(id)
         const data = {
             approved : 0
         }
@@ -64,6 +63,7 @@ const AdminPreview = () => {
         }
         rejectAds();
     }
+    console.log(ticketData);
     return (
         <div className="dashboard marketer-preview">
             <div className="small-title">
@@ -94,17 +94,35 @@ const AdminPreview = () => {
                             </div>
                             <div className="preview-wrapper">
                                 {
-                                    ticketData.map(({id, title, content, start, end, area, location, budget_id, image, approved, createdBy, phone}) => {
-                                        const target_region = area.split(",");
+                                    ticketData.map(({id, title, content, ageRange, start, end, area, location, budget_id, image, approved, createdBy, fb_page, instagram, linkedin, awareness, demographics, interests, conversions, app_installs, engagement, sales, reach, target, phone}) => {
+
+                                        const age = ageRange.split(",");
+                                        const demoArray = demographics.split("=");
+                                        const interestArray = interests.split("=")
+                                        const allAreas = area.split("=")
+
                                         let price = "";
                                         if(budget_id == 1){
-                                            price = "#10,000"
+                                            price = "#20,000"
                                         }else if(budget_id == 2){
                                             price = "#50,000"
                                         }else if(budget_id = 3){
-                                            price = "#100,000"
+                                            price = "#150,000"
+                                        }else if(budget_id = 4){
+                                            price = "#200,000"
+                                        }else if(budget_id = 5){
+                                            price = "#500,000"
+                                        }else if(budget_id = 6){
+                                            price = "#1,000,000"
                                         }
+                                        let newDate = '';
+                                        const data_ = start.split("00");
+                                        newDate = data_[0];
 
+                                        let newDateEnd = '';
+                                        const data_2 = end.split("00");
+                                        newDateEnd = data_2[0];
+                                         
                                         const getuser = users.filter(item => item.id == createdBy);
                                         let userValue = "";
                                         let user_email = "";
@@ -115,6 +133,22 @@ const AdminPreview = () => {
                                             user_phone = phone;
                                         })
 
+                                        let campaign_type = '';
+                                        if(awareness == 1){
+                                            campaign_type = <span>Awareness</span>
+                                        }else if(conversions == 1){
+                                            campaign_type = <span>Conversions</span>
+                                        }else if(app_installs == 1){
+                                            campaign_type = <span>App Installs</span>
+                                        }else if(engagement == 1){
+                                            campaign_type = <span>Engagement</span>
+                                        }else if(sales == 1){
+                                            campaign_type = <span>Sales</span>
+                                        }else if(reach == 1){
+                                            campaign_type = <span>Reach</span>
+                                        }else if(target == 1){
+                                            campaign_type = <span>Traffic</span>
+                                        }
                                         let approvedBtn = '';
                                         if(approved == 0){
                                                 approvedBtn = <div className="approve-text d-flex align-item-center">
@@ -144,42 +178,86 @@ const AdminPreview = () => {
                                                 </div>
                                                 <div className="descritpion mb-4">
                                                     <h5>Description</h5>
-                                                    <p>{content} consectetur adipisicing elit. Numquam unde doloremque vero fuga, deserunt ipsam. Neque necessitatibus sunt at reiciendis labore perspiciatis</p>
+                                                    <p>{content}</p>
                                                 </div>
-                                                <div className="campaign mb-4">
-                                                    <h5>Campaign type</h5>
-                                                    <div className="campaign-list">
-                                                        <span>Conversion</span>
-                                                        <span>Traffic</span>
-                                                        <span>Sales</span>
-                                                        <span>Engagement</span>
+                                                <div className="dates mb-4">
+                                                    <div className=" campaign start">
+                                                        <h5>Campaign type</h5>
+                                                        <div className="campaign-list">
+                                                            {campaign_type}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div className="budget mb-4">
-                                                    <h5>Budget</h5>
-                                                    <p>{price}</p>
+                                                    <div className="end">
+                                                        <h5>Budget</h5>
+                                                        <p>{price}</p>
+                                                    </div>
                                                 </div>
                                                 <div className="dates mb-4">
                                                     <div className="start">
                                                         <h5>Start date</h5>
-                                                        <p>{start}</p>
+                                                        <p>{newDate}</p>
                                                     </div>
                                                     <div className="end">
                                                         <h5>End date</h5>
-                                                        <p>{end}</p>
+                                                        <p>{newDateEnd}</p>
                                                     </div>
                                                 </div>
                                                 <div className="target-area mb-4">
-                                                    <h5>Target Area</h5>
+                                                    <h5>Age Range</h5>
+                                                    <p>{`${age[0]} - ${age[1]}`}</p>
+                                                </div>
+                                                <div className="target-area mb-4">
+                                                    <h5>Target Country Location</h5>
                                                     <p>{location}</p>
                                                 </div>
                                                 <div className="location mb-4">
-                                                    <h5>Location</h5>
+                                                    <h5>Target Area</h5>
                                                     <div className="locations">
-                                                        <span>{target_region[0]}</span>
-                                                        <span>{target_region[1]}</span>
-                                                        <span>{target_region[2]}</span>
+                                                        {
+                                                            allAreas.map(item => {
+                                                                return(
+                                                                    <span>{item}</span>
+                                                                )
+                                                            })
+                                                        }
                                                     </div>
+                                                    <img src={image} alt="" />
+                                                </div>
+                                                <div className="dates mb-4">
+                                                    <div className="start">
+                                                        <h5>Facebook Page</h5>
+                                                        <p>{fb_page}</p>
+                                                    </div>
+                                                    <div className="end">
+                                                        <h5>Linkedin Page</h5>
+                                                        <p>{linkedin}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="target-area mb-4">
+                                                    <h5>Instagram Account</h5>
+                                                    <p>{instagram}</p>
+                                                </div>
+                                                <div className="target-area mb-4">
+                                                    <h5>Demographics</h5>
+                                                    {demoArray.map(item => {
+                                                        return(
+                                                            <ul>
+                                                                <li>{item}</li>
+                                                            </ul>
+                                                        )
+                                                        })
+                                                    }
+                                                </div>
+                                                <div className="target-area mb-4">
+                                                    <h5>Interest</h5>
+                                                    {interestArray.map(item => {
+                                                        return(
+                                                            <ul>
+                                                                <li>{item}</li>
+                                                            </ul>
+                                                        )
+                                                        })
+                                                    }
                                                 </div>
                                             </div>
                                             <div className="sender">
@@ -212,8 +290,8 @@ const AdminPreview = () => {
                                 }
                             </div>    
                             <div className="lower-btns">
-                                <Link to='/marketer/dashboard'>Back</Link>
-                                <button>Confirmed</button>
+                                <Link to='/admin'>Back</Link>
+                                {/* <button>Confirmed</button> */}
                             </div>
                         </div>
                     </div>  

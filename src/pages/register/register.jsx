@@ -24,33 +24,35 @@ const Register = ({navBackground}) => {
 
     const formSubmit = (e) => {
         e.preventDefault();
-        setRegister({loading : true});
-        const data = {
-            email : register.email,
-            password : register.password,
-            password_confirmation : register.confirm_password
-        }
-        const newData = new FormData();
-        newData.append('email', data.email);
-        newData.append('password', data.password);
-        newData.append('password_confirmation', data.password_confirmation);
-
-        axios({
-            url : 'http://test.canyousing.com.ng/api/user/register',
-            method : 'POST',
-            data : newData,
-            config: { headers: {'Content-Type': 'multipart/form-data' }}
-        })
-        .then(res => {
-            if(res.status === 200){
-                localStorage.setItem('user-email', data.email);
-                history.push('/email-verification');
+        if(register.email != "", register.password != "", register.confirm_password != ""){
+            setRegister({loading : true});
+            const data = {
+                email : register.email,
+                password : register.password,
+                password_confirmation : register.confirm_password
             }
-        })
-        .catch(err => {
-            setError_msg(err.response.data.error)
-            setRegister({loading : false});
-        })
+            const newData = new FormData();
+            newData.append('email', data.email);
+            newData.append('password', data.password);
+            newData.append('password_confirmation', data.password_confirmation);
+    
+            axios({
+                url : 'https://test.canyousing.com.ng/api/user/register',
+                method : 'POST',
+                data : newData,
+                config: { headers: {'Content-Type': 'multipart/form-data' }}
+            })
+            .then(res => {
+                if(res.status === 200){
+                    localStorage.setItem('user-email', data.email);
+                    history.push('/email-verification');
+                }
+            })
+            .catch(err => {
+                setError_msg(err.response.data.error)
+                setRegister({loading : false});
+            })
+        }        
     }
     const error_mail = error_msg.email;
     const error_password = error_msg.password;
@@ -71,6 +73,15 @@ const Register = ({navBackground}) => {
             )
         })
     }
+
+    let btnText = ""
+    if(register.loading === true){
+        btnText = <div className="spier" style={{display : register.loading ? "block" : "none"}}>
+        <Loader type="TailSpin" color="#ffffff" height={20} width={20} />
+        </div>
+    }else if(register.loading === false){
+        btnText = <span>Continue</span>
+    }
     return (
         <div className="sign-up">
             <Header navBackground={navBackground}/>
@@ -79,32 +90,30 @@ const Register = ({navBackground}) => {
                     <div className="col-md-4">
                         <form onSubmit={formSubmit}>
                             <img src={image} alt="" />
-
                             <h4>Create an account</h4>
                             <p>Set up a new account</p>
                             <div className="form-group">
                                 <label>Email</label>
-                                <input type="text" placeholder="joe@gmail.com" name="email" onChange={handleChange} value={register.email}/>
+                                <input type="text" required placeholder="joe@gmail.com" name="email" onChange={handleChange} value={register.email}/>
                                 {error_text}
                             </div>
                             <div className="form-group">
                                 <label>Password</label>
-                                <input type="password" placeholder="Enter your password" name="password" onChange={handleChange} value={register.password}/>
+                                <input type="password" required placeholder="Enter your password" name="password" onChange={handleChange} value={register.password}/>
                                 {error_text2}
                             </div>
                             <div className="form-group">
                                 <label>Confirm Password</label>
-                                <input type="password" placeholder="Enter your password" name="confirm_password" onChange={handleChange} value={register.confirm_password}/>
+                                <input type="password" required placeholder="Enter your password" name="confirm_password" onChange={handleChange} value={register.confirm_password}/>
                             </div>
                             <div className="forget-password">
                                 <Link>Atleast 8 characters</Link>
                             </div>
                             
-                            <button type="submit" className="d-flex align-center justify-content-center">
-                                <span>Continue</span>
-                                <div className="spinner" style={{display : register.loading ? "block" : "none"}}>
-                                    <Loader type="TailSpin" color="#FFFFFF" height={30} width={30} />
-                                </div>
+                            <button type="submit" className="d-flex align-center justify-content-center" 
+                            style={{backgroundColor : register.loading ? "#333333" : "#EE315D"}}
+                            >
+                             {btnText}   
                             </button>
                         </form>
                        <div className="signup">

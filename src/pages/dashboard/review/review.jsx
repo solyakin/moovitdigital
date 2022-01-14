@@ -31,7 +31,7 @@ const Review = () => {
                 <div className="title-text justify-content-between">
                     <div className="logo">
                         <img src={hamburger} alt="hamburger" width="25px" className="hamburger" onClick={toggler}/>
-                        <Link to='/'>
+                        <Link to='/home'>
                             <img src={logo} alt="moovit-logo" />
                         </Link>
                     </div>
@@ -85,7 +85,7 @@ const Review = () => {
                                 
                                 <div className="btns">
                                     <button>
-                                        <Link to='/dashboard'>Back to dashboard</Link>
+                                        <Link to='/dashboard/advertiser'>Back to dashboard</Link>
                                     </button>
                                     <button>
                                         <Link to='/create-ads'>Create another ad</Link>

@@ -12,10 +12,14 @@ import signout from '../../../assets/SignOut.svg';
 import creditCard from '../../../assets/CreditCard.svg';
 import swal from 'sweetalert';
 import user from '../../../assets/User.svg';
+import hamburger from '../../../assets/hamburger.png';
+import PublisherMobileTag from '../../../components/Pub-mobile-Tab/PubMobileTag';
 
 const PublisherEditProfile = () => {
 
+    const [ham, setHam] = useState(false);
     const history = useHistory();
+    const [notification, setNotification] = useState([]);
     const [profile, setProfile] = useState({
         firstName : '',
         lastName : '',
@@ -38,6 +42,14 @@ const PublisherEditProfile = () => {
         },
         withCredentials: false
     })
+    useEffect(() => {
+        const dataFetching = async() => {
+            const allNotifications = await authAxios.get('/api/user/notifications');
+            const notification_array = allNotifications.data;
+            setNotification(notification_array.data);
+        }
+        dataFetching();
+    }, []);
     
     const handleLogout = (e) => {
         e.preventDefault();
@@ -69,11 +81,18 @@ const PublisherEditProfile = () => {
 
         }
     }
+    const toggler = (e) => {
+        e.preventDefault();
+        setHam(!ham);
+    } 
+    let notification_count = notification.length;
+    
     return (
         <div className="dashboard">
             <div className="small-title">
                 <div className="title-text justify-content-between">
                     <div className="logo">
+                        <img src={hamburger} alt="hamburger" width="25px" className="hamburger" onClick={toggler}/>
                         <Link to='/home'>
                             <img src={logo} alt="moovit-logo" />
                         </Link>
@@ -125,6 +144,9 @@ const PublisherEditProfile = () => {
                             <img src={signout} alt="" />
                             <p onClick={handleLogout} className="logout">Logout</p>
                         </div>
+                    </div>
+                    <div className="mobile-tag">
+                        <PublisherMobileTag ham={ham} notification_count={notification_count} handleLogout={handleLogout} />
                     </div>
                     <div className="dashboard-main">
                         <div className="ads-wrapper">

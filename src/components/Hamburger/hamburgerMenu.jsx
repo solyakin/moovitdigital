@@ -89,24 +89,22 @@ const HamburgerMenu = ({state, setState}) => {
                         <div className="content">
                             <nav>
                                 <span>
-                                    <Link ref = {el => {line1 = el } } onClick={() => setState({clicked : false})} to="/home">Home</Link>
-                                </span>
-                                <span>
                                     <Link ref = {el => {line2 = el } } onClick={() => setState({clicked : false})} to="/about">Discover Us</Link>
                                 </span>
                                 <span>
-                                    <Link ref = {el => {line2 = el } } onClick={() => setState({clicked : false})} to="/">Packages</Link>
+                                    <Link ref = {el => {line1 = el } } onClick={() => setState({clicked : false})} to="/advertiser">Advertiser</Link>
+                                </span>
+                                <span>
+                                    <Link ref = {el => {line1 = el } } onClick={() => setState({clicked : false})} to="/publisher">Publisher</Link>
+                                </span>
+                                <span>
+                                    <Link ref = {el => {line2 = el } } onClick={() => setState({clicked : false})} to="/packages">Packages</Link>
                                 </span>
                                 <span>
                                     <Link ref = {el => {line3 = el } } onClick={() => setState({clicked : false})} to="/contact">Contact us</Link>
                                 </span>
                             </nav>
                             <div ref = {el => {info = el } } className="promise">
-                                {/* <h4>WE ARE A</h4>
-                                <p>FULL-SERVICE</p>
-                                <p>FULL-BRAIN</p>
-                                <p>FULL-THINKING</p>
-                                <p>WE ARE MOOOOOVIT....</p> */}
                                 <img src={smile} alt="moovit-smile-icon" />
                             </div>
                         </div>
@@ -121,7 +119,9 @@ const HamburgerMenu = ({state, setState}) => {
                                 <li>
                                     <a href="https://instagram.com/moovitdigital">Instagram</a>
                                 </li>
-                                <li>Youtube</li>
+                                <li>
+                                    <a href="https://www.youtube.com/channel/UCfTya7OzM-_D95sxNTVqfcw">Youtube</a>
+                                </li>
                             </ul>
                         </div>
                     </div>

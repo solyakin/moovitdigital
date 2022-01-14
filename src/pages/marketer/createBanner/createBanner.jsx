@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import Loader from "react-loader-spinner";
 import '../../dashboard/dashboard.scss';
@@ -14,10 +14,26 @@ import signout from '../../../assets/SignOut.svg';
 import axios from 'axios';
 import swal from 'sweetalert';
 
-const CreateBanner = () => {
+// =========================================
+// RECONSDIER HOW TO FILTER AVERTISERS BY FIRSTNAME
+// =========================================
 
+const CreateBanner = () => {
     const history = useHistory()
     const [loading, setLoading] = useState(false); 
+    const [advertisers, setAdvertisers] = useState({
+        advertiser : '',
+        id : ''
+    });
+
+    const [adsList, setAdsList] = useState([]);
+    const [advs, setAdvs] = useState([]);
+    let target_value = '';
+    const targetAdvertiser = advs.filter(items => items.firstName == advertisers.advertiser)
+    targetAdvertiser.map(({id}) => {
+        target_value = id
+    });
+    console.log(target_value)
     const [notification, setNotification] = useState([]);
     const [file, setFile] = useState(null);
     const [banner, setBanner] = useState({
@@ -26,7 +42,9 @@ const CreateBanner = () => {
         width : '',
         height : '',
         description : '',
-        url : ''
+        url : '',
+        userId : target_value,
+        advert_id : "",
     })
 
     const token = localStorage.getItem("auth_token");
@@ -42,8 +60,36 @@ const CreateBanner = () => {
         e.persist();
         setBanner({...banner, [e.target.name] : e.target.value});
     }
+    const handleChange_2 = (e) => {
+        e.persist();
+        setAdvertisers({...advertisers,[e.target.name] : e.target.value, [e.target.target] : e.target.id});
+    }
+    useEffect(() => {
+        const fetchingData = async () => {
+            const allList = await authAxios.get('/api/admin/users');
+            const itemList = allList.data.data;
+            setAdvs(itemList.data);
+
+            const allAdverts = await authAxios.get('/api/admin/ads');
+            const ads_data = allAdverts.data.data;
+            setAdsList(ads_data.data);
+        }
+        fetchingData();
+    },[])
+
+    
     const formSubmit = (e) => {
         e.preventDefault();
+        const targetAds = adsList.filter( item => 
+            item.title.toLowerCase() == banner.name.toLowerCase()
+        );
+        console.log(targetAds)
+        
+        let advert_id = '';
+        targetAds.map(({id}) => {
+            advert_id = id
+        })
+        
         setLoading(true)
         const newData = new FormData();
         newData.append('name', banner.name);
@@ -52,6 +98,8 @@ const CreateBanner = () => {
         newData.append('height', banner.height);
         newData.append('description', banner.description);
         newData.append('url', banner.url);
+        newData.append('advert_id', advert_id);
+        newData.append('user_id', target_value);
 
         authAxios.post('https://test.canyousing.com.ng/api/admin/banners', newData)
         .then(res => {
@@ -64,7 +112,10 @@ const CreateBanner = () => {
                 width : '',
                 height : '',
                 description : '',
-                url : ''})
+                url : '',
+                userId : '',
+                advert_id : ''
+            })
             }
         })
         .catch(err => console.log(err))
@@ -83,6 +134,11 @@ const CreateBanner = () => {
         .catch(err => console.log(err));
     }
     let notification_count = notification.length;
+    
+    // console.log(advs)
+    // console.log(advert_id)
+    
+    // console.log(banner.name)
     return (
         <div className="dashboard">
             <div className="small-title">
@@ -166,6 +222,16 @@ const CreateBanner = () => {
                                                         <input type="text" name="height" value={banner.height} onChange={handleChange} />
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div className="form-group">
+                                                <label htmlFor="">Select Advertiser</label>
+                                                    <input list="data2" name="advertiser" value={advertisers.advertiser} target="id" id={advertisers.id} onChange={handleChange_2} />
+                                                    <datalist id="data2">
+                                                        {advs.map(({id, firstName, lastName}) =>{
+                                                            return <option key={id} id={id} value={firstName} className="target_child"></option>
+                                                        }   
+                                                        )}
+                                                    </datalist>
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="">Description</label>

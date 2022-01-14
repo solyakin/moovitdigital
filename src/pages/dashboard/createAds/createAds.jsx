@@ -18,11 +18,12 @@ const CreateAds = () => {
         hide : false,
         transformArrow : false,
     });
+    const [show, setShow] = useState(true);
     const [ham, setHam] = useState(false);
     const [start, setStart] = useState(null);
     const history = useHistory();
     const [file, setFile] = useState(null);
-    const [hide, setHide] = useState(false);
+    // const [hide, setHide] = useState(false);
     const [showNext, setShowNext] = useState("block");
     const [showNext2, setShowNext2] = useState("none");
     const [showNext3, setShowNext3] = useState("none");
@@ -40,18 +41,22 @@ const CreateAds = () => {
         phone : "",
         start : "",
         end : "", 
+        dimensions : [],
         graphic_id : 1,
         budget_id : "",
         area : "",
         awareness : 0,
         traffic : 0,
+        fbPage : '',
+        instagram : '',
+        linkedin : '',
         engagement : 0,
         conversions : 0,
         apps : 0,
         reach : 0,
         sales: 0,
-        demographics : "all user",
-        interests : "all interest"
+        demographics : [],
+        interests : []
     })
 
     const handleClick = (e) => {
@@ -60,14 +65,14 @@ const CreateAds = () => {
     }
     
     const handleChange = (e) =>{
-        // e.persist();
         setCreateAds({...createAds, [e.target.name]: e.target.value})
     }
 
     const handleSubmit = (e) => {
         e.preventDefault();
         setDisabled(true)
-        if(createAds.budget_id !== "" && createAds.graphic_id !== "" && createAds.phone !== "" && createAds.title !== "" && file !== null && createAds.start !== "" && createAds.end !=="" && createAds.location !== ""){
+        setShow(false)
+        if(createAds.budget_id !== "" && createAds.graphic_id !== "" && createAds.fbPage !== "" && createAds.phone !== "" && createAds.title !== "" && file !== null && createAds.start !== "" && createAds.end !=="" && createAds.location !== ""){
             setLoading(true);
             const data = {
                 title : createAds.title,
@@ -81,6 +86,10 @@ const CreateAds = () => {
                 sales : createAds.sales,
                 gender : createAds.gender,
                 location : createAds.location,
+                dimensions : createAds.dimensions,
+                fb_page : createAds.fbPage,
+                instagram : createAds.instagram,
+                linkedin : createAds.linkedin,
                 ageRange : createAds.ageRange,
                 graphic_id : createAds.graphic_id,
                 budget_id : createAds.budget_id,
@@ -97,7 +106,7 @@ const CreateAds = () => {
             newForm.append("content", data.content);
             newForm.append("image", file);
             newForm.append("awareness", data.awareness);
-            newForm.append("traffic", data.traffic);
+            newForm.append("target", data.traffic);
             newForm.append("engagement", data.engagement);
             newForm.append("conversions", data.conversions);
             newForm.append("app_installs", data.apps);
@@ -105,10 +114,14 @@ const CreateAds = () => {
             newForm.append("sales", data.sales);
             newForm.append("gender", data.gender);
             newForm.append("location", data.location);
+            newForm.append("dimensions", data.dimensions);
             newForm.append("ageRange", data.ageRange);
             newForm.append("graphic_id", data.graphic_id);
             newForm.append("budget_id", data.budget_id);
             newForm.append("phone", data.phone);
+            newForm.append("fb_page", data.fb_page);
+            newForm.append("linkedin", data.linkedin);
+            newForm.append("instagram", data.instagram);
             newForm.append("start", data.start);
             newForm.append("end", data.end);
             newForm.append("area", data.area);
@@ -141,6 +154,9 @@ const CreateAds = () => {
         e.preventDefault();
         setHam(!ham);
     } 
+    const scrollToTop2 = ()=>{
+        document.getElementById('wrapper').scrollIntoView();
+      }
     console.log(createAds);
     return (
             <div className="dashboard create-ads">
@@ -148,7 +164,7 @@ const CreateAds = () => {
                 <div className="title-text justify-content-between">
                     <div className="logo">
                         <img src={hamburger} alt="hamburger" width="25px" className="hamburger" onClick={toggler}/>
-                        <Link to='/'>
+                        <Link to='/home'>
                             <img src={logo} alt="moovit-logo" />
                         </Link>
                     </div>
@@ -184,6 +200,7 @@ const CreateAds = () => {
                             setFile={setFile}
                             handleChange={handleChange}
                             state={state}
+                            // scrollToTop2={scrollToTop2}
                             setState={setState}
                             />
                             <Templates showNext3={showNext3}
@@ -195,6 +212,7 @@ const CreateAds = () => {
                             loading ={loading}
                             Disabled={disabled}
                             setDisabled={setDisabled}
+                            show={show}
                             />
                         </form> 
                     </div>

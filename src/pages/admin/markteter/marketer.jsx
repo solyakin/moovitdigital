@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../../dashboard/dashboard.scss';
 import axios from 'axios';
 import Loader from "react-loader-spinner";
+import swal from 'sweetalert';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import '../../admin/admin.scss';
 import '../allAdvertisers/advertiser.scss';
@@ -23,10 +24,6 @@ const AllMarketer = () => {
         headers : {
             Authorization : `Bearer ${token}`,
             'Content-Type' : "applciation/json",
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods' : 'GET, POST, PUT, DELETE, OPTIONS',
-            'Access-Control-Allow-Headers' : 'X-Requested-With, Content-Type, X-Token-Auth, Authorization',
-            'Access-Control-Allow-Credentials' : 'true'
         }
     })
     useEffect(() => {
@@ -49,9 +46,33 @@ const AllMarketer = () => {
     }, [])
     console.log(adsCount)
 
-    // let valuesArray = Object.values(adsCount);
-    // console.log(valuesArray)
-    
+    const handleDelete = (e) => {
+        e.preventDefault();
+        const { id } = e.currentTarget
+        console.log(id)
+        const deleteStaff = async () => {
+            const query = await authAxios.post(`/api/admin/delete-staff/${id}`);
+            const res = query.data;
+            setLoading(false);
+            swal("Great!", "Staff Deleted successfully!", "success")
+            .then(() => {
+                window.location.reload()
+            })
+            console.log(res);
+            
+        }
+        deleteStaff();
+
+    }
+    const handleClick = (e) => {
+        const targetId = e.target.id;
+        console.log(targetId);
+        const targetData = adsCount.filter(ele => {
+                return ele.id == targetId;
+            })
+        localStorage.setItem("targetData", JSON.stringify(targetData));
+        localStorage.setItem("targetId", targetId);
+    }
     return (
         <div className="dashboard preview">
             <div className="small-title">
@@ -99,7 +120,8 @@ const AllMarketer = () => {
                                                             </div>
                                                         </div>
                                                         <div className="btn">
-                                                            <button>Delete</button>
+                                                            <Link to='/admin/marketer/activity' id={id} onClick={handleClick}>View Activity</Link>
+                                                            <button onClick={handleDelete} id={id}>Delete</button>
                                                         </div>
                                                     </div>
                                                 </div>

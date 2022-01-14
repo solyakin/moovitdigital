@@ -20,10 +20,6 @@ const AllPublishers = () => {
         headers : {
             Authorization : `Bearer ${token}`,
             'Content-Type' : "applciation/json",
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Methods' : 'GET, POST, PUT, DELETE, OPTIONS',
-            'Access-Control-Allow-Headers' : 'X-Requested-With, Content-Type, X-Token-Auth, Authorization',
-            'Access-Control-Allow-Credentials' : 'true'
         }
     })
     useEffect(() => {
@@ -95,14 +91,18 @@ const AllPublishers = () => {
                                             <th scope="col">Business Name</th>
                                             <th scope="col">Email</th>
                                             <th scope="col">Phone Number</th>
-                                            <th scope="col">Business Bio</th>
-                                            <th scope="col">Business Turnover</th>
-                                            
+                                            <th scope="col">Website Timeline</th>
+                                            <th scope="col">Created At</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {
-                                            valuesArray.map(({id, firstName, lastName, email, phone, business_bio, company, turnover}) => {
+                                            valuesArray.map(({id, firstName, lastName, email, phone, website_timeline, company, created_at}) => {
+                                                const newArray = created_at.split("T");
+                                                const newDate = newArray[0];
+
+                                                const newTime = newArray[1].split(".");
+                                                const new_time = newTime[0];
                                                 return(
                                                     <tr key={id}>
                                                     <th scope="row">
@@ -112,12 +112,10 @@ const AllPublishers = () => {
                                                         <td className="text-left">{company}</td>
                                                         <td className="text-left">{email}</td>
                                                         <td className="text-left">{phone}</td>
-                                                        <td className="text-left">{business_bio}</td>
-                                                        <td className="text-left">{turnover}</td>
+                                                        <td className="text-left">{website_timeline}</td>
+                                                        <td className="text-left">{`${newDate} | ${new_time}`}</td>
                                                         <td>
-                                                        <td>
-                                                            <Link to='/admin/advertiser/preview' id={id} onClick={handleClick}>Preview</Link>
-                                                        </td>
+                                                            <Link to='/admin/publisher/preview' id={id} onClick={handleClick}>Preview</Link>
                                                         </td>
                                                     </tr>
 

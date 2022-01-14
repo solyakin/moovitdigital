@@ -2,7 +2,7 @@ import React from 'react';
 import '../footer/footer.scss';
 import { Link } from 'react-router-dom';
 import fb from '../../assets/facebook/active.svg';
-import twitter from '../../assets/TwitterLogo.svg';
+import youtube from '../../assets/youtube.png';
 import instagram from '../../assets/InstagramLogo.svg';
 import Linkedin from '../../assets/linkedin.png';
 import image from '../../assets/image 1.png';
@@ -20,6 +20,7 @@ const Footer = () => {
                             <a href="https://www.facebook.com/moovitdigital"><img src={fb} alt="facebook-logo" /></a>
                             <a href="https://www.linkedin.com/company/moovitdigital/"><img src={Linkedin} alt="linkedin-logo" width="20px"/></a>
                             <a href="https://instagram.com/moovitdigital"><img src={instagram} alt="instagram-logo"/></a>
+                            <a href="https://www.youtube.com/channel/UCfTya7OzM-_D95sxNTVqfcw"><img src={youtube}  width="24px" height="24px" alt="instagram-logo"/></a>
                         </div>
                     </div>
                     <div className="item">
