@@ -2,13 +2,15 @@ import React, {useState} from 'react';
 import '../contact-form/contact-form.scss';
 import axios from 'axios';
 import swal from 'sweetalert';
+import Loader from "react-loader-spinner";
 
 const ContactForm = () => {
     const [support, setSupport] = useState({
         name : '',
         email : '',
         description : '',
-        subject : ''
+        subject : '',
+        loading : false
     })
 
     const handleChange = (e) => {
@@ -17,6 +19,7 @@ const ContactForm = () => {
     }
     const formSubmit = (e) => {
         e.preventDefault();
+        setSupport({...support, loading : true})
         const data = {
             name : support.name,
             email : support.email,
@@ -40,15 +43,25 @@ const ContactForm = () => {
             if(res.status == 200){
                 console.log(res.data)
                 swal("Great!", "Message sent successfully added!", "success")
-                .setSupport({
+                setSupport({
                     name : '',
                     email : '',
                     description : '',
-                    subject : ''
+                    subject : '',
+                    loading : false
                 })
             }
         })
         .catch(err => console.log(err))
+    }
+
+    let btnText = ""
+    if(support.loading === true){
+        btnText = <div className="spier" style={{display : support.loading ? "block" : "none"}}>
+        <Loader type="TailSpin" color="#ffffff" height={20} width={20} />
+        </div>
+    }else if(support.loading === false){
+        btnText = <span>Submit</span>
     }
     return (
         <div className="contact-form">
@@ -56,7 +69,7 @@ const ContactForm = () => {
                 <div className="row_">
                     <div className="form_wrapper">
                         <h3>Leave a message</h3>
-                        <p>We’ll love to have your feedback</p>
+                        <p>We'll love to have your feedback</p>
                         <form onSubmit={formSubmit} className="mt-4">
                             <div className="form-group mb-3">
                                 <label htmlFor="">Name</label>
@@ -74,9 +87,11 @@ const ContactForm = () => {
                                 <label htmlFor="">Message</label>
                                 <textarea name="description" id="" cols="10" rows="3" placeholder="enter message here" value={support.description} onChange={handleChange}></textarea>
                             </div>
-                            <div className="row justify-content-center">
+                            <div className="row justify-content-center mt-1">
                                 <div className="col-lg-5 col-sm-10">
-                                    <button type="submit" className="mb-5 mt-4">Submit</button>
+                                    <button style={{backgroundColor : support.loading ? "#333333" : "#EE315D"}}>
+                                        {btnText}
+                                    </button>
                                 </div>
                             </div>
                         </form>

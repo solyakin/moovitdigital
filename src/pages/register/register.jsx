@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import { Link, useHistory } from 'react-router-dom';
 import Loader from "react-loader-spinner";
 import '../Login/Login.scss';
-import google from '../../assets/google.svg';
+// import google from '../../assets/google.svg';
 import image from '../../assets/image 1.png';
 import Header from '../../components/header/header';
 import axios from 'axios';
@@ -24,7 +24,7 @@ const Register = ({navBackground}) => {
 
     const formSubmit = (e) => {
         e.preventDefault();
-        if(register.email != "", register.password != "", register.confirm_password != ""){
+        if(register.email !== "" && register.password !== "" && register.confirm_password !== ""){
             setRegister({loading : true});
             const data = {
                 email : register.email,

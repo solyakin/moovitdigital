@@ -16,7 +16,6 @@ const MarketerProfile = () => {
     const [profile, setProfile] = useState([]);
     const [notification, setNotification] = useState([]);
 
-    const id = localStorage.getItem("auth_id")
     const token = localStorage.getItem("auth_token")
 
     const authAxios = axios.create({
@@ -33,6 +32,10 @@ const MarketerProfile = () => {
             const profileData = await authAxios.get('/api/admin/profile');
             const result = profileData.data;
             setProfile(result);
+
+            const allNotifications = await authAxios.get('/api/user/notifications');
+            const notification_array = allNotifications.data;
+            setNotification(notification_array.data);
         }
         fetching()
     },[])
@@ -48,6 +51,7 @@ const MarketerProfile = () => {
         })
         .catch(err => console.log(err));
     }
+
     let notification_count = notification.length;
 
     return (

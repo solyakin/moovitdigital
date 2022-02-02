@@ -36,9 +36,10 @@
                         h5{
                         font-size: 15px;
                         color: #484848;
+                        font-weight: 600;
                         }
                         p{
-                         font-size: 13px;
+                         font-size: 15px;
                          color: #484848;
                          width: 80%;
                         }
@@ -53,11 +54,20 @@
                                 }
                             }
                         }
+                        .social{
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            width: 100%;
+                            p{
+                                width: 100%;
+                            }
+                        }
                         .dates{
                             display: flex;
                             align-items: center;
                             justify-content: space-between;
-                            width: 50%;
+                            width: 70%;
                             p{
                                 width: 100%;
                             }
@@ -67,16 +77,23 @@
                             grid-template-columns: repeat(auto-fit, 1fr);
                             align-items: center;
                             span{
-                                font-size: 13px;
+                                font-size: 14px;
                                 margin-right: 20px;
+                                margin-bottom: 8px;
                             }
                         }
-                        ul{
-                            padding-left: 20px;
-                            li{
-                                font-size: 13px;
-                            }
-                        }  
+                        .target-area{
+                            ul{
+                                padding-left: 20px;
+                                display: grid;
+                                grid-template-columns: repeat(auto-fit, minMax(250px, 3fr));
+                                li{
+                                    font-size: 15px;
+                                    margin-bottom: 15px;
+                                }
+                            }  
+                        }
+                        
                     }
                     .sender{
                         flex: .3;
@@ -146,7 +163,7 @@
                             .approve-text{
                                 p{
                                     font-weight: 500;
-                                    margin-right: 10px;
+                                    margin-left: 10px;
                                 }
                             }
                         }

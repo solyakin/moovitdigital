@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../../dashboard/dashboard.scss';
 import Loader from "react-loader-spinner";
@@ -62,14 +62,27 @@ const Support = () => {
         .then(res => {
             if(res.status == 200){
                 setLoading(false)
-                swal("Great!", "Message sent successfully added!", "success");
+                swal("Great!", "Message sent successfully!", "success");
                 setSupport({name : "", email : "", description : "", subject : ""});
             }else if(res.status !== 200){
                 swal("Oops!", "Something went wrong!", "warning");
                 setLoading(false)
             }
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            console.log(err)
+            swal("Failed!", "Please try again!", "warning");
+            setSupport({name : "", email : "", description : "", subject : ""});
+            setLoading(false)
+        })
+    }
+    let btnText = ""
+    if(loading === true){
+        btnText = <div className="spier" style={{display : loading ? "block" : "none"}}>
+        <Loader type="TailSpin" color="#ffffff" height={20} width={20} />
+        </div>
+    }else if(loading === false){
+        btnText = <span className="text-white">Submit</span>
     }
     return (
         <div className="dashboard">
@@ -118,12 +131,9 @@ const Support = () => {
                                                 <label htmlFor="">Description</label>
                                                 <textarea name="description" id="" cols="10" rows="3" required placeholder="enter message here" value={support.description} onChange={handleChange}></textarea>
                                             </div>
-                                            <button type="submit">Send</button>
+                                            <button type="submit" style={{width: "180px", borderRadius:"3px"}}>{btnText}</button>
                                         </form>
                                     </div>
-                                </div>
-                                <div className="spinner" style={{display : loading ? "block" : "none", position : 'fixed', top : '10px', right : '20px'}}>
-                                    <Loader type="TailSpin" color="#EE315D" height={30} width={30} />
                                 </div>
                             </div>
                         </div>                 

@@ -42,9 +42,9 @@ const Header = ({navBackground}) => {
          
     }
     if(state.clicked === null || state.clicked === false){
-        LoginBtns = <img src={hamburger}  alt="hamburger-icon" width="40px"/>
+        LoginBtns = <img src={hamburger}  alt="hamburger-icon" width="40px" height="40px"/>
     }else if(state.clicked === true){
-        LoginBtns = <img src={close}  alt="close-icon" width="30px"/>
+        LoginBtns = <img src={close}  alt="close-icon" width="30px" height="40px"/>
     }
    
     // if(!token){

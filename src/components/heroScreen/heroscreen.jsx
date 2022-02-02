@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../../components/heroScreen/heroscreen.scss'
 import logo from '../../assets/LOGO 1.svg';
+// import image from '../../assets/image 1.png';
 import shape1 from '../../assets/Group 5.svg';
 import shape2 from '../../assets/Group 9.svg';
 import shape3 from '../../assets/shape1.svg';
@@ -49,9 +50,9 @@ const Heroscreen = () => {
     return (
         <div className='heroscreen'> 
             <div className="hero-content">
-                <img src={logo} alt="" className="logo" />
+                <img src={logo} alt="" className="logo"  width="500px" height="84px"/>
                 <div className="big-text">
-                    <p>Your advert on social media and top sites, discovered by consumers just waiting to engage with you.</p>
+                    <p>Your advert on social media and top websites, discovered by consumers just waiting to engage with you.</p>
                 </div>
             </div>
             

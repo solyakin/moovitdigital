@@ -38,8 +38,8 @@ const Admin = () => {
 
             const allPublishers = await authAxios.get('/api/admin/publisher');
             const result = allPublishers.data;
-            const pubData = result.data;
-            const allPubCount = Object.keys(pubData).length
+            const pubData = result.data.data;
+            const allPubCount = pubData.length;
             setpubCount(allPubCount);
 
             const allStaff = await authAxios.get('/api/admin/staff');
@@ -49,18 +49,17 @@ const Admin = () => {
 
             const allNotifications = await authAxios.get('/api/admin/notifications');
             const notification_array = allNotifications.data;
-            console.log(notification_array);
             setNotification(notification_array);
 
             const linkedinAds = await authAxios.get('/api/admin/linkedin');
             const res = linkedinAds.data;
-            console.log(res)
         }
 
         authAxios.get('/api/admin/ads')
                 .then(response => {
                 if(response.status == 200){
                     const data = response.data;
+                    console.log(data);
                     const adsListData = data.data.data;
                     setAdsList(adsListData)
                 }
@@ -68,7 +67,8 @@ const Admin = () => {
         authAxios.get('/api/admin/advertiser')
         .then(res => {
             const adsCount = res.data.data;
-            const allCount = Object.keys(adsCount).length;
+            const targetArray = adsCount.data
+            const allCount = targetArray.length;
             setAdsCount(allCount);
         })
         .catch( err => console.log(err))
@@ -76,12 +76,10 @@ const Admin = () => {
         .then(() => {
             setLoading(false);
         })
-        
     }, [])
 
     const handleClick = (e) => {
         const targetId = e.target.id;
-        console.log(targetId);
         const targetData = adsList.filter(ele => {
                 return ele.id == targetId;
             })
@@ -90,6 +88,7 @@ const Admin = () => {
     }
     
     console.log(adsList);
+    
     return (
         <div className="dashboard">
             <div className="small-title">

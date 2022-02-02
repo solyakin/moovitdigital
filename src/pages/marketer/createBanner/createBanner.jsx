@@ -25,15 +25,10 @@ const CreateBanner = () => {
         advertiser : '',
         id : ''
     });
-
+    const [title, setTitle] = useState('');
     const [adsList, setAdsList] = useState([]);
     const [advs, setAdvs] = useState([]);
-    let target_value = '';
-    const targetAdvertiser = advs.filter(items => items.firstName == advertisers.advertiser)
-    targetAdvertiser.map(({id}) => {
-        target_value = id
-    });
-    console.log(target_value)
+
     const [notification, setNotification] = useState([]);
     const [file, setFile] = useState(null);
     const [banner, setBanner] = useState({
@@ -43,13 +38,11 @@ const CreateBanner = () => {
         height : '',
         description : '',
         url : '',
-        userId : target_value,
+        userId : '',
         advert_id : "",
     })
 
     const token = localStorage.getItem("auth_token");
-    const auth_id = localStorage.getItem("auth_id");
-    const auth_name = localStorage.getItem("auth_name");
     const authAxios = axios.create({
         baseURL : "https://test.canyousing.com.ng",
         headers : {
@@ -62,17 +55,42 @@ const CreateBanner = () => {
     }
     const handleChange_2 = (e) => {
         e.persist();
-        setAdvertisers({...advertisers,[e.target.name] : e.target.value, [e.target.target] : e.target.id});
+        setAdvertisers({...advertisers, advertiser : e.target.value});
+        const {value} = e.currentTarget;
+        let targetItem = document.querySelector(`option[value="${value}"]`);
+        if(targetItem){
+            const selectedId = targetItem.getAttribute("id")
+            setBanner({...banner, userId : selectedId})
+        }
+    }
+    const handleTitle = (e) => {
+        e.preventDefault();
+        setTitle(e.target.value);
+        setBanner({...banner, name : e.target.value})
+        const { value }  = e.currentTarget;
+
+        let option = document.querySelector(`option[value="${value}"]`);
+        if(option){
+            const selectedId = option.getAttribute("id")
+            setBanner({...banner, advert_id : selectedId})
+        }
     }
     useEffect(() => {
         const fetchingData = async () => {
-            const allList = await authAxios.get('/api/admin/users');
-            const itemList = allList.data.data;
-            setAdvs(itemList.data);
+            try {
+                const allList = await authAxios.get('/api/admin/advertiser');
+                const itemList = allList.data.data;
+                const newArray = Object.values(itemList)
+                setAdvs(newArray);
 
-            const allAdverts = await authAxios.get('/api/admin/ads');
-            const ads_data = allAdverts.data.data;
-            setAdsList(ads_data.data);
+                const allAdverts = await authAxios.get('/api/admin/ads');
+                const ads_data = allAdverts.data.data;
+                setAdsList(ads_data.data);
+            } catch (error) {
+                console.log(error)
+                swal("Failed", "Try Refresh the page to fetch data", "warning")
+            }
+            
         }
         fetchingData();
     },[])
@@ -80,26 +98,19 @@ const CreateBanner = () => {
     
     const formSubmit = (e) => {
         e.preventDefault();
-        const targetAds = adsList.filter( item => 
-            item.title.toLowerCase() == banner.name.toLowerCase()
-        );
-        console.log(targetAds)
         
-        let advert_id = '';
-        targetAds.map(({id}) => {
-            advert_id = id
-        })
-        
+        const finalTitle = `${title} ${banner.width}x${banner.height}`;
+
         setLoading(true)
         const newData = new FormData();
-        newData.append('name', banner.name);
+        newData.append('name', finalTitle);
         newData.append('banner', file);
         newData.append('width', banner.width);
         newData.append('height', banner.height);
         newData.append('description', banner.description);
         newData.append('url', banner.url);
-        newData.append('advert_id', advert_id);
-        newData.append('user_id', target_value);
+        newData.append('advert_id', banner.advert_id);
+        newData.append('user_id', banner.userId);
 
         authAxios.post('https://test.canyousing.com.ng/api/admin/banners', newData)
         .then(res => {
@@ -107,7 +118,8 @@ const CreateBanner = () => {
                 console.log(res.data)
                 swal("Great!", "Banner created successfully!", "success");
                 setLoading(false)
-                setBanner({name : '',
+                setBanner({
+                name : '',
                 banner : '',
                 width : '',
                 height : '',
@@ -115,12 +127,26 @@ const CreateBanner = () => {
                 url : '',
                 userId : '',
                 advert_id : ''
-            })
+                })
+                setTitle("")
+                setAdvertisers({advertiser : '', id : ""})
             }
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            const errors = err.response.status
+            const errorArray = err.response.data.errors;
+            const newArray = Object.values(errorArray);
+
+            let errorMsg = ""
+            newArray[0].forEach(item => { errorMsg =  item})
+            swal("Failed!", `${errorMsg}`, "error")
+            .then(() => {
+                setLoading(false)
+            })
+            console.log(errorMsg)
+        })
     }
-    
+
     const handleLogout = (e) => {
         e.preventDefault();
         authAxios.post('https://test.canyousing.com.ng/api/admin/logout')
@@ -135,10 +161,16 @@ const CreateBanner = () => {
     }
     let notification_count = notification.length;
     
-    // console.log(advs)
-    // console.log(advert_id)
+    let btnText = ""
+    if(loading === true){
+        btnText = <div className="spier" style={{display : loading ? "block" : "none"}}>
+        <Loader type="TailSpin" color="#ffffff" height={20} width={20} />
+        </div>
+    }else if(loading === false){
+        btnText = <span className="text-white">Submit</span>
+    }
     
-    // console.log(banner.name)
+    console.log(banner)
     return (
         <div className="dashboard">
             <div className="small-title">
@@ -200,7 +232,13 @@ const CreateBanner = () => {
                                         <form onSubmit={formSubmit}>
                                             <div className="form-group">
                                                 <label htmlFor="">Title</label>
-                                                <input type="text" name="name" value={banner.name} onChange={handleChange} />
+                                                <input list="data" name="title" value={title}  id="title-input" onChange={handleTitle} />
+                                                    <datalist id="data">
+                                                        {adsList.map(({id, title}) =>{
+                                                            return <option key={id} id={id} value={title} className="target_child"></option>
+                                                        }   
+                                                        )}
+                                                    </datalist>
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="">Banner</label>
@@ -225,10 +263,11 @@ const CreateBanner = () => {
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="">Select Advertiser</label>
-                                                    <input list="data2" name="advertiser" value={advertisers.advertiser} target="id" id={advertisers.id} onChange={handleChange_2} />
+                                                    <input list="data2" name="advertiser" value={advertisers.advertiser} id='data-all' onChange={handleChange_2} />
                                                     <datalist id="data2">
-                                                        {advs.map(({id, firstName, lastName}) =>{
-                                                            return <option key={id} id={id} value={firstName} className="target_child"></option>
+                                                        {advs.filter(item => item.firstName != null)
+                                                        .map(({id, firstName, lastName}) =>{
+                                                            return <option key={id} id={id} value={`${firstName} ${lastName}`} className="target_child"></option>
                                                         }   
                                                         )}
                                                     </datalist>
@@ -241,10 +280,7 @@ const CreateBanner = () => {
                                                 <label htmlFor="">URL</label>
                                                 <input type="text"  name="url" value={banner.url} onChange={handleChange}/>
                                             </div>
-                                            <button type="submit">Send</button>
-                                            <div className="spinner" style={{display : loading ? "block" : "none"}}>
-                                                <Loader type="TailSpin" color="#EE315D" height={30} width={30} />
-                                            </div>
+                                            <button type="submit" style={{width :"180px", borderRadius : "3px"}}>{btnText}</button>
                                         </form>
                                     </div>
                                 </div>

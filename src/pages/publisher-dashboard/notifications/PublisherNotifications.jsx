@@ -3,7 +3,6 @@ import axios from 'axios';
 import '../../dashboard/dashboard.scss';
 import '../../admin/notifications/notifications.scss';
 import avatar from '../../../assets/Ellipse 51.png';
-import Trash from '../../../assets/Trash.svg';
 import squares from '../../../assets/SquaresFour.svg';
 import megaphone from '../../../assets/MegaphoneSimple.svg';
 import bag from '../../../assets/BagSimple.svg';
@@ -132,7 +131,7 @@ const PublisherNotifications = () => {
                                         const time_ = created_at.split("T")[1];
                                         const time_value = time_.split(".")[0];
                                         let dynamic_text = ""
-                                            if(type = "App\Notifications\NewAdvertNotification"){
+                                            if(type === "App\Notifications\NewAdvertNotification"){
                                                 dynamic_text = "new ads"
                                             }
                                             console.log(dynamic_text)

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import '../../dashboard/dashboard.scss';
 import '../../dashboard/ads-history/ads-history.scss';
+import '../pb-support/style.scss';
 import logo from '../../../assets/image 1.png';
 import axios from 'axios';
 import squares from '../../../assets/SquaresFour.svg';
@@ -13,12 +14,15 @@ import creditCard from '../../../assets/CreditCard.svg';
 import user from '../../../assets/User.svg';
 import Loader from "react-loader-spinner";
 import swal from 'sweetalert';
+import PublisherMobileTag from '../../../components/Pub-mobile-Tab/PubMobileTag';
+import hamburger from '../../../assets/hamburger.png';
 
 const PublisherSupport = () => {
 
     const history = useHistory();
     const [loading, setLoading] = useState(false);
-    const id = localStorage.getItem("auth_id")
+    const [ham, setHam] = useState(false);
+    const [notification, setNotification] = useState([]);
     const token = localStorage.getItem("auth_token")
     const [support, setSupport] = useState({
         name : '',
@@ -54,7 +58,7 @@ const PublisherSupport = () => {
             config: { headers: {'Content-Type': 'multipart/form-data' }}
         })
         .then(res => {
-            if(res.status == 200){
+            if(res.status === 200){
                 console.log(res.data)
                 setLoading(false)
                 swal("Great!", "Message sent successfully added!", "success");
@@ -84,11 +88,18 @@ const PublisherSupport = () => {
         })
         .catch(err => console.log(err));
     }
+    const toggler = (e) => {
+        e.preventDefault();
+        setHam(!ham);
+    } 
+    let notification_count = notification.length;
+
     return (
-        <div className="dashboard">
+        <div className="dashboard support-wrapper">
             <div className="small-title">
                 <div className="title-text justify-content-between">
                     <div className="logo">
+                        <img src={hamburger} alt="hamburger" width="25px" className="hamburger" onClick={toggler}/>
                         <Link to='/home'>
                             <img src={logo} alt="moovit-logo" />
                         </Link>
@@ -99,7 +110,7 @@ const PublisherSupport = () => {
                     </div>
                 </div>
                 <div className="dashboard-main-wrapper">
-                    <div className="tabs">
+                <div className="tabs">
                         <div className="tab-item">
                         <img src={squares} alt="" />
                             <Link to='/dashboard/publisher'>Dashboard</Link>
@@ -119,7 +130,8 @@ const PublisherSupport = () => {
                         <div className="tab-item">
                             <img src={bag} alt="" />
                             <p>
-                                <Link to='/publisher/notifications'>Notifications</Link>
+                                <Link to='/publisher/notifications'>Notifications <span style={{display
+                 : notification_count < 1 ? "none" : "flex"}}>{notification_count}</span></Link>
                             </p>
                         </div>
                         <div className="tab-item">
@@ -143,8 +155,11 @@ const PublisherSupport = () => {
                             <p onClick={handleLogout} className="logout">Logout</p>
                         </div>
                     </div>
+                    <div className="mobile-tag">
+                        <PublisherMobileTag ham={ham} notification_count={notification_count} handleLogout={handleLogout} />
+                    </div>
                     <div className="dashboard-main">
-                        <div className="ads-wrapper mt-3">
+                        <div className="ads-wrapper">
                             <div className="ads-heading">
                                 <h4>Support</h4>
                             </div> 

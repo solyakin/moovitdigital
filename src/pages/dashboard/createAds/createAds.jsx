@@ -2,6 +2,7 @@ import React, {useState } from 'react';
 import {Link, useHistory} from 'react-router-dom';
 import axios from 'axios';
 import swal from 'sweetalert';
+import close from '../../../assets/close2.png';
 import '../../dashboard/dashboard.scss';
 import '../../dashboard/createAds/createAds.scss';
 import Tags from '../../../components/Tags/Tags';
@@ -11,6 +12,9 @@ import Templates from '../../../components/templates/templates';
 import logo from '../../../assets/image 1.png';
 import MobileTags from '../../../components/MobileTags/mobileTags';
 import hamburger from '../../../assets/hamburger.png';
+import RequestForm from '../../../components/RequestForm/RequestForm';
+import Payment from '../../dashboard/payment/payment';
+import Submit from '../../dashboard/submit/Submit';
 
 const CreateAds = () => {
 
@@ -18,21 +22,30 @@ const CreateAds = () => {
         hide : false,
         transformArrow : false,
     });
+    const [errors, setErrors] = useState({
+        code : "",
+        codeMessage : ""
+    })
+    const [contactAgent, setContactAgent] = useState(false);
     const [show, setShow] = useState(true);
     const [ham, setHam] = useState(false);
     const [start, setStart] = useState(null);
     const history = useHistory();
     const [file, setFile] = useState(null);
+    const [dialog, setDialog] = useState(false);
     // const [hide, setHide] = useState(false);
     const [showNext, setShowNext] = useState("block");
     const [showNext2, setShowNext2] = useState("none");
     const [showNext3, setShowNext3] = useState("none");
+    const [showNext4, setShowNext4] = useState("none");
+    const [showNext5, setShowNext5] = useState("none");
     const [loading, setLoading] = useState(false);  
     const [disabled, setDisabled] = useState(false);
     const [state, setState] = useState({
         selectedOption : "awareness"
     })
     const [createAds, setCreateAds] = useState({
+        amount : "",
         title : "",
         description : "",
         gender: "",
@@ -41,7 +54,7 @@ const CreateAds = () => {
         phone : "",
         start : "",
         end : "", 
-        dimensions : [],
+        dimensions : "360 x 450",
         graphic_id : 1,
         budget_id : "",
         area : "",
@@ -50,6 +63,8 @@ const CreateAds = () => {
         fbPage : '',
         instagram : '',
         linkedin : '',
+        demo_others : '',
+        interest_others : '',
         engagement : 0,
         conversions : 0,
         apps : 0,
@@ -67,14 +82,14 @@ const CreateAds = () => {
     const handleChange = (e) =>{
         setCreateAds({...createAds, [e.target.name]: e.target.value})
     }
-
     const handleSubmit = (e) => {
         e.preventDefault();
         setDisabled(true)
         setShow(false)
-        if(createAds.budget_id !== "" && createAds.graphic_id !== "" && createAds.fbPage !== "" && createAds.phone !== "" && createAds.title !== "" && file !== null && createAds.start !== "" && createAds.end !=="" && createAds.location !== ""){
+        if(createAds.budget_id !== "" && createAds.graphic_id !== "" && createAds.phone !== "" && createAds.title !== "" && file !== null && createAds.start !== "" && createAds.end !=="" && createAds.location !== ""){
             setLoading(true);
             const data = {
+                amount : createAds.amount,
                 title : createAds.title,
                 content : createAds.description,
                 awareness : createAds.awareness,
@@ -90,6 +105,8 @@ const CreateAds = () => {
                 fb_page : createAds.fbPage,
                 instagram : createAds.instagram,
                 linkedin : createAds.linkedin,
+                demoOthers : createAds.demo_others,
+                interestOther : createAds.interest_others,
                 ageRange : createAds.ageRange,
                 graphic_id : createAds.graphic_id,
                 budget_id : createAds.budget_id,
@@ -103,6 +120,7 @@ const CreateAds = () => {
 
             const newForm = new FormData();
             newForm.append("title", data.title);
+            newForm.append("amount", data.amount);
             newForm.append("content", data.content);
             newForm.append("image", file);
             newForm.append("awareness", data.awareness);
@@ -115,6 +133,8 @@ const CreateAds = () => {
             newForm.append("gender", data.gender);
             newForm.append("location", data.location);
             newForm.append("dimensions", data.dimensions);
+            newForm.append("demo_others", data.demoOthers);
+            newForm.append("interest_others", data.interestOther);
             newForm.append("ageRange", data.ageRange);
             newForm.append("graphic_id", data.graphic_id);
             newForm.append("budget_id", data.budget_id);
@@ -140,23 +160,34 @@ const CreateAds = () => {
             .then(res => {
                 if(res.status == 200){
                     const result = res.data;
-                    history.push('/payment');
+                    history.push('/request-call');
                 }
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                const errorArray  = err.response.data.error;
+                const newArray = Object.values(errorArray);
+                console.log(newArray);
+                // errorArray.map(item => console.log(item))
+                setErrors({code : err.response.status, codeMessage : err.response.statusText})
+                setLoading(false);
+                setShow(true);
+                setDialog(false);
+                swal("Error", "something went wrong. pls try again", "warning");
+            })
         }else{
-            swal("Oops!", "Please enter all fields!", "warning");
+            swal("Oops!", "Please enter all required fields!", "warning");
             setLoading(false);
             setDisabled(false);
+            setDialog(false);
         }
     }
     const toggler = (e) => {
         e.preventDefault();
         setHam(!ham);
     } 
-    const scrollToTop2 = ()=>{
-        document.getElementById('wrapper').scrollIntoView();
-      }
+    // const scrollToTop2 = ()=>{
+    //     document.getElementById('wrapper').scrollIntoView();
+    //   }
     console.log(createAds);
     return (
             <div className="dashboard create-ads">
@@ -165,12 +196,16 @@ const CreateAds = () => {
                     <div className="logo">
                         <img src={hamburger} alt="hamburger" width="25px" className="hamburger" onClick={toggler}/>
                         <Link to='/home'>
-                            <img src={logo} alt="moovit-logo" />
+                            <img src={logo} alt="moovit-logo" className="logo-img" />
                         </Link>
+                        <div className="text d-flex align-items-center mobile">
+                            <p className='mt-1'>Need help?</p>
+                            <button onClick={() => setContactAgent(true)}>Contact an agent</button>
+                        </div>
                     </div>
-                    <div className="text d-flex align center">
-                        {/* <p>The Brand Hub</p>
-                        <img src={caretDown} alt="" /> */}
+                    <div className="text d-flex align-items-center">
+                        <p className='mt-1'>Need help?</p>
+                        <button onClick={() => setContactAgent(true)}>Contact an agent</button>
                     </div>
                 </div>
                 <div className="dashboard-main-wrapper">
@@ -209,13 +244,36 @@ const CreateAds = () => {
                             setCreateAds={setCreateAds}
                             setShowNext2={setShowNext2}
                             setShowNext3={setShowNext3} 
+                            setShowNext4={setShowNext4} 
                             loading ={loading}
                             Disabled={disabled}
+                            dialog={dialog}
+                            setDialog={setDialog}
                             setDisabled={setDisabled}
                             show={show}
                             />
+                            <Payment createAds={createAds} 
+                            setCreateAds={setCreateAds}
+                            setShowNext3={setShowNext3}
+                            setShowNext4={setShowNext4}
+                            showNext4={showNext4}
+                            setShowNext5={setShowNext5}
+                            setDisabled={setDisabled}
+                            />
+                            <Submit createAds={createAds}
+                            handleSubmit={handleSubmit}
+                            setDisabled={setDisabled}
+                            showNext5={showNext5}
+                            />
                         </form> 
                     </div>
+                </div>
+            </div>
+            <div className="contact-agent" style={{display : contactAgent ? "block" : "none"}}>
+                {/* <h5>Contact an agent</h5> */}
+                <RequestForm />
+                <div className="close" onClick={() =>setContactAgent(false)}>
+                    <img src={close} alt="close btn" width="20px" height="20px" />
                 </div>
             </div>
         </div>
@@ -223,3 +281,4 @@ const CreateAds = () => {
 }
 
 export default CreateAds
+// 

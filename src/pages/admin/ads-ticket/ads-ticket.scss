@@ -118,6 +118,9 @@
                 }
                 .suggestions{
                     margin-top: 10px;
+                    .selected{
+                        background: #D6D6D6;
+                    }
                     .user-profile{
                         display: flex;
                         align-items: center;

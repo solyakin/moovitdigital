@@ -247,6 +247,9 @@ const MarketerDashboard = () => {
                                                     {
                                                         newArray.filter((items, index) => (index < 5))
                                                         .map(({id, title, start, location}) => {
+                                                            let newDate = '';
+                                                            const data_ = start.split("00");
+                                                            newDate = data_[0];
                                                             return (
                                                                 <tr key={id}>
                                                                     <th scope="row">
@@ -254,7 +257,7 @@ const MarketerDashboard = () => {
                                                                     </th>
                                                                     <td className="text-left">{title}</td>
                                                                     <td>Tier 2</td>
-                                                                    <td>{start}</td>
+                                                                    <td>{newDate}</td>
                                                                     <td>{location}</td>
                                                                     <td onClick={handleClick_} id={id}>
                                                                         <Link to={'/marketer/preview-advert'} id={id} onClick={handleClick_}>Preview</Link>

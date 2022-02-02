@@ -205,7 +205,7 @@ const PublisherForm = ({navBackground}) => {
                             </div>
 
                             <div className="duration mt-4">
-                                <h5>How long have your used this domain?</h5>
+                                <h5>How long have you used this domain?</h5>
                                 <div className="row">
                                     <div className="col-lg-8 col-sm-12">
                                         <div className="duration-frame">
@@ -293,13 +293,15 @@ const PublisherForm = ({navBackground}) => {
                                 </div>
                             </div>
                             <button>Send Request</button>
-                            <div className="spinner mb-4" style={{display : loading ? "block" : "none"}}>
-                                <Loader type="TailSpin" color="#EE315D" height={30} width={30} />
-                            </div>
+                            
                         </form>
                     </div>
                 </div>
-
+            </div>
+            <div className="overlay"style={{display : loading ? "block" : "none"}}>
+                <div className="spinner mb-4" >
+                    <Loader type="Oval" color="#EE315D" height={60} width={70} />
+                </div>
             </div>
         </div>
     )

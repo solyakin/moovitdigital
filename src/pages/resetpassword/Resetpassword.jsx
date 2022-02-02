@@ -51,7 +51,7 @@ const ResetPassword = ({navBackground}) => {
                 setData({loading : false})
             });
         }
-        if(data.token == '' || data.token == undefined){
+        if(data.token === '' || data.token === undefined){
             swal("Ooops!", "Something went wrong. Try again", "warning")
             setData({laoding : false});
         }
@@ -92,7 +92,7 @@ const ResetPassword = ({navBackground}) => {
                                 <label>Enter New Password</label>
                                 <input type="password" name="password" value={data.password} required onChange={handleChange}/>
                                 {
-                                    password_error != '' ?
+                                    password_error !== '' ?
                                     password_error.map((item, index) => {
                                         return <p key={index} style={{height : "-10px", color : "red"}}>{item}</p>
                                     }):

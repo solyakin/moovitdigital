@@ -2,16 +2,22 @@ import React, { useState } from 'react'
 import axios from 'axios';
 import swal from 'sweetalert';
 import '../forgotPassword/forgetpassword.scss';
+import Loader from "react-loader-spinner";
 import Header from '../../components/header/header';
 // import logo from '../../assets/image 1.png';
 
 const ForgetPassword = ({navBackground}) => {
 
     const [data, setData] = useState({
-        email : ''
+        email : '',
+        loading : false
     })
+    const [disabled, setDisabled] = useState(false);
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        setData({...data, loading : true })
+        setDisabled(true)
         const newData = new FormData();
         newData.append('email', data.email);
         axios({
@@ -21,14 +27,28 @@ const ForgetPassword = ({navBackground}) => {
             config: { headers: {'Content-Type': 'multipart/form-data'}}
         })
         .then(res => {
-            swal("Great!", "Reset link sent successfully", "success")
             console.log(res.data);
+            swal("Success!", "Reset link sent to your email", "success")
+            setData({...data, loading : false });
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            console.log(err)
+            setData({...data, loading : false });
+            swal("Ooops!", "Something went wrong, try Again", "warning")
+            setDisabled(false);
+        });
     }
     const handleChange = (e) => {
         e.persist();
-        setData({ email : e.target.value})
+        setData({...data, email : e.target.value})
+    }
+    let btnText = ""
+    if(data.loading === true){
+        btnText = <div className="spier" style={{display : data.loading ? "block" : "none"}}>
+        <Loader type="TailSpin" color="#ffffff" height={20} width={20} />
+        </div>
+    }else if(data.loading === false){
+        btnText = <span>Submit</span>
     }
     console.log(data)
     return (
@@ -43,7 +63,9 @@ const ForgetPassword = ({navBackground}) => {
                                 <label>Please Enter Email Address below</label>
                                 <input type="email" name="email" value={data.email} placeholder="john@doe.com" required onChange={handleChange}/>
                             </div>
-                            <button type="submit">Submit</button>
+                            <button disabled={disabled} type="submit" style={{backgroundColor : data.loading ? "#333333" : "#EE315D"}}>
+                                {btnText}
+                            </button>
                         </form>
                     </div>
                 </div>

@@ -1,17 +1,20 @@
 .packages{
+    background: #E5E5E5;
     .small-title{
         padding-top: 0;
+        background: transparent!important;
         .dashboard-main-wrapper{
             flex: 1;
             display: block!important;
             .dashboard-main{
-                background: white;
+                // background: white;
                 padding-right: 20px;
                 max-width: 1140px;
                 .content-form{
                     margin-top: 5rem;
+                    background: transparent!important;
                     @media screen and (max-width : 480px){
-                        margin-top: 3rem;
+                        margin-top: 2rem;
                     }
                     h3{
                         text-align: center;
@@ -35,6 +38,10 @@
                     .price-list{
                         padding-top: 10px;
                         .tier{
+                            background: white;
+                            @media screen and (max-width: 480px) {
+                                width: 300px!important;
+                            }
                             h6{
                                 margin-bottom: 2rem;
                             }

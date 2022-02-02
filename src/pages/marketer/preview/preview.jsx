@@ -3,6 +3,7 @@ import { useHistory } from 'react-router';
 import '../../dashboard/dashboard.scss';
 import '../preview/preview.scss';
 import swal from 'sweetalert';
+import Loader from "react-loader-spinner";
 import squares from '../../../assets/SquaresFour.svg';
 import bag from '../../../assets/BagSimple.svg';
 import plus from '../../../assets/Plus.svg';
@@ -18,9 +19,11 @@ import { Link } from 'react-router-dom';
 
 const MarketerPreview = () => {
 
-    const [adsList, setAdslist] =useState([]);
+    const [adsList, setAdslist] = useState([]);
     const [users, setUsers] = useState([]);
     const [notification, setNotification] = useState([]);
+    const [loading, setLoading ] = useState(false);
+    const [loading2, setLoading2 ] = useState(false);
     const targetId = localStorage.getItem("targetId")
     const token = localStorage.getItem("auth_token");
     const authAxios = axios.create({
@@ -42,36 +45,59 @@ const MarketerPreview = () => {
             const adsListData = ads_data.data.data;
             const newArray = adsListData.filter(item => item.id == targetId)
             setAdslist(newArray);
+
+            const allNotifications = await authAxios.get('/api/admin/notifications');
+            const notification_array = allNotifications.data;
+            setNotification(notification_array.data);
         }
         fetchingData()
     }, [])
     const handleApprove = (e) => {
         e.preventDefault();
+        setLoading(true)
         const { id } = e.currentTarget;
         console.log(id)
         const data = {
             approved : 1
         }
         const approveAds = async () => {
-            const query = await authAxios.put(`/api/admin/approve-ads/${id}`, data);
-            const res = query.data;
-            swal("Great!", "Ads Approved successfully!", "success");
-            console.log(res);
+            try {
+                const query = await authAxios.put(`/api/admin/approve-ads/${id}`, data);
+                const res = query.data;
+                swal("Great!", "Ads Approved successfully!", "success");
+                setLoading(false);
+                window.location.reload();
+                console.log(res);
+            } catch (error) {
+                swal("Failed!", "Request was unsuccessfully!", "success");
+                setLoading(false);
+                console.log(error)
+            }
+            
         }
         approveAds();
     }
     const handleReject = (e) => {
         e.preventDefault();
+        setLoading2(true)
         const { id } = e.currentTarget;
         console.log(id)
         const data = {
             approved : 0
         }
         const rejectAds = async () => {
-            const query = await authAxios.put(`/api/admin/approve-ads/${id}`, data);
-            const res = query.data;
-            swal("Great!", "Ads Rejected successfully!", "success");
-            console.log(res);
+            try {
+                const query = await authAxios.put(`/api/admin/approve-ads/${id}`, data);
+                const res = query.data;
+                swal("Great!", "Ads Rejected successfully!", "success");
+                setLoading2(false)
+                window.location.reload();
+                console.log(res);
+            } catch (error) {
+                swal("Failed!", "Request was unsuccessfully!", "success");
+                setLoading2(false);
+                console.log(error)
+            }
         }
         rejectAds();
     }
@@ -89,6 +115,23 @@ const MarketerPreview = () => {
     }
     let notification_count = notification.length;
     console.log(adsList)
+
+    let btnText = ""
+    if(loading === true){
+        btnText = <div className="spier" style={{display : loading ? "block" : "none"}}>
+        <Loader type="TailSpin" color="#ffffff" height={20} width={20} />
+        </div>
+    }else if(loading === false){
+        btnText = <span className="text-white">Approve</span>
+    }
+    let rejectText = ""
+    if(loading2 === true){
+        rejectText = <div className="spier" style={{display : loading2 ? "block" : "none"}}>
+        <Loader type="TailSpin" color="#ffffff" height={20} width={20} />
+        </div>
+    }else if(loading2 === false){
+        rejectText = <span className="text-white">Reject</span>
+    }
     return (
         <div className="dashboard marketer-preview">
             <div className="small-title">
@@ -99,8 +142,7 @@ const MarketerPreview = () => {
                         </Link>
                     </div>
                     <div className="text d-flex align center">
-                        {/* <p>The Brand Hub</p>
-                        <img src={caretDown} alt="" /> */}
+                        
                     </div>
                 </div>
                 <div className="dashboard-main-wrapper">
@@ -152,22 +194,45 @@ const MarketerPreview = () => {
                             </div>
                             <div className="preview-wrapper">
                                 {
-                                    adsList.map(({id, title, approved, content, start, end, area, location, budget_id, image, createdBy, awareness, conversions, app_installs, engagement, sales, reach, target, phone}) => {
-                                        const target_region = area.split(",");
+                                    adsList.map(({id, title, approved, content, demographics, ageRange, interests, start, end, area, location, budget_id, image, fb_page, gender, instagram, linkedin, createdBy, awareness, conversions, Dimensions, app_installs, engagement, sales, reach, target, phone}) => {
+                                        // const target_region = area.split(",");
+
+                                        const age = ageRange.split(",");
+                                        const demoArray = demographics.split("=");
+                                        const interestArray = interests.split("=")
+                                        const allAreas = area.split("=")
+
+                                        const see = interestArray.filter(item => item != '')
+                                        console.log(see)
                                         let price = "";
                                         if(budget_id == 1){
-                                            price = "#10,000"
+                                            price = "#20,000"
                                         }else if(budget_id == 2){
                                             price = "#50,000"
                                         }else if(budget_id = 3){
-                                            price = "#100,000"
+                                            price = "#150,000"
+                                        }else if(budget_id = 4){
+                                            price = "#200,000"
+                                        }else if(budget_id = 5){
+                                            price = "#500,000"
+                                        }else if(budget_id = 6){
+                                            price = "#1,000,000"
                                         }
+
+                                        let newDate = '';
+                                        const data_ = start.split("00");
+                                        newDate = data_[0];
+
+                                        let newDateEnd = '';
+                                        const data_2 = end.split("00");
+                                        newDateEnd = data_2[0];
+                                       
                                         const getuser = users.filter(item => item.id == createdBy);
                                         let userValue = "";
                                         let user_email = "";
                                         let user_phone = "";
-                                        getuser.map(({firstName, lastName, email, phone}) => {
-                                            userValue = <span>{firstName} {lastName}</span>
+                                        getuser.map(({firstName, lastName, email, phone, id}) => {
+                                            userValue = <span key={id}>{firstName} {lastName}</span>
                                             user_email = email;
                                             user_phone = phone;
                                         })
@@ -188,28 +253,32 @@ const MarketerPreview = () => {
                                         }else if(target == 1){
                                             campaign_type = <span>Traffic</span>
                                         }
+
+                                        const  dimArr = Dimensions.replace(/\D+/g, '');
+                                        const newDimension = dimArr.split('');
+                                        console.log(newDimension);
+                                        
                                         let approvedBtn = '';
                                         if(approved == 0){
                                                 approvedBtn = <div className="approve-text d-flex align-item-center">
-                                                                <p className="reject">Rejected</p>
                                                                 <img src={icon4} alt="" width="25px"/>
+                                                                <p className="reject">Rejected</p>
                                                             </div>
                                         } else if(approved == 1) {
                                             approvedBtn = <div className="approve-text d-flex align-item-center">
-                                                            <p>Approved</p>
                                                             <img src={tick} alt="" width="15px"/>
+                                                            <p>Approved</p>
                                                         </div>
                                         }else{
                                             approvedBtn = <div className="row d-flex justify-content-between">
                                                 <div className="col-6">
-                                                    <button className="approve" id={id} onClick={handleApprove}>Approve</button>
+                                                    <button className="approve" id={id} onClick={handleApprove}>{btnText}</button>
                                                 </div>
                                                 <div className="col-6">
-                                                    <button id={id} onClick={handleReject}>Reject</button>
+                                                    <button id={id} onClick={handleReject}>{rejectText}</button>
                                                 </div>
                                             </div> 
                                         }
-                                
                                         return <div className="prev-container" key={id}>
                                             <div className="ads-detail">
                                                 <div className="title mb-4">
@@ -233,12 +302,51 @@ const MarketerPreview = () => {
                                                 <div className="dates mb-4">
                                                     <div className="start">
                                                         <h5>Start date</h5>
-                                                        <p>{start}</p>
+                                                        <p>{newDate}</p>
                                                     </div>
                                                     <div className="end">
                                                         <h5>End date</h5>
-                                                        <p>{end}</p>
+                                                        <p>{newDateEnd}</p>
                                                     </div>
+                                                </div>
+                                                <div className="dates mb-4">
+                                                    <div className="start">
+                                                        <h5>Age Range</h5>
+                                                        <p>{`${age[0]} - ${age[1]}`}</p>
+                                                    </div>
+                                                    <div className="end">
+                                                        <h5>Gender</h5>
+                                                        <p>{gender}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="target-area mb-4">
+                                                    <h5>Dimensions</h5>
+                                                    {
+                                                        newDimension.map((item, index) => {
+
+                                                            let renderDimension = "";
+                                                            if(item == 1){
+                                                                renderDimension = "300 x 250"
+                                                            }else if(item == 2){
+                                                                renderDimension = "300 x 50"
+                                                            }else if(item == 3){
+                                                                renderDimension = "428 x 300"
+                                                            }else if(item == 4){
+                                                                renderDimension = "468 x 60"
+                                                            }else if(item == 5){
+                                                                renderDimension = "160 x 600"
+                                                            }else if(item == 6){
+                                                                renderDimension = "300 x 50"
+                                                            }else if(item == 7){
+                                                                renderDimension = "300 x 600"
+                                                            }else if(item == 8){
+                                                                renderDimension = "728 x 50"
+                                                            }else if(item == 9){
+                                                                renderDimension = "120 x 600"
+                                                            }
+                                                            return <p key={index}>{renderDimension}</p>
+                                                        })
+                                                    }
                                                 </div>
                                                 <div className="target-area mb-4">
                                                     <h5>Target Area</h5>
@@ -247,10 +355,53 @@ const MarketerPreview = () => {
                                                 <div className="location mb-4">
                                                     <h5>Location</h5>
                                                     <div className="locations">
-                                                        <span>{target_region[0]}</span>
-                                                        <span>{target_region[1]}</span>
-                                                        <span>{target_region[2]}</span>
+                                                    {
+                                                        allAreas.map((item, index) => {
+                                                            // const newString = item.slice(1)
+                                                            return(
+                                                                <span key={index}>{item}</span>
+                                                            )
+                                                        })
+                                                    }
                                                     </div>
+                                                </div>
+                                                <div className="social mb-4">
+                                                    <div className="start">
+                                                        <h5>Facebook Page</h5>
+                                                        <p>{fb_page}</p>
+                                                    </div>
+                                                    <div className="end">
+                                                        <h5>Linkedin Page</h5>
+                                                        <p>{linkedin}</p>
+                                                    </div>
+                                                    <div className="start">
+                                                        <h5>Instagram Page</h5>
+                                                        <p>{instagram}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="target-area mb-4">
+                                                    <h5>Demographics</h5>
+                                                    <ul>
+                                                    {demoArray.map((item, index) => {
+                                                        const cleanData = item.replace(/(["",\/]+)/g, '');
+                                                        return(  
+                                                            <li key={index}>{cleanData}</li>  
+                                                        )
+                                                        })
+                                                    }
+                                                    </ul>
+                                                </div>
+                                                <div className="target-area mb-4">
+                                                    <h5>Interest</h5>
+                                                    <ul>
+                                                        {interestArray.map((item, index) => {
+                                                            const cleanData = item.replace(/(["",\/]+)/g, '');
+                                                            return(
+                                                                <li key={index}>{cleanData}</li>
+                                                            )
+                                                            })
+                                                        }
+                                                    </ul>
                                                 </div>
                                             </div>
                                             <div className="sender">

@@ -94,25 +94,28 @@ const AdminPreview = () => {
                             </div>
                             <div className="preview-wrapper">
                                 {
-                                    ticketData.map(({id, title, content, ageRange, start, end, area, location, budget_id, image, approved, createdBy, fb_page, instagram, linkedin, awareness, demographics, interests, conversions, app_installs, engagement, sales, reach, target, phone}) => {
+                                    ticketData.map(({id, title, gender, content, Dimensions, ageRange, start, end, area, location, budget_id, image, approved, createdBy, fb_page, instagram, linkedin, awareness, demographics, interests, conversions, app_installs, engagement, sales, reach, target, phone}) => {
 
                                         const age = ageRange.split(",");
                                         const demoArray = demographics.split("=");
                                         const interestArray = interests.split("=")
                                         const allAreas = area.split("=")
 
+                                        // const  dimArr = Dimensions.replace(/\D+/g, '');
+                                        // const newDimension = dimArr.split('');
+
                                         let price = "";
                                         if(budget_id == 1){
                                             price = "#20,000"
                                         }else if(budget_id == 2){
                                             price = "#50,000"
-                                        }else if(budget_id = 3){
+                                        }else if(budget_id == 3){
                                             price = "#150,000"
-                                        }else if(budget_id = 4){
+                                        }else if(budget_id == 4){
                                             price = "#200,000"
-                                        }else if(budget_id = 5){
+                                        }else if(budget_id == 5){
                                             price = "#500,000"
-                                        }else if(budget_id = 6){
+                                        }else if(budget_id == 6){
                                             price = "#1,000,000"
                                         }
                                         let newDate = '';
@@ -202,13 +205,23 @@ const AdminPreview = () => {
                                                         <p>{newDateEnd}</p>
                                                     </div>
                                                 </div>
-                                                <div className="target-area mb-4">
-                                                    <h5>Age Range</h5>
-                                                    <p>{`${age[0]} - ${age[1]}`}</p>
+                                                <div className="dates mb-4">
+                                                    <div className="start">
+                                                        <h5>Age Range</h5>
+                                                        <p>{`${age[0]} - ${age[1]}`}</p>
+                                                    </div>
+                                                    <div className="end">
+                                                        <h5>Gender</h5>
+                                                        <p>{gender}</p>
+                                                    </div>
                                                 </div>
                                                 <div className="target-area mb-4">
                                                     <h5>Target Country Location</h5>
                                                     <p>{location}</p>
+                                                </div>
+                                                <div className="target-area mb-4">
+                                                    <h5>Dimensions</h5>
+                                                    <p>{Dimensions}</p>
                                                 </div>
                                                 <div className="location mb-4">
                                                     <h5>Target Area</h5>
@@ -223,12 +236,12 @@ const AdminPreview = () => {
                                                     </div>
                                                     <img src={image} alt="" />
                                                 </div>
-                                                <div className="dates mb-4">
+                                                <div className="text d-flex align-items-center justify-content-between mb-4">
                                                     <div className="start">
                                                         <h5>Facebook Page</h5>
                                                         <p>{fb_page}</p>
                                                     </div>
-                                                    <div className="end">
+                                                    <div className="start">
                                                         <h5>Linkedin Page</h5>
                                                         <p>{linkedin}</p>
                                                     </div>
@@ -239,25 +252,27 @@ const AdminPreview = () => {
                                                 </div>
                                                 <div className="target-area mb-4">
                                                     <h5>Demographics</h5>
-                                                    {demoArray.map(item => {
-                                                        return(
-                                                            <ul>
-                                                                <li>{item}</li>
-                                                            </ul>
-                                                        )
-                                                        })
-                                                    }
+                                                    <ul>
+                                                        {demoArray.map((item, index) => {
+                                                            const cleanData = item.replace(/(["",\/]+)/g, '');
+                                                            return(  
+                                                                <li key={index}>{cleanData}</li>  
+                                                            )
+                                                            })
+                                                        }
+                                                    </ul>
                                                 </div>
                                                 <div className="target-area mb-4">
                                                     <h5>Interest</h5>
-                                                    {interestArray.map(item => {
-                                                        return(
-                                                            <ul>
-                                                                <li>{item}</li>
-                                                            </ul>
-                                                        )
-                                                        })
-                                                    }
+                                                    <ul>
+                                                        {interestArray.map((item, index) => {
+                                                            const cleanData = item.replace(/(["",\/]+)/g, '');
+                                                            return(
+                                                                <li key={index}>{cleanData}</li>
+                                                            )
+                                                            })
+                                                        }
+                                                    </ul>
                                                 </div>
                                             </div>
                                             <div className="sender">

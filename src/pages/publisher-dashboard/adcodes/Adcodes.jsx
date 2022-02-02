@@ -22,7 +22,6 @@ const PublisherAdcode = () => {
     const [notification, setNotification] = useState([]);
     const history = useHistory();
     const token = localStorage.getItem("auth_token");
-    const auth_id = localStorage.getItem("auth_id");
     const authAxios = axios.create({
         baseURL : "https://test.canyousing.com.ng",
         headers : {

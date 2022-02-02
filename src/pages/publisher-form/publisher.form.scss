@@ -3,6 +3,21 @@
     text-align: left;
     padding-top: 80px!important;
     padding-bottom: 4rem;
+    position: relative;
+    .overlay{
+        background: rgba(0, 0, 0, 0.4);
+        position: fixed;
+        z-index: 10000;
+        top:0;
+        height:100%;
+        width: 100%;
+        overflow-y: hidden;
+        .spinner{
+            position: absolute;
+            top: 50%;
+            left: 45%;
+        }
+    }
     .row{
         @media only screen and (max-width : 768px){
             display: block!important;

@@ -40,13 +40,13 @@ const Advertisers = () => {
        const fetching = async () => {
             const allNotifications = await authAxios.get('/api/admin/notifications');
             const notification_array = allNotifications;
-            console.log(notification_array);
             setNotification(notification_array);
 
             authAxios.get('/api/admin/advertiser')
             .then(res => {
                 const result = res.data.data;
-                setAdscount(result);
+                console.log(result)
+                setAdscount(result.data);
             })
             .catch( err => console.log(err))
         }
@@ -55,14 +55,12 @@ const Advertisers = () => {
            setLoading(false);
        })
     }, [])
-    console.log(adsCount)
 
     let valuesArray = Object.values(adsCount);
-    console.log(valuesArray)
 
     // const { search, searchField} = state;
     const searchedArray = valuesArray.filter(item => item.firstName.toLowerCase().includes(state.searchField.toLowerCase()))
-    console.log(searchedArray);
+    console.log(adsCount);
     
     return (
         <div className="dashboard preview">

@@ -40,16 +40,17 @@ const Tags = ({ style, handleClick }) => {
                 <Link to='/dashboard/advertiser'>Dashboard</Link>
             </div>
             <div className="tab-ads">
-                <div className="tab-item mb-2">
+                <div className="tab-item mb-2" onClick={handleClick}>
                     <img src={megaphone} alt="" />
-                    <p>Ads Management</p>
-                    <img src={caretDown2} alt="" onClick={handleClick} 
+                    <p>Ads Creation</p>
+                    <img src={caretDown2} alt=""  
                     style={{transform : style.transformArrow ? "rotate(180deg)" : "rotate(0deg)"}}/>
                 </div>
                 <div className="sub-track" style={{display : style.hide ? "block" : "none"}}>
-                    <p className="mb-2"><Link to='/create-ads'>Create an Ad</Link></p>
-                    <p className="mb-2"><Link to='/ads-history'>Publisher Ads</Link></p>
-                    <p className="mb-2"><Link to='/running-ads'>Social Media Ads</Link></p>
+                    <p className="mb-2"><Link to='/create-ads'>Create new Ad</Link></p>
+                    <p className="mb-2"><Link to='/ads-history'>Ads History</Link></p>
+                    <p className="mb-2"><Link to='/socialmedia-ads'>Social Media Ads</Link></p>
+                    <p className="mb-2"><Link to='/publisher-ads'>Publisher Ads</Link></p>
                 </div>
             </div>
             <div className="tab-item">

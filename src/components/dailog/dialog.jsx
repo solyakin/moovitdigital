@@ -1,10 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
 import smile from '../../assets/LOGO 2-STAND.svg';
 import '../dailog/dialog.scss';
 import Loader from "react-loader-spinner";
 
 const Dialog = ({handleSubmit, dialog, setDialog, show}) => {
-
     
     const closePopUp = (e) => {
         e.preventDefault();

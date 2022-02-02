@@ -1,14 +1,16 @@
- import React, {useState, useEffect} from 'react'
+ import React, {useState} from 'react'
 import { Link, useHistory } from 'react-router-dom';
 import Loader from "react-loader-spinner";
 import Header from '../../components/header/header';
 import '../Login/Login.scss';
+import swal from 'sweetalert';
 import google from '../../assets/google.svg';
 import image from '../../assets/image 1.png';
 import facebook from '../../assets/facebook.png';
 import axios from 'axios';
 
 const Login = ({navBackground}) => {
+    
     const history = useHistory();
     const [error_msg, setError_msg] = useState([]);
     const [login, setLogin] = useState({
@@ -22,22 +24,22 @@ const Login = ({navBackground}) => {
         setLogin({...login, [e.target.name] : e.target.value});
     }
 
-    // const fb_login = (e) => {
-    //     e.preventDefault();
-    //     axios.get('https://test.canyousing.com.ng/user/facebook/auth')
-    //     .then(res => {
-    //         console.log(res);
-    //     })
-    //     .catch(err => console.log(err));
-    // }
-    // const google_login = (e) => {
-    //     e.preventDefault();
-    //     axios.get('https://test.canyousing.com.ng/google/googlelogin')
-    //     .then(res => {
-    //         console.log(res.data);
-    //     })
-    //     .catch(err => console.log(err))
-    // }
+    const fb_login = (e) => {
+        e.preventDefault();
+        axios.get('https://test.canyousing.com.ng/user/facebook/auth')
+        .then(res => {
+            console.log(res);
+        })
+        .catch(err => console.log(err));
+    }
+    const google_login = (e) => {
+        e.preventDefault();
+        axios.get('https://test.canyousing.com.ng/google/googlelogin')
+        .then(res => {
+            console.log(res.data);
+        })
+        .catch(err => console.log(err))
+    }
     const formSubmit = (e) => {
         e.preventDefault();
         setLogin({loading : true});
@@ -45,7 +47,6 @@ const Login = ({navBackground}) => {
             email : login.email,
             password : login.password
         }
-        console.log(data)
         const newData = new FormData();
         newData.append('email', data.email);
         newData.append('password', data.password);
@@ -58,7 +59,7 @@ const Login = ({navBackground}) => {
         })
         .then(res => {
             if(res.status === 200){
-                console.log(res.data)
+                console.log(res.data.data)
                 if(res.data.action === 'old' && res.data.data.role === 'advertiser'){
                     localStorage.setItem('auth_name', res.data.data.firstName);
                     localStorage.setItem('auth_id', res.data.data.id);
@@ -69,22 +70,27 @@ const Login = ({navBackground}) => {
                     localStorage.setItem('auth_token', res.data.data.token);
                     localStorage.setItem('auth_id', res.data.data.id);
                     history.push('/account-type'); 
+                }else if(res.data.data.role === 'publisher' && res.data.data.approved === null ){
+                    console.log("Not Approved")
+                    history.push('/request-status')
                 }else if(res.data.action === 'old' && res.data.data.role === 'publisher'){
                     localStorage.setItem('auth_name', res.data.data.firstName);
                     localStorage.setItem('auth_id', res.data.data.id);
                     localStorage.setItem('auth_token', res.data.data.token);
                     localStorage.setItem('auth_role', res.data.data.role);
                     history.push('/dashboard/publisher')
-                }  
+                } 
             } 
         })
         .catch(err => {
             console.log(err)
-            if(err){
-                setLogin({loading : false});
-                // window.location.reload()
+            if(err.response){
+                setLogin({loading : false, email : '', password : ''});
+                setError_msg(err.response.data.error)
+            }else if(err.response === undefined){
+                setLogin({loading : false, email : '', password : ''});
+                swal("Failed", "check internet connection", "error");
             }
-            setError_msg(err.response.data.error)
         })
     }
     let error_text = '';
@@ -107,13 +113,12 @@ const Login = ({navBackground}) => {
     console.log(login)
     return (
         <div className="sign-up">
-                <Header navBackground={navBackground}/>
+            <Header navBackground={navBackground}/>
             <div className="container ">
                 <div className="row justify-content-center">
                     <div className="col-md-4">
                         <form onSubmit={formSubmit}>
                             <img src={image} alt="" />
-
                             <h4>Welcome Back</h4>
                             <p>Fill in your login details</p>
                             <div className="form-group">
@@ -141,8 +146,8 @@ const Login = ({navBackground}) => {
                                 <img src={google} alt="google icon" />
                                 <p>Continue with Google</p>
                            </a>
-                       </div> */}
-                       {/* <div className="google-btn">
+                       </div>
+                       <div className="google-btn">
                            <a href="https://test.canyousing.com.ng/facebook/auth" className="d-flex align-item-center">
                                 <img src={facebook} alt="google icon" />
                                 <p>Continue with Facebbok</p>
@@ -150,10 +155,10 @@ const Login = ({navBackground}) => {
                         </div> */}
                        <div className="policy">
                             <div className="tnc">
-                                <Link>Terms and Conditions</Link>
+                                <Link to='#'>Terms and Conditions</Link>
                             </div>
                             <div className="tnc">
-                                <Link>Privacy Policy</Link>
+                                <Link to='#'>Privacy Policy</Link>
                             </div>
                        </div>
                     </div>

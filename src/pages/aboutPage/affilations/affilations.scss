@@ -51,4 +51,12 @@
         color: #484848;
         font-weight: 500;
     }
+    .img{
+        @media screen and (max-width: 480px){
+            display: block!important;
+            img{
+                margin-bottom: 30px
+            }                      
+        };
+    }
 }

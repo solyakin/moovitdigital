@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import { Link, useHistory } from 'react-router-dom'
 import '../../dashboard/dashboard.scss';
 import '../../marketer/adcode/adcode.scss';
+import '../../dashboard/ads-history/ads-history.scss';
+import '../../marketer/createBanner/createbanner.scss';
 import axios from 'axios';
 import Loader from "react-loader-spinner";
 import Handshake from '../../../assets/Handshake.svg';
@@ -13,19 +15,22 @@ import logo from '../../../assets/image 1.png';
 import usericon from '../../../assets/User.svg';
 import swal from 'sweetalert';
 
+//work on user_id
+
+
 const Adcodes = () => {
 
-    let target_value = 1;
-    let banner_id = '';
-    let banner_name = '';
+    const [data_id, setData_id] = useState({
+        banner : '',
+        advertiser : '',
+        publisher : ""
+    })
     const [advertisers, setAdvertisers] = useState({
         advertiser : '',
         id : ''
     });
     const [loading, setLoading] = useState(false); 
     const [advs, setAdvs] = useState([]);
-    let target__value = '';
-   
     const [notification, setNotification] = useState([]);
     const [adcode, setAdcode ] = useState({
         publisher : "",
@@ -36,7 +41,8 @@ const Adcodes = () => {
     const [value_, setValue] = useState({
         publishers : "",
         banner : "",
-        userId : ""
+        userId : "",
+        advertid : "",
     });
     const [sendAdcode, setSendAdcode] = useState({
         publisher_sent : "",
@@ -46,25 +52,50 @@ const Adcodes = () => {
         publisher_sent : "",
         adcode_sent : ""
     })
-    const [publisher_id, setPublisher_id] = useState('');
     const [adsList, setAdsList] = useState([]);
     const [allPublisher, setPublisher] = useState([]);
     const handleChange_1 = (e) => {
         e.persist();
         setValue({...value_, [e.target.name] : e.target.value});
         setAdcode({...adcode, [e.target.name] : e.target.value});
+        const { value }  = e.currentTarget;
+
+        let option = document.querySelector(`option[value="${value}"]`);
+        if(option){
+            const selectedId = option.getAttribute("id")
+            setData_id({...data_id, banner : selectedId})
+        }
     }
+
     const handleChange__2 = (e) => {
         e.persist();
         setAdvertisers({...advertisers,[e.target.name] : e.target.value});
+        const { value }  = e.currentTarget;
+
+        let option = document.querySelector(`option[value="${value}"]`);
+        if(option){
+            const selectedId = option.getAttribute("id")
+            setData_id({...data_id, advertiser : selectedId})
+        }
     }
-    const handleChange = (e) => {
+    const handleChange_2 = (e) => {
         e.persist();
-        setAdcode({...adcode,  [e.target.name]: e.target.value})
+        setPub_l({...pub_l, [e.target.name] : e.target.value});
+        setSendAdcode({...sendAdcode, [e.target.name] : e.target.value});
+        const { value }  = e.currentTarget;
+
+        let option = document.querySelector(`option[value="${value}"]`);
+        if(option){
+            const selectedId = option.getAttribute("id")
+            setData_id({...data_id, publisher : selectedId})
+        }
+    }
+
+    const handleChange = (e) => {
+        setSendAdcode({...sendAdcode, [e.target.name] : e.target.value});
     }
     const history = useHistory();
     const token = localStorage.getItem("auth_token");
-    const auth_id = localStorage.getItem("auth_id");
     const authAxios = axios.create({
         baseURL : "https://test.canyousing.com.ng",
         headers : {
@@ -73,76 +104,93 @@ const Adcodes = () => {
     })
     useEffect(() => {
         const fetchingData = async () => {
-            const allNotifications = await authAxios.get('/api/admin/notifications');
-            const notification_array = allNotifications.data;
-            setNotification(notification_array.data);
+            try {
+                const allBanners = await authAxios.get('/api/admin/all-banners');
+                const banners_data = allBanners.data;
+                setBanner(banners_data.data);
 
-            const allBanners = await authAxios.get('/api/admin/all-banners');
-            const banners_data = allBanners.data;
-            setBanner(banners_data.data);
+                const allPublishers = await authAxios.get('/api/admin/publisher');
+                const pub_data = allPublishers.data.data;
+                const value_data = Object.values(pub_data)
+                setPublisher(value_data);
 
-            const allPublishers = await authAxios.get('/api/admin/publisher');
-            const pub_data = allPublishers.data.data;
-            const value_data = Object.values(pub_data)
-            setPublisher(value_data);
+                const allAdverts = await authAxios.get('/api/admin/ads');
+                const ads_data = allAdverts.data.data;
+                setAdsList(ads_data.data);
 
-            const allAdverts = await authAxios.get('/api/admin/ads');
-            const ads_data = allAdverts.data.data;
-            setAdsList(ads_data.data);
+                const allList = await authAxios.get('/api/admin/advertiser');
+                const itemList = allList.data;
+                console.log(itemList)
+                setAdvs(itemList.data);
 
-            const allList = await authAxios.get('/api/admin/advertiser');
-            const itemList = allList.data;
-            console.log(itemList)
-            setAdvs(itemList.data);
+                const allNotifications = await authAxios.get('/api/admin/notifications');
+                const notification_array = allNotifications.data;
+                setNotification(notification_array.data);
+
+            } catch (error) {
+                const errors = error.response.status
+                const errorArray = error.response.data.errors;
+                const newArray = Object.values(errorArray);
+
+                let errorMsg = ""
+                newArray[0].forEach(item => { errorMsg =  item})
+                swal("Failed!", `${errorMsg}`, "error")
+                .then(() => {
+                    setLoading(false)
+                })
+                console.log(errorMsg)
+            }
+            
 
         }
         fetchingData();
     },[])
     const advertiserList  = Object.values(advs)
-     const targetAdvertiser = advertiserList.filter(items => items.firstName == advertisers.advertiser)
-    targetAdvertiser.map(({id}) => {
-        target__value = id
-    });
+   
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        const targetAds = adsList.filter( item => 
-            item.title.toLowerCase() == banner_name.toLowerCase()
-        );
-        console.log(targetAds)
-        let advert_id = '';
-        targetAds.map(({id}) => {
-            advert_id = id
-        })
         setLoading(true);
+
         const data = {
-            script : sendAdcode.adcode_sent,
-            userId : value_.userId
+            script : sendAdcode.adcode_sent
         }
-        console.log(data);
+
         const newForm = new FormData();
-        newForm.append("publisher_id", target_value);
+        newForm.append("publisher_id", data_id.publisher);
         newForm.append("script", data.script)
-        newForm.append("user_id", target__value)
-        newForm.append("banner_id", banner_id)
-        newForm.append("advert_id", advert_id)
+        newForm.append("user_id", data_id.advertiser)
+        newForm.append("banner_id", data_id.banner)
+        newForm.append("advert_id", value_.advertid)
         authAxios.post('/api/admin/publisher-ads', newForm)
         .then(res => {
             swal("Great!", "Adcode sent successfully!", "success");
             setLoading(false);
             console.log(res.data);
+            setValue({
+                publishers : "",
+                banner : "",
+                userId : "",
+                advertid : "",
+            })
+            setAdcode({
+                publisher : "",
+                banner : ""
+            })
+            setSendAdcode({
+                publisher_sent : "",
+                adcode_sent : "",
+            })
         })
         .catch(err => console.log(err))   
     }
-    const handleChange_2 = (e) => {
-        e.persist();
-        setPub_l({...pub_l, [e.target.name] : e.target.value});
-        setSendAdcode({...sendAdcode, [e.target.name] : e.target.value});
-    }
+    
     
     const handleClick = (e) => {
         e.preventDefault();
         setShow(true);
+        banner.filter(item => item.id == data_id.banner).map(({advert_id}) => {
+            setValue({...value_, advertid : advert_id})
+        })
     }
     const handleLogout = (e) => {
         e.preventDefault();
@@ -155,25 +203,18 @@ const Adcodes = () => {
         })
         .catch(err => console.log(err));
     }
-    const handle_ = (e) => {
-        e.preventDefault();
-    }
-    let notification_count = notification.length;
-    const dimension = banner.filter(item => item.name == adcode.banner);
-
-    const targetPublisher = allPublisher.filter(items => items.firstName == sendAdcode.publisher_sent)
-    targetPublisher.map(({id}) => {
-        target_value = id
-    });
     
-    const targetBanner = banner.filter(item => item.name === adcode.banner)
-    targetBanner.map(({id, name}) => {
-        banner_id = id
-        banner_name = name
-    })
+    let notification_count = notification.length;
 
-    console.log(allPublisher)
-    console.log(targetBanner)
+    let btnText = ""
+    if(loading === true){
+        btnText = <div className="spier" style={{display : loading ? "block" : "none"}}>
+        <Loader type="TailSpin" color="#ffffff" height={20} width={20} />
+        </div>
+    }else if(loading === false){
+        btnText = <span className="text-white">Send Adcode</span>
+    }
+
     return (
         <div className="dashboard">
             <div className="small-title">
@@ -235,7 +276,7 @@ const Adcodes = () => {
                                                 <label htmlFor="">Select Banner</label>
                                                 <input list="data" name="banner" value={adcode.banner} onChange={handleChange_1}/>
                                                 <datalist id="data">
-                                                    {banner.map(({id, name, banner, width, height}) =>{
+                                                    {banner.map(({id, name, banner, width}) =>{
                                                         return <option key={id} value={name} id={id} className="banner-id"></option>
                                                         }
                                                     )}
@@ -244,7 +285,8 @@ const Adcodes = () => {
                                             
                                             <div className="row">
                                                 {
-                                                    dimension.map(({width, height, id}) => {
+                                                    banner.filter(item => item.id == data_id.banner)
+                                                    .map(({width, height, id}) => {
                                                         return <div className="row" key={id}>
                                                             <div className="col">
                                                                 <div className="form-group">
@@ -267,26 +309,22 @@ const Adcodes = () => {
                                             <div className="row">
                                                 <div className="form-group">
                                                     <label htmlFor="">Select Advertiser</label>
-                                                        <input list="data1" name="advertiser" value={advertisers.advertiser} target="id" onChange={handleChange__2} />
+                                                        <input list="data1" name="advertiser" value={advertisers.advertiser} onChange={handleChange__2} />
                                                         <datalist id="data1">
                                                             {advertiserList.map(({id, firstName, lastName}) =>{
-                                                                return <option key={id} id={id} value={firstName} className="target_child"></option>
+                                                                return <option key={id} id={id} value={`${firstName} ${lastName}`} className="target_child"></option>
                                                             }   
                                                             )}
                                                         </datalist>
                                                 </div>
-                                                {/* <div className="form-group">
-                                                    <label htmlFor="">User ID</label>
-                                                    <input type="text" name="userId" value={value_.userId} onChange={handleChange_1} />
-                                                </div> */}
                                             </div>
                                             <div className="row">
                                                 <div className="form-group">
                                                     <label htmlFor="">Publisher to send Adcode</label>
                                                     <input list="data2" name="publisher_sent" value={sendAdcode.publisher_sent} onChange={handleChange_2} />
                                                     <datalist id="data2">
-                                                        {allPublisher.map(({id, firstName}) =>
-                                                            <option key={id} id={id} value={firstName} className="target_child"></option>
+                                                        {allPublisher.map(({id, firstName, lastName}) =>
+                                                            <option key={id} id={id} value={`${firstName} ${lastName}`} className="target_child"></option>
                                                         )}
                                                         
                                                     </datalist>
@@ -297,20 +335,18 @@ const Adcodes = () => {
                                                     <h3>Send Adcode to Publisher</h3>                           
                                                     <div className="form-group">
                                                         <label htmlFor="">Paste Adcode here</label>
-                                                        <textarea name="adcode_sent" id="" cols="30" rows="7" onChange={handleChange_2} value={sendAdcode.adcode_sent}  style={{border: "1px solid #e5e5e5"}}></textarea>                       
+                                                        <textarea name="adcode_sent" id="" cols="30" rows="7" onChange={handleChange} value={sendAdcode.adcode_sent}  style={{border: "1px solid #e5e5e5"}}></textarea>                       
                                                     </div>
                                                 </div>
                                             </div>
-                                            <button type="submit">Send Adcode</button>
-                                            <div className="spinner" style={{display : loading ? "block" : "none"}}>
-                                                <Loader type="TailSpin" color="#EE315D" height={30} width={30} />
-                                            </div>
+                                            <button type="submit" style={{width :"180px", borderRadius : "3px"}}>{btnText}</button>
                                         </form>
                                     </div>
                                     <div className="col-lg-5" style={{display : show ? "block" : 'none'}}>    
                                        {
-                                            dimension.map(({width, height, id}) => {
-                                                let publisher_id = target_value;
+                                            banner.filter(item => item.id == data_id.banner)
+                                            .map(({width, height, id}) => {
+                                                let publisher_id = data_id.publisher;
                                                 let code = `<div id="ad">
                                                         <iframe
                                                         src="https://test.canyousing.com.ng/adcode/${id}

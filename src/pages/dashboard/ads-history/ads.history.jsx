@@ -11,6 +11,8 @@ import Tags from '../../../components/Tags/Tags';
 import hamburger from '../../../assets/hamburger.png';
 import logo from '../../../assets/image 1.png';
 import MobileTags from '../../../components/MobileTags/mobileTags';
+import RequestForm from '../../../components/RequestForm/RequestForm';
+import close from '../../../assets/close2.png';
 
 const AdHistory = () => {
 
@@ -19,10 +21,11 @@ const AdHistory = () => {
     const [ham, setHam] = useState(false);
     const current_id = localStorage.getItem("auth_id");
     const token = localStorage.getItem("auth_token");
+    const [paginate, setPaginate] = useState('');
     const [adsList, setAdsList] = useState([]);
-    const [banner, setBanner] = useState([]);
-    const [publisherAds, setPublisherAds] = useState([])
-    const [isLoading, setLoading] = useState(false);
+    const [contactAgent, setContactAgent] = useState(false);
+    const [publisherAds] = useState([])
+    const [isLoading] = useState(false);
     const [style, setStyle] = useState({
         hide : false,
         transformArrow : false,
@@ -31,9 +34,6 @@ const AdHistory = () => {
         search : [],
         searchField : ""
     })
-
-    // const [fbData, setfbData] = useState([]);
-    // const [show, setShow] = useState("none");
 
     const authAxios = axios.create({
         baseURL : "https://test.canyousing.com.ng",
@@ -44,26 +44,19 @@ const AdHistory = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const allUserAds = await authAxios.get('/api/user/user-ads');
-            const response = allUserAds.data;
-            const adsListData = response.data.data;
-            const newArray = adsListData.filter(ele => {
-                return ele.createdBy == current_id;
-            })
-            setAdsList(newArray);
-
-            const publisherads = await authAxios.get('api/user/script/users')
-            const pub_res = publisherads.data;
-            setPublisherAds(pub_res.data)
-
-            const banners = await authAxios.get('/api/user/all-banners')
-            const res = banners.data;
-            setBanner(res.data)
-
-            // const newArray = adsListData.filter(ele => {
-            //     return ele.createdBy == current_id;
-            // })
-            // setUserAds(newArray);
+            try {
+                const allUserAds = await authAxios.get('/api/user/user-ads');
+                const response = allUserAds.data;
+                setPaginate(response.data);
+                const adsListData = response.data.data;
+                const newArray = adsListData.filter(ele => {
+                    return ele.createdBy == current_id;
+                })
+                setAdsList(newArray);
+            } catch (error) {
+                console.log(error)
+            }
+            
         }
         fetchData();
     }, [])
@@ -94,7 +87,7 @@ const AdHistory = () => {
         setState({searchField : e.target.value})
     }
     const searchedArray = adsList.filter(item => item.title.toLowerCase().includes(state.searchField.toLowerCase()))
-    console.log(publisherAds);
+    console.log(paginate);
     console.log(adsList)
     return (
         <div className="dashboard">
@@ -103,11 +96,16 @@ const AdHistory = () => {
                     <div className="logo">
                         <img src={hamburger} alt="hamburger" width="25px" className="hamburger" onClick={toggler}/>
                         <Link to='/home'>
-                            <img src={logo} alt="moovit-logo" />
+                            <img src={logo} alt="moovit-logo" className="logo-img" />
                         </Link>
+                        <div className="text d-flex align-items-center mobile">
+                            <p className='mt-1'>Need help?</p>
+                            <button onClick={() => setContactAgent(true)}>Contact an agent</button>
+                        </div>
                     </div>
-                    <div className="text d-flex align center">
-                        
+                    <div className="text d-flex align-items-center">
+                        <p className='mt-1'>Need help?</p>
+                        <button onClick={() => setContactAgent(true)}>Contact an agent</button>
                     </div>
                 </div>
                 <div className="dashboard-main-wrapper">
@@ -125,7 +123,7 @@ const AdHistory = () => {
                             width={40}/> : (
                                 <div className="ads-wrapper">
                                     <div className="ads-heading">
-                                        <h4>Publisher Ads</h4>
+                                        <h4>Ads History</h4>
                                     </div>
                                     <div className="history-wrapper">
                                         <div className="text-right">
@@ -149,90 +147,111 @@ const AdHistory = () => {
                                             <th scope="col">Content</th>
                                             <th scope="col">Location</th>
                                             <th scope="col">Budget</th>
-                                            <th scope="col">Impressions</th>
-                                            <th scope="col">Clicks</th>
+                                            <th scope="col">Start</th>
+                                            <th scope="col">End</th>
                                             <th scope="col">Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             {
-                                                publisherAds.map(({id, user_id, impressions, clicks, banner_id, advert_id}) => {
-                                                    const ads_id = advert_id
-                                                    const ban_id = banner_id;
+                                                adsList.map(({id, title, content, location, start, end, Dimensions, budget_id, approved, awareness, app_installs, engagement,sales,reach,target,conversions}) => {
+                                                    
+                                                    let newStartDate = '';
+                                                    const data_1 = start.split("00");
+                                                    newStartDate = data_1[0];
 
-                                                    const targetBanner = banner.filter(item => item.user_id == user_id)
-                                                    // const filteredScript = publisherAds.filter(item => item.advert_id == ads_id )
-                                                    // console.log(filteredScript)
+                                                    let newEndDate = '';
+                                                    const data_2 = end.split("00");
+                                                    newEndDate = data_2[0];
 
-                                                    // filteredScript.forEach(({impressions, clicks}) => {
-                                                    //     console.log(impressions)
-                                                    //     impressionCount = impressionCount += impressions
-                                                    //     clickCount += clicks
-                                                    // })   
-                                                
-                                                    // console.log(clickCount)
-                                                    console.log(impressionCount)
-
-                                                    let title = '';
-                                                    let content_data = "";
-                                                    let location_data = "";
+                                                    //budget
                                                     let budget_data = "";
-                                                    let budget_val = 0;
-                                                    let status = "";
-                                                    targetBanner.map(({id, name}) => {
-                                                        if(id == ban_id){
-                                                            title = name;
-                                                        }  
-                                                    })
-                                                    adsList.map(({id, title, content, location, budget_id, active, approved}) => {
+                                                    if(budget_id == 1){
+                                                        budget_data = "#20,000"
+                                                    }else if(budget_id == 2){
+                                                        budget_data = "#50,000"
+                                                    }else if(budget_id == 3){
+                                                        budget_data = "#150,000"
+                                                    }else if(budget_id == 4){
+                                                        budget_data = "#200,000"
+                                                    }else if(budget_id == 5){
+                                                        budget_data = "#500,000"
+                                                    }else if(budget_id == 6){
+                                                        budget_data = "#1,000,000"
+                                                    }
 
-                                                        if(ads_id == id){
-                                                            content_data = content;
-                                                            location_data = location;
-                                                            if(budget_id == 1){
-                                                                budget_data = "#10,000"
-                                                            }else if(budget_id == 2){
-                                                                budget_data = "#50,000"
-                                                            }else if(budget_id == 3){
-                                                                budget_data = "#100,000"
-                                                            }
-                                                            if(approved == 1){
-                                                                status = "Approved"
-                                                            }else{
-                                                                status = "Not Approved"
-                                                            }
-                                                        }
-                                                        if(budget_id == 1){
-                                                            budget_val = 10000
-                                                        }else if(budget_id == 2){
-                                                            budget_val = 50000
-                                                        }else if(budget_id == 3){
-                                                            budget_val = 100000
-                                                        }
-                                                        let amount = budget_val;
-                                                        let newAmount = 0;
-                                                        const budget_rate = 900;
-                                                        if(impressionCount < 1000){
-                                                            newAmount = amount 
-                                                        }else if(impressionCount >= 1000){
-                                                            const rate = impressionCount / 1000;
-                                                            const val  = rate * budget_rate;
-                                                            newAmount = amount - val;
-                                                        }
-                                                        // console.log(newAmount)
-                                                    })
+                                                    let campaign_type = '';
+                                                    if(awareness == 1){
+                                                        campaign_type = <span>Awareness</span>
+                                                    }else if(conversions == 1){
+                                                        campaign_type = <span>Conversions</span>
+                                                    }else if(app_installs == 1){
+                                                        campaign_type = <span>App Installs</span>
+                                                    }else if(engagement == 1){
+                                                        campaign_type = <span>Engagement</span>
+                                                    }else if(sales == 1){
+                                                        campaign_type = <span>Sales</span>
+                                                    }else if(reach == 1){
+                                                        campaign_type = <span>Reach</span>
+                                                    }else if(target == 1){
+                                                        campaign_type = <span>Traffic</span>
+                                                    }
+                                                    let status = "";
+                                                    if(approved == 1){
+                                                        status = "Approved"
+                                                    }else{
+                                                        status = "Not Approved"
+                                                    }
+
+                                                    // adsList.map(({id, title, content, location, budget_id, active, approved}) => {
+
+                                                    //     if(ads_id == id){
+                                                    //         content_data = content;
+                                                    //         location_data = location;
+                                                    //         if(budget_id == 1){
+                                                    //             budget_data = "#10,000"
+                                                    //         }else if(budget_id == 2){
+                                                    //             budget_data = "#50,000"
+                                                    //         }else if(budget_id == 3){
+                                                    //             budget_data = "#100,000"
+                                                    //         }
+                                                    //         if(approved == 1){
+                                                    //             status = "Approved"
+                                                    //         }else{
+                                                    //             status = "Not Approved"
+                                                    //         }
+                                                    //     }
+                                                    //     if(budget_id == 1){
+                                                    //         budget_val = 10000
+                                                    //     }else if(budget_id == 2){
+                                                    //         budget_val = 50000
+                                                    //     }else if(budget_id == 3){
+                                                    //         budget_val = 100000
+                                                    //     }
+                                                    //     let amount = budget_val;
+                                                    //     let newAmount = 0;
+                                                    //     const budget_rate = 900;
+                                                    //     if(impressionCount < 1000){
+                                                    //         newAmount = amount 
+                                                    //     }else if(impressionCount >= 1000){
+                                                    //         const rate = impressionCount / 1000;
+                                                    //         const val  = rate * budget_rate;
+                                                    //         newAmount = amount - val;
+                                                    //     }
+                                                    //     // console.log(newAmount)
+                                                    // })
                                                     return(
                                                         <tr key={id} id={id}>
                                                         <th scope="row text-left">
                                                             <input type="checkbox" name="" id="" />
                                                         </th>
                                                         <td>{title}</td>
-                                                        <td>Publisher</td>
-                                                        <td>{content_data}</td>
-                                                        <td>{location_data}</td>
+                                                        <td>{campaign_type}</td>
+                                                        <td>{content}</td>
+                                                        <td>{location}</td>
                                                         <td>{budget_data}</td>
-                                                        <td className="text-center">{impressions}</td>
-                                                        <td>{clicks}</td>
+                                                        <td className="text-center">{newStartDate}</td>
+                                                        <td>{newEndDate}</td>
                                                         <td>{status}</td>
                                                     </tr>
                                                     )
@@ -244,8 +263,20 @@ const AdHistory = () => {
                                     </div>
                                 </div>
                             )
-                        }              
+                        }    
+                        <div className="pagination text d-flex align-items-center justify-content-center">
+                            <a href={paginate.first_page_url} className="text-black">Previous</a>
+                            <a href={paginate.next_page_url} className="text-black">Next</a>
+                        </div>          
                     </div>
+                   
+                </div>
+            </div>
+            <div className="contact-agent" style={{display : contactAgent ? "block" : "none"}}>
+                {/* <h5>Contact an agent</h5> */}
+                <RequestForm />
+                <div className="close" onClick={() =>setContactAgent(false)}>
+                    <img src={close} alt="close btn" width="20px" height="20px" />
                 </div>
             </div>
         </div>

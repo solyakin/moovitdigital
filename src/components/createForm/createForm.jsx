@@ -40,7 +40,7 @@ const CreateForm = ({createAds, setCreateAds, setShowNext, state, setState, star
     const [query, setQuery] = useState("");
     const autoCompleteRef = useRef(null);
     const [allArea, setAllArea] = useState([]);
-    const apiKey = PROCESS.ENV.token
+    const apiKey = process.env.REACT_APP_API_KEY;
 
     function handleScriptLoad(updateQuery, autoCompleteRef) {
         autoComplete = new window.google.maps.places.Autocomplete(
@@ -255,7 +255,6 @@ const CreateForm = ({createAds, setCreateAds, setShowNext, state, setState, star
                                         placeholderText="Select a day"
                                         required
                                         />
-                                        {/* <input type="date" required  placeholder="(DD/MM/YY) e.g 10/2/2021" name="start" onChange={handleChange} value={createAds.start}/> */}
                                     </div>
                                 </div>
                                 <div className="col">
@@ -268,7 +267,6 @@ const CreateForm = ({createAds, setCreateAds, setShowNext, state, setState, star
                                         placeholderText="Select a day"
                                         required
                                         />
-                                    {/* <input type="date" required  placeholder="(DD/MM/YY) e.g 20/3/2022" name="end" onChange={handleChange} value={createAds.end}/> */}
                                 </div>
                             </div>
                             <div className="row dates mb-3">
@@ -311,7 +309,6 @@ const CreateForm = ({createAds, setCreateAds, setShowNext, state, setState, star
                                         // onPhoneNumberBlur={onBlur()}
                                         required
                                         />
-                                        {/* <input type="text" required placeholder="+234 816 911 4001" name="phone" onChange={handleChange} value={createAds.phone}/> */}
                                     </div>
                                 </div>
                             </div>
@@ -319,13 +316,13 @@ const CreateForm = ({createAds, setCreateAds, setShowNext, state, setState, star
                                 <div className="col-lg-6">
                                     <div className="form-group start">
                                         <label htmlFor="">Facebook Business Page</label><br></br>
-                                        <input type="text" required placeholder="Brand hub page" name="fbPage" onChange={handleChange} value={createAds.fbPage}/>
+                                        <input type="text" placeholder="www.facebook.com/brandhub" name="fbPage" onChange={handleChange} value={createAds.fbPage}/>
                                     </div>
                                 </div>
                                 <div className="col-lg-6">
                                     <div className="form-group end">
                                         <label htmlFor="">Instagram Account</label><br></br>
-                                        <input type="text" required placeholder="Brand hub page" name="instagram" onChange={handleChange} value={createAds.instagram}/>
+                                        <input type="text" placeholder="www.instagram.com/brandhub" name="instagram" onChange={handleChange} value={createAds.instagram}/>
                                     </div>
                                 </div>
                             </div>
@@ -333,7 +330,7 @@ const CreateForm = ({createAds, setCreateAds, setShowNext, state, setState, star
                                 <div className="col-lg-6">
                                     <div className="form-group start">
                                         <label htmlFor="">Linkedin Business Page</label><br></br>
-                                        <input type="text" required placeholder="Brand hub page" name="linkedin" onChange={handleChange} value={createAds.linkedin}/>
+                                        <input type="text" placeholder="www.linkedin.com/brandhub" name="linkedin" onChange={handleChange} value={createAds.linkedin}/>
                                     </div>
                                 </div>
                             </div>
@@ -352,7 +349,6 @@ const CreateForm = ({createAds, setCreateAds, setShowNext, state, setState, star
                                     renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
                                 />
                                 </div>
-                            
                             </div>
                             <div className="row">
                                 <div className="col-lg-8">
@@ -440,14 +436,14 @@ const CreateForm = ({createAds, setCreateAds, setShowNext, state, setState, star
                         </div>
                         <div className="row demographic">
                             <div className="col">
-                                <h4>Demographics(Optional)</h4>
+                                <h4>Demographics</h4>
                                 <div className="table-responsive">
-                                    <table class="table table-bordered">
+                                    <table className="table table-bordered">
                                         <thead>
                                             <tr>
-                                            <th scope="col">Age-Group</th>
+                                            <th scope="col">Relationship</th>
                                             <th scope="col">Education</th>
-                                            <th scope="col">Employment</th>
+                                            <th scope="col">Work(Industry)</th>
                                             <th scope="col">Income(Naira)</th>
                                             </tr>
                                         </thead>
@@ -455,8 +451,8 @@ const CreateForm = ({createAds, setCreateAds, setShowNext, state, setState, star
                                             <tr>
                                                 <td>
                                                     <div className="form-group">
-                                                        <input type="checkbox" name="under_12_years" value="under 12 years" onClick={__handleChange4}/>
-                                                        <span>Under 12 years</span>
+                                                        <input type="checkbox" name="engaged" value="engaged" onClick={__handleChange4}/>
+                                                        <span>Engaged</span>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -467,8 +463,8 @@ const CreateForm = ({createAds, setCreateAds, setShowNext, state, setState, star
                                                 </td>
                                                 <td>
                                                     <div className="form-group">
-                                                        <input type="checkbox" name="employ_under_12_years" value="employ under 12 years" onClick={__handleChange4}/>
-                                                        <span>under 12 years</span>
+                                                        <input type="checkbox" name="adminstrative_services" value="Adminstrative services" onClick={__handleChange4}/>
+                                                        <span>Adminstrative services</span>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -481,20 +477,20 @@ const CreateForm = ({createAds, setCreateAds, setShowNext, state, setState, star
                                             <tr>
                                                 <td>
                                                     <div className="form-group">
-                                                        <input type="checkbox" name="age_13_21" value="13 - 21 years" onClick={__handleChange4}/>
-                                                        <span>13 - 21 years</span>
+                                                        <input type="checkbox" name="complicated" value="complicated" onClick={__handleChange4}/>
+                                                        <span>Complicated</span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="form-group">
                                                         <input type="checkbox" name="bachelor_degree" value="bachelor's degree" onClick={__handleChange4}/>
-                                                        <span> Bachelor’s degree </span>
+                                                        <span> High school leaver </span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="form-group">
-                                                        <input type="checkbox" name="employ_13_21_years" value="employ 13 - 21 years" onClick={__handleChange4}/>
-                                                        <span>13 -21 years</span>
+                                                        <input type="checkbox" name="Business_and_Finance" value="Business and Finance" onClick={__handleChange4}/>
+                                                        <span>Business and Finance</span>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -507,72 +503,124 @@ const CreateForm = ({createAds, setCreateAds, setShowNext, state, setState, star
                                             <tr>
                                                 <td>
                                                     <div className="form-group">
-                                                        <input type="checkbox" name="age_21_40" value="21 - 40 years" onClick={__handleChange4}/>
-                                                        <span>21 - 40 years</span>
+                                                        <input type="checkbox" name="divorced" value="divorced" onClick={__handleChange4}/>
+                                                        <span>Divorced</span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="form-group">
-                                                        <input type="checkbox" name="master_degree" value="master's degree" onClick={__handleChange4}/>
+                                                        <input type="checkbox" name="university" value="university" onClick={__handleChange4}/>
+                                                        <span>University</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="Enigneering" value="Enigneering" onClick={__handleChange4}/>
+                                                        <span>Engineering</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="income_200000_500000" value="200,000 - 500,000" onClick={__handleChange4}/>
+                                                        <span>200,000-500,000</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="married" value="married" onClick={__handleChange4}/>
+                                                        <span>Married</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="university_graduate" value="university graduate" onClick={__handleChange4}/>
+                                                        <span>University(Postgraduate)</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="Food_and_Restaurants" value="Food and Restaurants" onClick={__handleChange4}/>
+                                                        <span>Food and Restaurants</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="income_500000_1000000" value="500,000 - 1,000,000" onClick={__handleChange4}/>
+                                                        <span>500,000 - 1,000,000</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="in_a_relationship" value="In a relationship" onClick={__handleChange4}/>
+                                                        <span>In a relationship</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="master_degree" value="Master's degree" onClick={__handleChange4}/>
                                                         <span>Master's Degree</span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="form-group">
-                                                        <input type="checkbox" name="employ_21_40_years" value="employ 21 - 40 years" onClick={__handleChange4}/>
-                                                        <span>21 - 40 years</span>
+                                                        <input type="checkbox" name="medical" value="medical/healthcare" onClick={__handleChange4}/>
+                                                        <span>Medical/Healthcare</span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="form-group">
-                                                        <input type="checkbox" name="income_200000_1000000" value="200,000 - 1,000,000" onClick={__handleChange4}/>
-                                                        <span>200,000-1,000,000</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div className="form-group">
-                                                        <input type="checkbox" name="age_41_60" value="41 - 60years" onClick={__handleChange4}/>
-                                                        <span>41 - 60years</span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="form-group">
-                                                        <input type="checkbox" name="post_graduate" value="post graduate" onClick={__handleChange4}/>
-                                                        <span>Post graduate</span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="form-group">
-                                                        <input type="checkbox" name="employ_41_60years" value="employ 41 - 60years" onClick={__handleChange4}/>
-                                                        <span>41 - 60years</span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div className="form-group">
-                                                        <input type="checkbox" name="income_1000000_10000000" value="1,000,000 - 10,000,000" onClick={__handleChange4}/>
-                                                        <span>1,000,000 - 10,000,000</span>
+                                                        <input type="checkbox" name="income_1000000-5000000" value="1,000,000 - 5,000,000" onClick={__handleChange4}/>
+                                                        <span>1,000,000 - 5,000,000</span>
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>
                                                     <div className="form-group">
-                                                        <input type="checkbox" name="above_60years" value="above 60years" onClick={__handleChange4}/>
-                                                        <span>Above 60years</span>
+                                                        <input type="checkbox" name="open_relationship" value="Open Relationship" onClick={__handleChange4}/>
+                                                        <span>Open Relationship</span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="form-group">
-                                                        <input type="checkbox" name="professional" value="Professional/doctorate" onClick={__handleChange4}/>
+                                                        <input type="checkbox" name="doctorate" value="doctorate" onClick={__handleChange4}/>
                                                         <span>Doctorate</span>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div className="form-group">
-                                                        <input type="checkbox" name="employ_above_60years" value="employ above 60years" onClick={__handleChange4}/>
-                                                        <span>Above 60years</span>
+                                                        <input type="checkbox" name="legal" value="legal services" onClick={__handleChange4}/>
+                                                        <span>Legal Services</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="5000000-10000000" value="5,000,000 - 10,000,000" onClick={__handleChange4}/>
+                                                        <span>5,000,000 - 10,000,000</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="public_realtionship" value="Public Partnenship" onClick={__handleChange4}/>
+                                                        <span>Public Partnership</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="professional" value="Professional degree" onClick={__handleChange4}/>
+                                                        <span>Professional Degree</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="transportation" value="transportation" onClick={__handleChange4}/>
+                                                        <span>Transportation</span>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -586,8 +634,262 @@ const CreateForm = ({createAds, setCreateAds, setShowNext, state, setState, star
                                     </table>
                                 </div>
                             </div>
+                            <div className="form-group-2">
+                                <label htmlFor=""> More Options(for demographic)</label><br></br>
+                                <span>Seperate every keyword with a comma</span>
+                                <input type="text" name="demo_others" value={createAds.demo_others} placeholder='divorced, gaming, tech, clothing, trading' onChange={handleChange}/>
+                            </div>
                         </div>
-                        <div className="interest">
+                        <div className="row demographic">
+                            <div className="col">
+                                <h4>Interest</h4>
+                                <div className="table-responsive">
+                                    <table className="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                            <th scope="col">Business and Industry</th>
+                                            <th scope="col">Entertainment</th>
+                                            <th scope="col">Family and Relationship</th>
+                                            <th scope="col">Food and Drink</th>
+                                            <th scope="col">Hobbies and Activities</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="advertising" value="advertising" onClick={__handleChange3}/>
+                                                        <span>Advertising</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="films" value="films" onClick={__handleChange3}/>
+                                                        <span>Films</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="dating" value="dating" onClick={__handleChange3}/>
+                                                        <span>Dating</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="alcoholic_drink" value="alcoholic drink" onClick={__handleChange3}/>
+                                                        <span>Alcoholic Drink</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="art_and_music" value="art and music" onClick={__handleChange3}/>
+                                                        <span>Art and Music</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="agriculture" value="agriculture" onClick={__handleChange3}/>
+                                                        <span>Agriculture</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="video" value="video" onClick={__handleChange3}/>
+                                                        <span> Videos </span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="family" value="family" onClick={__handleChange3}/>
+                                                        <span>Family</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="cooking" value="cooking" onClick={__handleChange3}/>
+                                                        <span>Cooking</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="home_and_gardent" value="home and garden" onClick={__handleChange3}/>
+                                                        <span>Home and Garden</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="aviation" value="avaition" onClick={__handleChange3}/>
+                                                        <span>Aviation</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="games" value="games" onClick={__handleChange3}/>
+                                                        <span>Games</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="friendship" value="friendship" onClick={__handleChange3}/>
+                                                        <span>Friendship</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="food" value="food" onClick={__handleChange3}/>
+                                                        <span>Food</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="pet" value="pet" onClick={__handleChange3}/>
+                                                        <span>Pets</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="business" value="business" onClick={__handleChange3}/>
+                                                        <span>Business</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="live_event" value="live event" onClick={__handleChange3}/>
+                                                        <span>Live events</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="fatherhood" value="fatherhood" onClick={__handleChange3}/>
+                                                        <span>Fatherhood</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="cuisine" value="cuisine" onClick={__handleChange3}/>
+                                                        <span>Cuisine</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="politics" value="Politics and Social issues" onClick={__handleChange3}/>
+                                                        <span>Politics/Social issues</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="marketing" value="marketing" onClick={__handleChange3}/>
+                                                        <span>Marketing</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="music" value="music" onClick={__handleChange3}/>
+                                                        <span>Music</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="motherhood" value="motherhood" onClick={__handleChange3}/>
+                                                        <span>Motherhood</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="fitness" value="fitness" onClick={__handleChange3}/>
+                                                        <span>Fitness/Wellness</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="travel" value="travel" onClick={__handleChange3}/>
+                                                        <span>Travel</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="property" value="property" onClick={__handleChange3}/>
+                                                        <span>Property</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="reading" value="reading" onClick={__handleChange3}/>
+                                                        <span>Reading</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="parenting" value="parenting" onClick={__handleChange3}/>
+                                                        <span>Parenting</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="drink" value="drink" onClick={__handleChange3}/>
+                                                        <span>Drink</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="vechile" value="vechile" onClick={__handleChange3}/>
+                                                        <span>Vehicle</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="enigneeirng" value="engineering" onClick={__handleChange3}/>
+                                                        <span>Engineering</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="television" value="television" onClick={__handleChange3}/>
+                                                        <span>Television Programme</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="wedding" value="wedding" onClick={__handleChange3}/>
+                                                        <span>Wedding</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="resturants" value="resturant" onClick={__handleChange3}/>
+                                                        <span>Resturants</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div className="form-group">
+                                                        <input type="checkbox" name="shopping" value="Shopping and Fashion" onClick={__handleChange3}/>
+                                                        <span>Shopping/Fashion</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div className="form-group-2">
+                                <label htmlFor="">More Options(for Interest)</label><br></br>
+                                <span>Seperate every keyword with a comma</span>
+                                <input type="text" name="interest_others" value={createAds.interest_others} placeholder='divorced, gaming, tech, clothing, trading' onChange={handleChange}/>
+                            </div>
+                        </div>
+                        {/* <div className="interest">
                             <h4>Interest</h4>
                             <div className="row">
                                 <div className="col-lg-6">
@@ -641,7 +943,7 @@ const CreateForm = ({createAds, setCreateAds, setShowNext, state, setState, star
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                         <div className="lower-btn">
                             <p className="" onClick={handleBack}>Back</p>
                             <button onClick={handleSave}>

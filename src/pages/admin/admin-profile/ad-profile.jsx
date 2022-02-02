@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../../dashboard/dashboard.scss';
+import '../../dashboard/ads-history/ads-history.scss';
 import swal from 'sweetalert';
 import logo from '../../../assets/image 1.png';
 import AdminTags from '../../../components/adminTags/adminTags';

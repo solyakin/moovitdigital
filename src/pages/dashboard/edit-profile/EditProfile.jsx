@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import swal from 'sweetalert';
+import Loader from "react-loader-spinner";
 import '../../dashboard/dashboard.scss';
 import '../../dashboard/ads-history/ads-history.scss';
 import logo from '../../../assets/image 1.png';
@@ -9,12 +10,12 @@ import Tags from '../../../components/Tags/Tags';
 
 const EditProfile = () => {
 
-    // const history = useHistory();
     const [profile, setProfile] = useState({
         firstName : '',
         lastName : '',
         number : '',
-        email : ''
+        email : '',
+        loading : false
     })
 
     const handleChange = (e) => {
@@ -43,21 +44,38 @@ const EditProfile = () => {
     }
     const formSubmit = async (e) => {
         e.preventDefault();
+        setProfile({...profile, loading : true})
         const data = {
             firstName : profile.firstName,
             lastName : profile.lastName,
             phone : profile.number,
             email : profile.email
         }
-        if(data.firstName !== "" && data.lastName !== "" && data.phone){
-            const postingData = await authAxios.put(`/api/user/edit-profile/${id}?firstName=${data.firstName}&lastName=${data.lastName}&phone=${data.phone}&email=${data.email}`);
-            const response = postingData.data;
-            swal("Great!", "Profile Updated successfully!", "success");
-            setProfile({firstName : "", lastName : "", number : "", email : ""})
-            console.log(response);
-        }else if(data.firstName === "" && data.lastName === "" && data.phone){
-
+        try {
+            if(data.firstName !== "" && data.lastName !== "" && data.phone){
+                const postingData = await authAxios.put(`/api/user/edit-profile/${id}?firstName=${data.firstName}&lastName=${data.lastName}&phone=${data.phone}&email=${data.email}`);
+                const response = postingData.data;
+                swal("Great!", "Profile Updated successfully!", "success");
+                setProfile({firstName : "", lastName : "", number : "", email : "", loading : false})
+                console.log(response);
+            }else if(data.firstName === "" && data.lastName === "" && data.phone){
+                return
+            }
+        } catch (error) {
+            console.log(error)
+            setProfile({firstName : "", lastName : "", number : "", email : "", loading : false})
+            swal("Failed!", "Please try again!", "error");
         }
+        
+    }
+
+    let btnText = ""
+    if(profile.loading === true){
+        btnText = <div className="spier" style={{display : profile.loading ? "block" : "none"}}>
+        <Loader type="TailSpin" color="#ffffff" height={20} width={20} />
+        </div>
+    }else if(profile.loading === false){
+        btnText = <span className="text-white">Submit</span>
     }
     return (
         <div className="dashboard">
@@ -104,7 +122,7 @@ const EditProfile = () => {
                                                 <p>Password</p>
                                                 <Link to='/forget-password'>Change password</Link>
                                             </div>
-                                            <button type="submit" className="btn btn-lg mt-4">Submit</button>
+                                            <button type="submit" className="btn btn-lg mt-4" style={{width : "180px"}}>{btnText}</button>
                                         </form>
                                     </div>
                                 </div>

@@ -11,6 +11,7 @@
             justify-content: center;
             width:  500px;
             margin: auto;
+            object-fit: contain;
             @media screen and (max-width: 768px){
                 width: 80%;                      
             };

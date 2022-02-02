@@ -150,7 +150,7 @@ const UserRegistration = ({navBackground}) => {
             swal("Ooops!", "Please select all fields", "warning");
         }
     }
-    console.log(user)
+
     return (
         <div className="user-registration">
             <Header navBackground={navBackground}/>
@@ -183,7 +183,7 @@ const UserRegistration = ({navBackground}) => {
                                         <div className="col">
                                             <div className="form-group">
                                                 <label htmlFor="">Date of Birth</label>
-                                                <input type="text" placeholder="DD/MM/YY" name="dob" required onChange={handleChange} value={user.dob}/>
+                                                <input type="date" placeholder="DD/MM/YY" name="dob" required onChange={handleChange} value={user.dob}/>
                                             </div>
                                         </div>
                                         <div className="col end">
@@ -201,7 +201,7 @@ const UserRegistration = ({navBackground}) => {
                                                 <input list="data" value={value.country} onChange={__handleChange} required />
                                                 <datalist id="data">
                                                     {locations.map(({name, index}) =>
-                                                        <option value={name.common} id={index}>{name.common}</option>
+                                                        <option key={index} value={name.common} id={index}>{name.common}</option>
                                                     )}
                                                 </datalist>
                                                 {/* <input list="data" value={value.country} onChange={__handleChange} required />

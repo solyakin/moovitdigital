@@ -49,7 +49,7 @@ const Faq = () => {
                                     <h5>What is Digital Marketing?</h5>
                                     <p style={{display : show ? "block" : "none"}}>Moovit Digital Advertising platform allows your firm/company to expand/grow its business globally while spending very little money. The biggest benefit of advertising with Moovit Digital is that you may target the exact audience for your ad.</p>
                                 </div>
-                                <img src={ArrowDown} alt="Arrow Down"  onClick={() => setstate(!show) } style={{transform : show ? "rotate(180deg)" : "rotate(0deg)"}}/>
+                                <img src={ArrowDown} alt="Arrow Down" width="20px" height="20px"  onClick={() => setstate(!show) } style={{transform : show ? "rotate(180deg)" : "rotate(0deg)"}}/>
                             </div>
                             <div className="item">
                                 <div className="text">
@@ -62,7 +62,7 @@ const Faq = () => {
                                         </ul>
                                     </p>
                                 </div>
-                                <img src={ArrowDown} alt="Arrow Down" onClick={ () => setstate1(!show1)} style={{transform : show1 ? "rotate(180deg)" : "rotate(0deg)"}}/>
+                                <img src={ArrowDown} alt="Arrow Down" width="20px" height="20px" onClick={ () => setstate1(!show1)} style={{transform : show1 ? "rotate(180deg)" : "rotate(0deg)"}}/>
                             </div>
                             <div className="item">
                                 <div className="text">
@@ -76,42 +76,42 @@ const Faq = () => {
                                         </ul>
                                     </p>
                                 </div>
-                                <img src={ArrowDown} alt="Arrow Down" onClick={ () => setstate2(!show2)} style={{transform : show2 ? "rotate(180deg)" : "rotate(0deg)"}}/>
+                                <img src={ArrowDown} alt="Arrow Down" width="20px" height="20px" onClick={ () => setstate2(!show2)} style={{transform : show2 ? "rotate(180deg)" : "rotate(0deg)"}}/>
                             </div>
                             <div className="item">
                                 <div className="text">
                                     <h5>How can I create an Ad?</h5>
                                     <p style={{display : show3 ? "block" : "none"}}>Creating an ad on our ads platform is incredibly very easy, your ads will go live in just a few simple steps.Its almost like you are doing nothing.</p>
                                 </div>
-                                <img src={ArrowDown} alt="Arrow Down" onClick={ () => setstate3(!show3)} style={{transform : show3 ? "rotate(180deg)" : "rotate(0deg)"}}/>
+                                <img src={ArrowDown} alt="Arrow Down" width="20px" height="20px" onClick={ () => setstate3(!show3)} style={{transform : show3 ? "rotate(180deg)" : "rotate(0deg)"}}/>
                             </div>
                             <div className="item">
                                 <div className="text">
                                     <h5>Where can I see my reports?</h5>
                                     <p style={{display : show4 ? "block" : "none"}}>Tabular representations will be available on the main screen of your advertiser account. You can track the performance of your ads there. </p>
                                 </div>
-                                <img src={ArrowDown} alt="Arrow Down" onClick={ () => setstate4(!show4)} style={{transform : show4 ? "rotate(180deg)" : "rotate(0deg)"}}/>
+                                <img src={ArrowDown} alt="Arrow Down" width="20px" height="20px" onClick={ () => setstate4(!show4)} style={{transform : show4 ? "rotate(180deg)" : "rotate(0deg)"}}/>
                             </div>
                             <div className="item">
                                 <div className="text">
                                     <h5>Is the reporting real-time?</h5>
                                     <p style={{display : show5 ? "block" : "none"}}>Yes, with a one-hour delay, the reports are updated in real-time. </p>
                                 </div>
-                                <img src={ArrowDown} alt="Arrow Down" onClick={ () => setstate5(!show5)} style={{transform : show5 ? "rotate(180deg)" : "rotate(0deg)"}}/>
+                                <img src={ArrowDown} alt="Arrow Down" width="20px" height="20px" onClick={ () => setstate5(!show5)} style={{transform : show5 ? "rotate(180deg)" : "rotate(0deg)"}}/>
                             </div>
                             <div className="item">
                                 <div className="text">
                                     <h5>What is the minimum amount to start?</h5>
                                     <p style={{display : show6 ? "block" : "none"}}>To start a campaign at Moovit Ads you just need to pay as little as N20,000.</p>
                                 </div>
-                                <img src={ArrowDown} alt="Arrow Down" onClick={ () => setstate6(!show6)} style={{transform : show6 ? "rotate(180deg)" : "rotate(0deg)"}}/>
+                                <img src={ArrowDown} alt="Arrow Down"  width="20px" height="20px" onClick={ () => setstate6(!show6)} style={{transform : show6 ? "rotate(180deg)" : "rotate(0deg)"}}/>
                             </div>
                             <div className="item">
                                 <div className="text">
                                     <h5>How I am billed for my campaign?</h5>
                                     <p style={{display : show7 ? "block" : "none"}}>We provide two types of advertising model i.e. CPC (Cost-Per-Click) & CPM (Cost-Per-1000 Impression).</p>
                                 </div>
-                                <img src={ArrowDown} alt="Arrow Down" onClick={ () => setstate7(!show7)} style={{transform : show7 ? "rotate(180deg)" : "rotate(0deg)"}}/>
+                                <img src={ArrowDown} alt="Arrow Down" width="20px" height="20px" onClick={ () => setstate7(!show7)} style={{transform : show7 ? "rotate(180deg)" : "rotate(0deg)"}}/>
                             </div>
                         </div>
                     </div>
@@ -123,42 +123,42 @@ const Faq = () => {
                                     <h5>Who are publishers and how much does it cost to join?</h5>
                                     <p style={{display : show8 ? "block" : "none"}}>MoovitDigital  Publisher allows you to join and make money by displaying our advertiser ads on your website/blog. It’s completely free and you do not have to pay anything.</p>
                                 </div>
-                                <img src={ArrowDown} alt="Arrow Down"  onClick={() => setstate8(!show8) } style={{transform : show8 ? "rotate(180deg)" : "rotate(0deg)"}}/>
+                                <img src={ArrowDown} alt="Arrow Down" width="20px" height="20px" onClick={() => setstate8(!show8) } style={{transform : show8 ? "rotate(180deg)" : "rotate(0deg)"}}/>
                             </div>
                             <div className="item">
                                 <div className="text">
                                     <h5>What type of ads do you provide?</h5>
                                     <p style={{display : show9 ? "block" : "none"}}> We offer a wide range of ad types in various formats. Like: Banner Ads Text Ads, Mobile Ads and Video Ads. </p>
                                 </div>
-                                <img src={ArrowDown} alt="Arrow Down" onClick={ () => setstate9(!show9)} style={{transform : show9 ? "rotate(180deg)" : "rotate(0deg)"}}/>
+                                <img src={ArrowDown} alt="Arrow Down" width="20px" height="20px" onClick={ () => setstate9(!show9)} style={{transform : show9 ? "rotate(180deg)" : "rotate(0deg)"}}/>
                             </div>
                             <div className="item">
                                 <div className="text">
                                     <h5>How many ads can I put on a single page?</h5>
                                     <p style={{display : show10 ? "block" : "none"}}>A maximum of four ad units can be placed on a single page.</p>
                                 </div>
-                                <img src={ArrowDown} alt="Arrow Down" onClick={ () => setstate10(!show10)} style={{transform : show10 ? "rotate(180deg)" : "rotate(0deg)"}}/>
+                                <img src={ArrowDown} alt="Arrow Down" width="20px" height="20px" onClick={ () => setstate10(!show10)} style={{transform : show10 ? "rotate(180deg)" : "rotate(0deg)"}}/>
                             </div>
                             <div className="item">
                                 <div className="text">
                                     <h5>Is the reporting real-time?</h5>
                                     <p style={{display : show11 ? "block" : "none"}}>Yes, with a one-hour delay, the reports are updated in real-time.</p>
                                 </div>
-                                <img src={ArrowDown} alt="Arrow Down" onClick={ () => setstate11(!show11)} style={{transform : show11 ? "rotate(180deg)" : "rotate(0deg)"}}/>
+                                <img src={ArrowDown} alt="Arrow Down" width="20px" height="20px" onClick={ () => setstate11(!show11)} style={{transform : show11 ? "rotate(180deg)" : "rotate(0deg)"}}/>
                             </div>
                             <div className="item">
                                 <div className="text">
                                     <h5>How can I increase my eCPM and make more money?</h5>
                                     <p style={{display : show12 ? "block" : "none"}}>In order to raise your ecpm or maximize your earnings. Ensure that our advertising appear “Above the Fold” on the website in order to boost CTR (Click-Through-Rate). For example, the more quality and unique impressions/clicks are rendered, the higher the ecpm and the better our system optimizes your account.</p>
                                 </div>
-                                <img src={ArrowDown} alt="Arrow Down" onClick={ () => setstate12(!show12)} style={{transform : show12 ? "rotate(180deg)" : "rotate(0deg)"}}/>
+                                <img src={ArrowDown} alt="Arrow Down" width="20px" height="20px" onClick={ () => setstate12(!show12)} style={{transform : show12 ? "rotate(180deg)" : "rotate(0deg)"}}/>
                             </div>
                             <div className="item">
                                 <div className="text">
                                     <h5>Can I use multiple accounts for different domain?</h5>
                                     <p style={{display : show13 ? "block" : "none"}}>No, you cannot use different accounts for different domains; however, you can use the same account for several domains. All you have to do now is log into your account and submit your new site.</p>
                                 </div>
-                                <img src={ArrowDown} alt="Arrow Down" onClick={ () => setstate13(!show13)} style={{transform : show13 ? "rotate(180deg)" : "rotate(0deg)"}}/>
+                                <img src={ArrowDown} alt="Arrow Down" width="20px" height="20px" onClick={ () => setstate13(!show13)} style={{transform : show13 ? "rotate(180deg)" : "rotate(0deg)"}}/>
                             </div>
                             <div className="item">
                                 <div className="text">
@@ -168,9 +168,8 @@ const Faq = () => {
                                         <span>No Gambling/Hacking Sites </span>
                                     </p>
                                 </div>
-                                <img src={ArrowDown} alt="Arrow Down" onClick={ () => setstate14(!show14)} style={{transform : show14 ? "rotate(180deg)" : "rotate(0deg)"}} />
+                                <img src={ArrowDown} alt="Arrow Down" width="20px" height="20px" onClick={ () => setstate14(!show14)} style={{transform : show14 ? "rotate(180deg)" : "rotate(0deg)"}} />
                             </div>
-                            
                         </div>
                     </div>
                 </div>

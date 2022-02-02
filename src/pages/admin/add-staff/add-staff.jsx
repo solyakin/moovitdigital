@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import '../../dashboard/dashboard.scss';
 import '../../admin/admin.scss';
+import '../../dashboard/ads-history/ads-history.scss';
 import axios from 'axios';
 import logo from '../../../assets/image 1.png'
 import AdminTags from '../../../components/adminTags/adminTags';

@@ -22,7 +22,6 @@ const PublisherProfile = () => {
     const [ham, setHam] = useState(false);
     const [notification, setNotification] = useState([]);
 
-    const id = localStorage.getItem("auth_id")
     const token = localStorage.getItem("auth_token")
 
     const authAxios = axios.create({

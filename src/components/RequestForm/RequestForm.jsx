@@ -1,6 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import '../contact-form/contact-form.scss';
 import '../RequestForm/requestForm.scss';
+import Loader from "react-loader-spinner";
 import axios from 'axios';
 import swal from 'sweetalert';
 
@@ -9,7 +10,8 @@ const RequestForm = () => {
         name : '',
         email : '',
         description : '',
-        subject : ''
+        subject : '',
+        loading : false
     })
 
     const handleChange = (e) => {
@@ -18,6 +20,7 @@ const RequestForm = () => {
     }
     const formSubmit = (e) => {
         e.preventDefault();
+        setSupport({...support, loading : true})
         const data = {
             name : support.name,
             email : support.email,
@@ -40,10 +43,19 @@ const RequestForm = () => {
         .then(res => {
             if(res.status == 200){
                 console.log(res.data)
+                setSupport({name : "", email : "", subject : "", description : "", loading : false})
                 swal("Great!", "Message sent successfully added!", "success");
             }
         })
         .catch(err => console.log(err))
+    }
+    let btnText = ""
+    if(support.loading === true){
+        btnText = <div className="spier" style={{display : support.loading ? "block" : "none"}}>
+        <Loader type="TailSpin" color="#ffffff" height={20} width={20} />
+        </div>
+    }else if(support.loading === false){
+        btnText = <span>Submit</span>
     }
     return (
         <div className='request-form'>
@@ -70,7 +82,9 @@ const RequestForm = () => {
                                 </div>
                                 <div className="row justify-content-center">
                                     <div className="col-lg-5 col-sm-10">
-                                        <button type="submit" className="mb-5 mt-4">Submit</button>
+                                        <button type="submit" className="mb-5 mt-4" style={{backgroundColor : support.loading ? "#333333" : "#EE315D"}}>
+                                            {btnText}
+                                        </button>
                                     </div>
                                 </div>
                             </form>

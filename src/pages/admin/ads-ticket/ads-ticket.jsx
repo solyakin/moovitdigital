@@ -35,19 +35,24 @@ const AdsTicket = () => {
    
     useEffect( ()=> {  
         const fetchData = async () =>{
-            const allAds = await authAxios.get('/api/admin/ads');
-            const response = allAds.data;
-            const adsListData = response.data.data;
-            setAdsList(adsListData);
+            try {
+                const allAds = await authAxios.get('/api/admin/ads');
+                const response = allAds.data;
+                console.log(response)
+                const adsListData = response.data.data;
+                setAdsList(adsListData);
 
-            const allStaff = await authAxios.get('/api/admin/staff');
-            const queryResponse = allStaff.data;
-            const staffData = queryResponse.data.data;
-            setStaff(staffData);
+                const allStaff = await authAxios.get('/api/admin/staff');
+                const queryResponse = allStaff.data;
+                const staffData = queryResponse.data.data;
+                setStaff(staffData);
 
-            const allNotifications = await authAxios.get('/api/admin/notifications');
-            const notification_array = allNotifications.data;
-            setNotification(notification_array.data);
+                const allNotifications = await authAxios.get('/api/admin/notifications');
+                const notification_array = allNotifications.data;
+                setNotification(notification_array.data);
+            } catch (error) {
+                console.log(error)
+            }
         }
         fetchData();
     },[])
@@ -64,13 +69,14 @@ const AdsTicket = () => {
     const doneClick = (e) => {
         e.preventDefault()
         setHide("none");
+        window.location.reload();
     }
 
     //handling the assign to marketer
     const handleClick = (e) => {
         e.preventDefault();
         const { id } = e.currentTarget;
-        console.log(id)
+        document.getElementById(id).classList.add("selected")
         const data = {
             assigned : id
         }
@@ -99,14 +105,10 @@ const AdsTicket = () => {
         e.preventDefault();
         setState({show : false, show1 : false, show2 : false, show3 : true})
     }
-    console.log(adsList)
     const newItems = adsList.filter(item => item.assigned != null);
-    console.log(newItems);
     const ApprovedList = adsList.filter(item => item.approved == 1);
-    console.log(ApprovedList)
     const unassignedList = adsList.filter(item => item.assigned === null);
-    console.log(unassignedList)
-    console.log(staff)
+    console.log(adsList)
     return (
         <div className="dashboard ads-ticket">
             <div className="small-title">
@@ -135,7 +137,16 @@ const AdsTicket = () => {
                             <div className="ads-ticket-list">
                                 <div className="row">
                                     {
-                                        adsList.map(({id, title, content, image, createdBy}) => {
+                                        adsList.map(({id, title, content, image, assigned, createdBy}) => {
+
+                                            let actionBtn = ""
+                                            if(assigned === null){
+                                                actionBtn = (
+                                                    <button onClick={assignClick} id={id}>Assign</button>
+                                                )
+                                            }else{
+                                                actionBtn = "";
+                                            }
                                             return(
                                                 <div className="col-lg-4" key={id}>
                                                     <div className="ads-card" id={id}>
@@ -153,8 +164,7 @@ const AdsTicket = () => {
                                                             <p>Created by <span>Jon Bellion</span></p>
                                                         </div>
                                                         <div className="instruct-btns">
-                                                            <a href='/#'></a>
-                                                            <button onClick={assignClick} id={id}>Assign</button>
+                                                            {actionBtn}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -276,7 +286,8 @@ const AdsTicket = () => {
                         <p>SUGGESTIONS</p>
                         <div className="suggestions">
                             {
-                                staff.map(({firstName, lastName, id}) => {
+                                staff.filter(item => item.role === "marketer")
+                                .map(({firstName, lastName, id}) => {
                                     return(
                                         <div className="user-profile" key={id} id={id} onClick={handleClick}>
                                             <img src={userP} alt="" />

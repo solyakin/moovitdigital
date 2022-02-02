@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import Pricing from '../pricing/pricing';
 import Tags from '../../../components/Tags/Tags';
@@ -7,18 +7,20 @@ import '../../dashboard/createAds/createAds.scss';
 import '../SMM/smm.scss';
 import hamburger from '../../../assets/hamburger.png';
 import logo from '../../../assets/image 1.png';
+import close from '../../../assets/close2.png';
 import MobileTags from '../../../components/MobileTags/mobileTags';
+import RequestForm from '../../../components/RequestForm/RequestForm';
 
 const SMM = () => {
     const [style, setStyle] = useState({
         hide : false,
         transformArrow : false,
     });
+    const [contactAgent, setContactAgent] = useState(false);
     const [ham, setHam] = useState(false);
     const handleClick = (e) => {
         e.preventDefault();
         setStyle({hide : !style.hide, transformArrow : !style.transformArrow});
-    
     }
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -34,10 +36,16 @@ const SMM = () => {
                     <div className="logo">
                         <img src={hamburger} alt="hamburger" width="25px" className="hamburger" onClick={toggler}/>
                         <Link to='/home'>
-                            <img src={logo} alt="moovit-logo" />
+                            <img src={logo} alt="moovit-logo" className="logo-img" />
                         </Link>
+                        <div className="text d-flex align-items-center mobile">
+                            <p className='mt-1'>Need help?</p>
+                            <button onClick={() => setContactAgent(true)}>Contact an agent</button>
+                        </div>
                     </div>
-                    <div className="text d-flex align center">
+                    <div className="text d-flex align-items-center">
+                        <p className='mt-1'>Need help?</p>
+                        <button onClick={() => setContactAgent(true)}>Contact an agent</button>
                     </div>
                 </div>
                 <div className="dashboard-main-wrapper">
@@ -76,8 +84,15 @@ const SMM = () => {
                     </div>
                 </div>
             </div>
+            <div className="contact-agent" style={{display : contactAgent ? "block" : "none"}}>
+                {/* <h5>Contact an agent</h5> */}
+                <RequestForm />
+                <div className="close" onClick={() =>setContactAgent(false)}>
+                    <img src={close} alt="close btn" width="20px" height="20px" />
+                </div>
+            </div>
         </div>
     )
 }
 
-export default SMM
+export default SMM;

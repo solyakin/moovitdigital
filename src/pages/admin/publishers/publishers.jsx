@@ -13,7 +13,10 @@ const AllPublishers = () => {
     const [notification, setNotification] = useState([]);
     const [adsCount, setAdscount] = useState([]);
     const [isLoading, setLoading] = useState(true);
-
+    const [state, setState] = useState({
+        search : [],
+        searchField : ""
+    })
     const token = localStorage.getItem("auth_token");
     const authAxios = axios.create({
         baseURL : "https://test.canyousing.com.ng",
@@ -32,7 +35,7 @@ const AllPublishers = () => {
             authAxios.get('/api/admin/publisher')
             .then(res => {
                 const result = res.data.data;
-                setAdscount(result);
+                setAdscount(result.data);
             })
             .catch( err => console.log(err))
         }
@@ -45,10 +48,14 @@ const AllPublishers = () => {
         const targetId = e.target.id;
         localStorage.setItem("tg_id", targetId);
     }
-    console.log(adsCount)
 
+    const handleSearch = (e) => {
+        e.persist();
+        setState({searchField : e.target.value})
+    }
     let valuesArray = Object.values(adsCount);
-    console.log(valuesArray)
+    const searchedArray = valuesArray.filter(item => item.company.toLowerCase().includes(state.searchField.toLowerCase()))
+    console.log(searchedArray)
     
     return (
         <div className="dashboard preview">
@@ -79,7 +86,7 @@ const AllPublishers = () => {
                                         <h4>Publishers List</h4>
                                     </div>
                                     <div className="smm">
-                                        <input type="text" placeholder="search"/>
+                                        <input type="text" onChange={handleSearch} placeholder="search by company name"/>
                                     </div>
                                 </div>
                                 <div className="history-table">
@@ -97,7 +104,7 @@ const AllPublishers = () => {
                                         </thead>
                                         <tbody>
                                             {
-                                            valuesArray.map(({id, firstName, lastName, email, phone, website_timeline, company, created_at}) => {
+                                            searchedArray.map(({id, firstName, lastName, email, phone, website_timeline, company, created_at}) => {
                                                 const newArray = created_at.split("T");
                                                 const newDate = newArray[0];
 

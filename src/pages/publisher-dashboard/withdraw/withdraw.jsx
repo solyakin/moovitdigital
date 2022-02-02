@@ -19,7 +19,6 @@ const Withdraw = () => {
 
     const history = useHistory;
     const [ham, setHam] = useState(false);
-    const [file_, setFile_] = useState(null);
     const [loading, setLoading] = useState(false);
     const [notification, setNotification] = useState([]);
     const [data, setData] = useState({
@@ -34,8 +33,6 @@ const Withdraw = () => {
     }
 
     const token = localStorage.getItem("auth_token");
-    const auth_id = localStorage.getItem("auth_id");
-    const auth_name = localStorage.getItem("auth_name");
     const authAxios = axios.create({
         baseURL : "https://test.canyousing.com.ng",
         headers : {
@@ -75,13 +72,21 @@ const Withdraw = () => {
                 })
             }
         })
-        .catch(error => console.log(error));
+        .catch(error => {
+            console.log(error)
+            setLoading(false)
+        });
     } 
     useEffect(() => {
         const fetchData = async () => {
-            const allNotifications = await authAxios.get('/api/user/notifications');
-            const notification_array = allNotifications.data;
-            setNotification(notification_array.data);
+            try {
+                const allNotifications = await authAxios.get('/api/user/notifications');
+                const notification_array = allNotifications.data;
+                setNotification(notification_array.data);
+            } catch (error) {
+                console.log(error)
+            }
+            
         }
         fetchData();
     },[])

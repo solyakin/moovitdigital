@@ -20,7 +20,6 @@ const PublisherAdHistory = () => {
     const token = localStorage.getItem("auth_token");
     const [ham, setHam] = useState(false);
     const [notification, setNotification] = useState([]);
-    const auth_id = localStorage.getItem("auth_id");
     const authAxios = axios.create({
         baseURL : "https://test.canyousing.com.ng",
         headers : {
@@ -44,6 +43,15 @@ const PublisherAdHistory = () => {
         e.preventDefault();
         setHam(!ham);
     } 
+    useEffect(()=> {
+        const fetching = async () => {
+
+            const allNotifications = await authAxios.get('/api/user/notifications');
+            const notification_array = allNotifications.data;
+            setNotification(notification_array.data);
+        }
+        fetching()
+    },[])
     let notification_count = notification.length;
     console.log(notification)
 

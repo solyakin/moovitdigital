@@ -1,18 +1,19 @@
 import React, {useState, useEffect} from 'react';
 import { connect } from 'react-redux';
+import swal from 'sweetalert';
 import '../../dashboard/dashboard.scss';
 import '../../../pages/marketer/preview/preview.scss';
 import AdminTags from '../../../components/adminTags/adminTags';
-import swal from 'sweetalert';
 import logo from '../../../assets/image 1.png';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import '../allAdvertisers/advertiser.scss';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 const AdvertiserPreview = (props) => {
 
+    const history = useHistory();
     const [isLoading, setLoading] = useState(false);
     const [fbData, setfbData] = useState([]);
     const [linkedinData, setLinkedinData] = useState([]);
@@ -35,39 +36,44 @@ const AdvertiserPreview = (props) => {
     })
     useEffect(() => {
         const fetchingData = async() => {
-            const allUsers = await authAxios.get('/api/admin/users')
-            const users_data = allUsers.data
-            setUsers(users_data.data.data);
-
-            const allNotifications = await authAxios.get('/api/admin/notifications');
-            const notification_array = allNotifications.data;
-            setNotification(notification_array.data);
-
-            const publisherads = await authAxios.get('api/admin/all-script')
-            const pub_res = publisherads.data;
-            setPublisherAds(pub_res.data)
-
-            const banners = await authAxios.get('/api/admin/all-banners')
-            const res = banners.data;
-            setBanner(res.data)
-
-            const allPublishers = await authAxios.get('/api/admin/publisher');
-            const result = allPublishers.data;
-            const pubData = result.data;
-            setPublishers(pubData);
-
-            const linkedinAds = await authAxios.get('/api/linkedin');
-            const results = linkedinAds.data;
-            setLinkedinData(results.elements)
-
-            authAxios.get('/api/admin/ads')
-                .then(response => {
-                if(response.status == 200){
-                    const data = response.data;
-                    const adsListData = data.data.data;
-                    setAdsList(adsListData)
-                }
-            })
+            try{
+                const allUsers = await authAxios.get('/api/admin/advertiser')
+                const users_data = allUsers.data.data;
+                setUsers(users_data.data);
+    
+                const allNotifications = await authAxios.get('/api/admin/notifications');
+                const notification_array = allNotifications.data;
+                setNotification(notification_array.data);
+    
+                const publisherads = await authAxios.get('api/admin/all-script')
+                const pub_res = publisherads.data;
+                setPublisherAds(pub_res.data)
+    
+                const banners = await authAxios.get('/api/admin/all-banners')
+                const res = banners.data;
+                setBanner(res.data)
+    
+                const allPublishers = await authAxios.get('/api/admin/publisher');
+                const result = allPublishers.data;
+                const pubData = result.data;
+                setPublishers(pubData);
+    
+                const linkedinAds = await authAxios.get('/api/linkedin');
+                const results = linkedinAds.data;
+                console.log(results)
+                setLinkedinData(results.elements)
+    
+                authAxios.get('/api/admin/ads')
+                    .then(response => {
+                    if(response.status == 200){
+                        const data = response.data;
+                        const adsListData = data.data.data;
+                        setAdsList(adsListData)
+                    }
+                })
+            }catch(error){
+                console.log(error)
+            }
         }
         fetchingData()
     }, [])
@@ -97,10 +103,31 @@ const AdvertiserPreview = (props) => {
         doc.autoTable({ html: '#table-linkedin' })
         doc.save('linkedin.pdf')
     }
+    const exportPdf_all = (e) => {
+        var doc= new jsPDF();
+        doc.autoTable({ html: '#table-all' })
+        doc.save('allAdverts.pdf')
+    }
+
+    const deleteUser = async (e) => {
+        e.preventDefault();
+        setLoading(true)
+        const { id } = e.currentTarget;
+        const query = await authAxios.post(`/api/admin/delete-user/${id}`);
+            const res = query.data;
+            setLoading(false);
+            swal("Great!", "User Deleted successfully!", "success")
+            .then(() => {
+                history.push('/admin/advertisers')
+            })
+            console.log(res);
+        
+    }
     const newPublisherArrray = Object.values(publishers);
     const userScript = publisherAds.filter(item => item.user_id == tg_id)
-    console.log(banner)
-    console.log(publisherAds)
+    // console.log(linkedinData);
+    const newUserArray = Object.values(users);
+    console.log(users);
     return (
         <div className="dashboard marketer-preview preview">
             <div className="small-title">
@@ -130,11 +157,12 @@ const AdvertiserPreview = (props) => {
                             </div>
                             <div className="preview-wrapper">
                                 {
-                                    users.filter(item => item.id == tg_id)
-                                    .map(({id, firstName, lastName, email, phone, company, business_type, business_duration, business_bio}) => {
+                                    newUserArray.filter(item => item.id == tg_id).map(({id, firstName, lastName, email, phone, company, business_type, business_duration, business_bio}) => {
+                                        console.log(id)
                                         return (
-                                            <div className="prev-container" key={id}>
-                                                <div className="ads-detail">
+                                            <>
+                                            <div className="prev-container" >
+                                                <div className="ads-detail" key={id}>
                                                     <div className="title mb-4">
                                                         <h5>Name</h5>
                                                         <p>{`${firstName} ${lastName}`}</p>
@@ -166,14 +194,114 @@ const AdvertiserPreview = (props) => {
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div className="lower-btns d-block">
+                                                <button style={{marginLeft : "0px"}} onClick={deleteUser} id={id}>Delete Account</button>
+                                            </div>
+                                        </>
                                         )
                                     })
                                 }
                             </div>   
-                            
+                            <div className="all-ads">
+                                <h4>Ads History</h4>
+                                <div className="history-table">
+                                    <table className="table admin-view" id='table-all'>
+                                        <thead>
+                                            <tr>
+                                            <th scope="col"></th>
+                                            <th scope="col">Campaign</th>
+                                            <th scope="col">Description</th>
+                                            <th scope="col">Start</th>
+                                            <th scope="col">location</th>
+                                            <th scope="col">Budget</th>
+                                            <th scope="col">Approved</th>
+                                            <th scope="col">Dimensions</th>
+                                            {/* 
+                                            <th scope="col">status</th> */}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                adsList.filter(item => item.createdBy == tg_id)
+                                                .map(({id, title, content, Dimensions, location, budget_id, start, approved}) => {
+                                                    let newDate = '';
+                                                    const data_ = start.split("00");
+                                                    newDate = data_[0];
+                                                    let budget_data = "";
+                                                    
+                                                    //handling dimensions
+                                                    const  dimArr = Dimensions.replace(/\D+/g, '');
+                                                    const newDimension = dimArr.split('')[0];
+                                                    console.log(newDimension[0]);
+
+                                                    let renderDimension = "";
+                                                    if(newDimension == 1){
+                                                        renderDimension = "300 x 250..."
+                                                    }else if(newDimension == 2){
+                                                        renderDimension = "300 x 50..."
+                                                    }else if(newDimension == 3){
+                                                        renderDimension = "428 x 300..."
+                                                    }else if(newDimension == 4){
+                                                        renderDimension = "468 x 60..."
+                                                    }else if(newDimension == 5){
+                                                        renderDimension = "160 x 600..."
+                                                    }else if(newDimension == 6){
+                                                        renderDimension = "300 x 50..."
+                                                    }else if(newDimension == 7){
+                                                        renderDimension = "300 x 600..."
+                                                    }else if(newDimension == 8){
+                                                        renderDimension = "728 x 50..."
+                                                    }else if(newDimension == 9){
+                                                        renderDimension = "120 x 600..."
+                                                    }
+                                                    console.log(renderDimension)
+                                                    if(budget_id == 1){
+                                                        budget_data = "#20,000"
+                                                    }else if(budget_id == 2){
+                                                        budget_data = "#50,000"
+                                                    }else if(budget_id == 3){
+                                                        budget_data = "#150,000"
+                                                    }else if(budget_id == 4){
+                                                        budget_data = "#200,000"
+                                                    }else if(budget_id == 5){
+                                                        budget_data = "#500,000"
+                                                    }else if(budget_id == 6){
+                                                        budget_data = "#1,000,000"
+                                                    }
+                                                    let status = "";
+                                                    if(approved == 1){
+                                                        status = "Approved"
+                                                    }else{
+                                                        status = "Not Approved"
+                                                    }
+                                                    return(
+                                                        <tr key={id} id={id}>
+                                                            <th scope="row text-left">
+                                                                <input type="checkbox" name="" id="" />
+                                                            </th>
+                                                            <td>{title}</td>
+                                                            <td>{content}</td>
+                                                            <td>{newDate}</td>
+                                                            <td>{location}</td>
+                                                            <td>{budget_data}</td>
+                                                            <td>{status}</td>
+                                                            <td>{renderDimension}</td>
+                                                        </tr>
+                                                    )
+                                                })
+                                            }
+                                        </tbody>
+                                    </table>
+                                    <div className="row mb-4 text-center justify-content-center">
+                                        <div className="col-lg-4">
+                                            <button className='export_btn' style={{padding : "7px 20px", width: "100%", borderRadius:"5px", marginBottom : "2rem"}} onClick={exportPdf_all}>Export Pdf</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             
                             <div className="all-ads">
-                                <h4>Publisher Advert</h4>
+                                <h4>Publisher Ads</h4>
                                 <div className="history-table mb-5">
                                     <table className="table admin-view" id="my-table">
                                         <thead>
@@ -218,11 +346,17 @@ const AdvertiserPreview = (props) => {
                                                             content_data = content;
                                                             location_data = location;
                                                             if(budget_id == 1){
-                                                                budget_data = "#10,000"
+                                                                budget_data = "#20,000"
                                                             }else if(budget_id == 2){
                                                                 budget_data = "#50,000"
-                                                            }else if(budget_id = 3){
-                                                                budget_data = "#100,000"
+                                                            }else if(budget_id == 3){
+                                                                budget_data = "#150,000"
+                                                            }else if(budget_id == 4){
+                                                                budget_data = "#200,000"
+                                                            }else if(budget_id == 5){
+                                                                budget_data = "#500,000"
+                                                            }else if(budget_id == 6){
+                                                                budget_data = "#1,000,000"
                                                             }
                                                             if(approved == 1){
                                                                 status = "Running"
@@ -260,7 +394,7 @@ const AdvertiserPreview = (props) => {
                                         <button className='export_btn' style={{padding : "7px 20px", width: "100%", borderRadius:"5px", marginBottom : "2rem"}} onClick={exportPdf}>Export Pdf</button>
                                     </div>
                                 </div>
-                                <h4>Social Media</h4>
+                                <h4>Social Media Ads</h4>
                                 <div className="history-table">
                                     <h4 className="text-center">Facebook Ads</h4>
                                     <table className="table table-striped" id="table-fb">
@@ -284,7 +418,6 @@ const AdvertiserPreview = (props) => {
                                         <tbody>
                                             {                 
                                             insightData.map(item => {
-                                                
                                                 const itemData = item.insights.data;
                                                 let clickAction = "";
                                                 let likeAction = "";
@@ -365,17 +498,16 @@ const AdvertiserPreview = (props) => {
                                             <tbody>
                                                 {                 
                                                     linkedinData.map((item, index) => {
-                                                        
                                                         const array_list = item.variables.data;
                                                         const newItem = Object.values(array_list)
-                                                        console.log(newItem)
+                                                        
                                                         let titleText = "";
                                                         let textVal = "";
                                                         newItem.map(({title, text}) => {
                                                             titleText = title;
                                                             textVal = text;
                                                         })
-                                                        console.log(titleText)
+                                                        
                                                         return(
                                                             <tr key={index}>
                                                                 <th scope="row text-left">
@@ -390,7 +522,7 @@ const AdvertiserPreview = (props) => {
                                                             </tr>
                                                         )
                                                     })
-                                                }
+                                                 }
                                             </tbody>
                                         </table>
                                         <div className="row justify-content-center">

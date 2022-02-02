@@ -1,11 +1,11 @@
 import React from 'react';
-import '../AdvertiserPage/advertiser.scss';
+import '../AdvertiserPage/advertiserPage.scss';
 import { Link } from 'react-router-dom';
 import phone from '../../assets/smartphone.png';
-import coin from '../../assets/coin.svg';
+import coin from '../../assets/naira.png';
+import stand from '../../assets/stand.svg';
 import tablet from '../../assets/tablet.png';
 import desktop from '../../assets/desktop.png';
-import money from '../../assets/money.svg';
 import network from '../../assets/jale.png';
 import smile from '../../assets/smile.svg';
 import Header from '../../components/header/header';
@@ -21,7 +21,7 @@ const PublisherPage = ({navBackground}) => {
                     <div className="row justify-content-center">
                         <div className="col">
                             <div className="content">
-                                <img src={money} alt="smile-icon" />
+                                <img src={stand} alt="smile-icon" className='stand' />
                             </div>
                         </div>
                         <div className="col">
@@ -61,7 +61,7 @@ const PublisherPage = ({navBackground}) => {
                     <div className="row note">
                         <div className="col">
                             <div className="content text-center">
-                                <h3 className="why">Highest Paying Ad Network For Publishers</h3>
+                                <h3 className="why">We are One of the Highest Paying Ad Network For Publishers</h3>
                                 <p>Start monetizing your website traffic by placing our ad codes from your publisher account, we are the highest paying CPC ad network and CPM ad network for publishers across the globe.</p>
                                 <p>Moovit is an online cpm/cpc ad network for publishers that pays you for every valid click/impression on your website. Our system ensures that the highest-bidder ads are displayed on your websites, ensuring the best possible revenue at any given time. Ad codes are available as html one line ad code that can be used to display banner ads, text ads, mobile ads, and pop ads on your website.</p>
                             </div>
@@ -72,8 +72,8 @@ const PublisherPage = ({navBackground}) => {
             <div className="place row">
                 <div className="container">
                     <div className="content">
-                        <h2>Why +10K Publishers Choose Us?</h2>
-                        <img src={smile} alt="" className=''/>
+                        <h2>Why Choose Us?</h2>
+                        <img src={smile} alt="" className='smile'/>
                         <p>Moovit is one of the leading highest paying ads network and gives publishers complete control over their audience, equipping them with technology that allows them to engage and keep people, make revenue from direct advertisers, and develop monetization strategies based on extensive data.</p>
                     </div>
                 </div>
@@ -87,11 +87,11 @@ const PublisherPage = ({navBackground}) => {
 
                             <div className="type d-flex, align-center justify-content-between">
                                 <div className="content">
-                                    <img src={coin} alt="" />
+                                    <img src={coin} alt="naira coin" />
                                     <p>CPC ADS</p>
                                 </div>
                                 <div className="content">
-                                    <img src={coin} alt="" />
+                                    <img src={coin} alt="naira coin" />
                                     <p>CPM ADS</p>
                                 </div>
                             </div>
@@ -99,9 +99,9 @@ const PublisherPage = ({navBackground}) => {
                     </div>
                     <div className="col">
                         <div className="content">
-                            <img src={network} alt="smile-icon" />
-                        </div>
+                            <img src={network} alt="smile-icon" className='big-img' />
                     </div>
+                        </div>
                 </div>
             </div>
             

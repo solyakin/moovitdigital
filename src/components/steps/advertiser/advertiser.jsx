@@ -15,7 +15,7 @@ const AdvertiserSteps = ({ show }) => {
         <div className="step-list" style={{display : show}}>
             <div className="step_1 mb-5">
                 <div className="wrapper">
-                    <img src={login} alt="" height="180px" className="login"/>
+                    <img src={login} alt="" width="200px" height="180px" className="login"/>
                     <div className="count">
                         <p>STEP 1</p>
                         <h5>Create an account</h5>
@@ -26,18 +26,18 @@ const AdvertiserSteps = ({ show }) => {
             </div>
             <div className="step_2 mb-5">
                 <div className="wrapper">
-                    <img src={login1} alt="" />
+                    <img src={login1} alt="" width="200px" height="180px" />
                     <div className="count">
                         <p>STEP 2</p>
                         <h5>Choose a budget</h5>
-                        <p>Choose a budget that best suit your business need/advert campagin.</p>
+                        <p>Choose a budget that best suit your business need/advert campaign.</p>
                     </div>
                 </div>
                 <img src={line2} alt="" className="line2" />    
             </div>
             <div className="step_3 mb-5">
                 <div className="wrapper align-center">
-                    <img src={login2} alt="" />
+                    <img src={login2} alt="" width="240px" height="180px"/>
                     <div className="count">
                         <p>STEP 3</p>
                         <h5>Pick a template</h5>
@@ -49,7 +49,7 @@ const AdvertiserSteps = ({ show }) => {
             </div>
             <div className="step_4 mb-5">
                 <div className="wrapper">
-                    <img src={login3} alt="" />
+                    <img src={login3} alt="" width="200px" height="180px"/>
                     <div className="count">
                         <p>STEP 4</p>
                         <h5>Make payment</h5>
@@ -60,7 +60,7 @@ const AdvertiserSteps = ({ show }) => {
             </div>
             <div className="step_5 mb-5">
                 <div className="wrapper">
-                    <img src={login4} alt="" className="login"/>
+                    <img src={login4} alt="" width="240px" height="180px" className="login"/>
                     <div className="count">
                         <p>STEP 5</p>
                         <h5>Publish advert</h5>

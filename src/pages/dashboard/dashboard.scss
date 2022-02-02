@@ -8,19 +8,62 @@
         font-size: 13px;
         text-decoration: none;
     }
+    .contact-agent{
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding-top: 80px;
+        background: rgba($color: #000000, $alpha: 0.8);
+        .request-form{
+            .contact-form{
+                margin-top: 1.5rem;
+                @media screen and (max-width : 768px){
+                    margin-top: 2rem;
+                }
+                .form_wrapper{
+                    @media screen and (max-width : 768px){
+                        padding: 10px 20px;
+                    }
+                }
+            }
+        }
+        h5{
+            font-weight: 300;
+        }
+        .close{
+            position: absolute;
+            right: 20%;
+            top: 80px;
+            cursor: pointer;
+            border: none;
+            @media screen and (max-width: 768px){
+                right: 20px;
+            }
+        }
+        h5{
+            color: white;
+        }
+        p{
+            color: white;
+        }
+    }
     .small-title{
-        padding-top: 10px;
         .title-text{
+            position: fixed;
+            width : 100%;
+            z-index: 10000;
             display: flex;
             align-items: center;
             justify-content: right;
+            padding-top: 10px;
             padding-right: 50px;
             padding-bottom: 20px;
+            background: white;
             @media screen and (max-width : 768px){
                 padding-right: 15px;
                 position: fixed;
                 top: 0;
-                height: 50px;
                 width: 100%;
                 z-index: 10;
                 background: white;
@@ -39,9 +82,16 @@
                 .hamburger{
                     display: none;
                 }
+                .mobile{
+                    display: none!important;
+                }
                 @media only screen and (max-width : 768px){
                     .hamburger{
                         display: block;
+                        cursor: pointer;
+                    }
+                    .mobile{
+                        display: block!important;
                         cursor: pointer;
                     }
                 }
@@ -55,8 +105,29 @@
                 }
             }
             .text{
+                @media only screen and (max-width : 768px){
+                    display: none!important;
+                }
+                p{
+                    @media screen and (max-width : 768px){
+                        display: none;
+                    }
+                }
                 img{
                     width : 20px;
+                }
+                button{
+                    padding: 8px 12px;
+                    font-size: 13px;
+                    margin-left: 15px;
+                    border-radius: 5px;
+                    background: none;
+                    color: #333333;
+                    border: 1px solid #808080;
+                    @media screen and (max-width : 768px){
+                        margin-left: 0;
+                        font-size: 10px;
+                    }
                 }
                 @media screen and (max-width : 768px){
                     p{
@@ -73,6 +144,7 @@
         }
         .dashboard-main-wrapper{
             display: flex;
+            padding-top: 5rem;
             // .mobile-tag{
             //     padding-bottom: 6rem;
             // }
@@ -90,7 +162,7 @@
                     align-items: center;
                     margin-bottom: 30px;
                     p{
-                        font-size: 14px;
+                        font-size: 16px;
                         margin-right: 20px;
                     }
                     .logout{
@@ -99,7 +171,7 @@
                     a{
                         color: white;
                         text-decoration: none;
-                        font-size: 14px;
+                        font-size: 16px;
                         margin-right: 20px;
                         position: relative;
                         span{
@@ -121,6 +193,7 @@
                 }
                 .tab-ads{
                     margin-bottom: 30px;
+                    cursor: pointer;
                     .sub-track{
                         display: flex;
                         flex-direction: column;
@@ -130,7 +203,7 @@
                         a{
                             color: white;
                             text-decoration: none;
-                            font-size: 14px;
+                            font-size: 16px;
                             margin-right: 20px;
                         }
                     }
@@ -158,7 +231,7 @@
                     align-items: center;
                     justify-content: space-between;
                     @media screen and (max-width : 768px){
-                        margin-top: 3rem;
+                        margin-top: 1rem;
                     }
                     .welcome{
                         h4{

@@ -7,17 +7,20 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import UserDashboardComponent from '../../components/userdashboardComponent/userDashboardComponent';
 import Tags from '../../components/Tags/Tags';
 import logo from '../../assets/image 1.png';
+import close from '../../assets/close2.png';
 import hamburger from '../../assets/hamburger.png';
 import MobileTags from '../../components/MobileTags/mobileTags';
+import RequestForm from '../../components/RequestForm/RequestForm';
 
 const Dashboard = () => {
     
     let impressionCount = 0;
-    let clickCount = 0
+    let clickCount = 0;
     const [style, setStyle] = useState({
         hide : false, 
         transformArrow : false,
     });
+    const [contactAgent, setContactAgent] = useState(false);
     const [ham, setHam] = useState(false);
     const [userAds, setUserAds] = useState([]);
     const [isLoading, setLoading] = useState(true);
@@ -81,9 +84,14 @@ const Dashboard = () => {
                         <Link to='/home'>
                             <img src={logo} alt="moovit-logo" className="logo-img" />
                         </Link>
+                        <div className="text d-flex align-items-center mobile">
+                            <p className='mt-1'>Need help?</p>
+                            <button onClick={() => setContactAgent(true)}>Contact an agent</button>
+                        </div>
                     </div>
-                    <div className="text d-flex align center">
-                        
+                    <div className="text d-flex align-items-center">
+                        <p className='mt-1'>Need help?</p>
+                        <button onClick={() => setContactAgent(true)}>Contact an agent</button>
                     </div>
                 </div>
                 <div className="dashboard-main-wrapper">
@@ -104,6 +112,13 @@ const Dashboard = () => {
                         }
                         
                     </div>
+                </div>
+            </div>
+            <div className="contact-agent" style={{display : contactAgent ? "block" : "none"}}>
+                {/* <h5>Contact an agent</h5> */}
+                <RequestForm />
+                <div className="close" onClick={() =>setContactAgent(false)}>
+                    <img src={close} alt="close btn" width="20px" height="20px" />
                 </div>
             </div>
         </div>

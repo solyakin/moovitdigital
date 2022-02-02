@@ -9,9 +9,12 @@ import { Link } from 'react-router-dom';
 import Tags from '../../../components/Tags/Tags';
 import MobileTags from '../../../components/MobileTags/mobileTags';
 import tick from '../../../assets/Frame 338.svg';
+import RequestForm from '../../../components/RequestForm/RequestForm';
+import close from '../../../assets/close2.png';
 
 const Review = () => {
 
+    const [contactAgent, setContactAgent] = useState(false);
     const [style, setStyle] = useState({
         hide : false, 
         transformArrow : false,
@@ -32,12 +35,16 @@ const Review = () => {
                     <div className="logo">
                         <img src={hamburger} alt="hamburger" width="25px" className="hamburger" onClick={toggler}/>
                         <Link to='/home'>
-                            <img src={logo} alt="moovit-logo" />
+                            <img src={logo} alt="moovit-logo" className="logo-img" />
                         </Link>
+                        <div className="text d-flex align-items-center mobile">
+                            <p className='mt-1'>Need help?</p>
+                            <button onClick={() => setContactAgent(true)}>Contact an agent</button>
+                        </div>
                     </div>
-                    <div className="text d-flex align center">
-                        {/* <p>The Brand Hub</p>
-                        <img src={caretDown} alt="" /> */}
+                    <div className="text d-flex align-items-center">
+                        <p className='mt-1'>Need help?</p>
+                        <button onClick={() => setContactAgent(true)}>Contact an agent</button>
                     </div>
                 </div>
                 <div className="dashboard-main-wrapper">
@@ -100,8 +107,16 @@ const Review = () => {
                     </div>
                 </div>
             </div>
+            <div className="contact-agent" style={{display : contactAgent ? "block" : "none"}}>
+                {/* <h5>Contact an agent</h5> */}
+                <RequestForm />
+                <div className="close" onClick={() =>setContactAgent(false)}>
+                    <img src={close} alt="close btn" width="20px" height="20px" />
+                </div>
+            </div>
         </div>
     )
 }
 
 export default Review;
+ 

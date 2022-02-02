@@ -17,7 +17,7 @@ const Package = ({navBackground}) => {
                     <div className="dashboard-main">
                         <div className="content-form">
                             <div className="row justify-content-center">
-                                <h3>Packages</h3>
+                                <h3>Choose a package that’s right for you</h3>
                                 <div className="price-list">
                                     <div className="tier">
                                         <h6 className='title'>SMM Starter Pack </h6>

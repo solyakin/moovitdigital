@@ -18,7 +18,7 @@ const AccountType = ({navBackground}) => {
                     <Link to='/user-registration'>Continue as an advertiser</Link>
                 </button>
                 <button className="thin">
-                    <Link to='/publisher-form'>Continue as an publisher</Link>
+                    <Link to='/publisher-form'>Continue as a publisher</Link>
                 </button>
 
                 <p>Don’t know yet? <span>Request a call now!</span></p>

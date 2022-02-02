@@ -15,7 +15,7 @@ const PublisherSteps = ({show1}) => {
         <div className="step-list publisher" style={{display : show1}}>
             <div className="step_1 mb-5">
                 <div className="wrapper">
-                    <img src={login} alt="" height="180px" className="login"/>
+                    <img src={login} alt="" width="200px" height="180px" className="login"/>
                     <div className="count">
                         <p>STEP 1</p>
                         <h5>Create an account</h5>
@@ -26,7 +26,7 @@ const PublisherSteps = ({show1}) => {
             </div>
             <div className="step_2 mb-5">
                 <div className="wrapper">
-                    <img src={approved} alt="" height="180px"/>
+                    <img src={approved} alt="" width="200px" height="180px"/>
                     <div className="count">
                         <p>STEP 2</p>
                         <h5>Get approved</h5>
@@ -37,7 +37,7 @@ const PublisherSteps = ({show1}) => {
             </div>
             <div className="step_3 mb-5">
                 <div className="wrapper">
-                    <img src={banner} alt="" />
+                    <img src={banner} alt="" width="240px" height="180px"/>
                     <div className="count">
                         <p>STEP 3</p>
                         <h5>Receive ads banners</h5>
@@ -49,7 +49,7 @@ const PublisherSteps = ({show1}) => {
             </div>
             <div className="step_4 mb-5">
                 <div className="wrapper">
-                    <img src={publish} alt="" />
+                    <img src={publish} alt="" width="200px" height="180px"/>
                     <div className="count">
                         <p>STEP 4</p>
                         <h5>Publish ads on site</h5>
@@ -60,7 +60,7 @@ const PublisherSteps = ({show1}) => {
             </div>
             <div className="step_5 mb-5">
                 <div className="wrapper">
-                    <img src={card} alt="" className="login"/>
+                    <img src={card} alt="" className="login" width="240px" height="180px"/>
                     <div className="count">
                         <p>STEP 5</p>
                         <h5>Get paid</h5>

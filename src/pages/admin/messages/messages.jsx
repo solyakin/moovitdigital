@@ -22,7 +22,7 @@ const Message = () => {
 
     const token = localStorage.getItem("auth_token");
     const authAxios = axios.create({
-        baseURL : "https://api.moovitdigital.com",
+        baseURL : "https://test.canyousing.com.ng",
         headers : {
             Authorization : `Bearer ${token}`
         }
@@ -30,57 +30,40 @@ const Message = () => {
     
     useEffect(() => {
         const fetchData = async () => {
-            const allAds = await authAxios.get('/api/admin/ads');
+            const allAds = await authAxios.get('/api/admin/messages');
             const response = allAds.data;
-            const adsListData = response.data.data;
+            const adsListData = response;
             setAdsList(adsListData);
 
-            const allAdvertisers = await authAxios.get('/api/admin/advertiser');
-            const res = allAdvertisers.data;
-            const adsCount = res.data;
-            for (const [key, value] of Object.entries(adsCount)) {
-                const allCount = key;
-                setAdsCount(allCount);
-            }
+            // const allAdvertisers = await authAxios.get('/api/admin/advertiser');
+            // const res = allAdvertisers.data;
+            // const adsCount = res.data;
+            // for (const [key, value] of Object.entries(adsCount)) {
+            //     const allCount = key;
+            //     setAdsCount(allCount);
+            // }
 
-            const allPublishers = await authAxios.get('/api/admin/publisher');
-            const result = allPublishers.data;
-            const pubData = result.data
-            for(const[key, value] of Object.entries(pubData)){
-                const allPubCount = key;
-                setpubCount(allPubCount);
-            }
+            // const allPublishers = await authAxios.get('/api/admin/publisher');
+            // const result = allPublishers.data;
+            // const pubData = result.data
+            // for(const[key, value] of Object.entries(pubData)){
+            //     const allPubCount = key;
+            //     setpubCount(allPubCount);
+            // }
 
-            const allStaff = await authAxios.get('/api/admin/staff');
-            const queryResponse = allStaff.data;
-            const staffData = queryResponse.data.data.length;
-            setStaff(staffData);
+            // const allStaff = await authAxios.get('/api/admin/staff');
+            // const queryResponse = allStaff.data;
+            // const staffData = queryResponse.data.data.length;
+            // setStaff(staffData);
 
             const allNotifications = await authAxios.get('/api/admin/notifications');
             const notification_array = allNotifications.data;
             setNotification(notification_array.data);
         }
 
-        // authAxios.get('/api/admin/ads')
-        //         .then(response => {
-        //         if(response.status == 200){
-        //             const data = response.data;
-        //             const adsListData = data.data.data;
-        //             setAdsList(adsListData)
-        //         }
-        //     })
-        //     .then(response => {
-        //         authAxios.get('/api/admin/advertiser')
-        //         .then(res => {
-        //             const data = res.data;
-        //             console.log(data)
-        //         })
-                
-        //     })
-        // .catch( err => console.log(err))
         fetchData();
     }, [])
-    
+    console.log(adsList);
     return (
         <div className="dashboard">
             <div className="small-title">
@@ -106,21 +89,31 @@ const Message = () => {
                                 <div className="msg-queue mt-3">
                                     <div className="today">
                                         <h6 className="h-text mb-3">Today</h6>
-                                        <div className="msg-item">  
-                                            <div className="msg-wrapper">
-                                                <img src={user} alt="" />
-                                                <div className="msg-info">
-                                                    <h6>Jon Bellion</h6>
-                                                    <p>Ads are not loading</p>
-                                                    <p className="content">Good day, I wanted to up...</p>
-                                                </div>
-                                                
-                                            </div>
-                                            <div className="time">
-                                                    <p>12.03</p>
-                                            </div>
-                                        </div>
-                                        <div className="msg-item">  
+                                        {/* <div >   */}
+                                        {
+                                            adsList.filter((item, index) => (index < 4))
+                                            .map(({id, name, email, subject, message}) => {
+                                                return(
+                                                        <div className="msg-item" key={id}>
+                                                            <div className="msg-wrapper">
+                                                                <img src={user} alt="" />
+                                                                <div className="msg-info">
+                                                                    <h6>{name}</h6>
+                                                                    <p>{subject}</p>
+                                                                    <p className="content">{message}</p>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                            <div className="time">
+                                                                    <p>12.03</p>
+                                                            </div>
+                                                        </div>
+                                                )
+                                            })
+                                        }
+                                            
+                                        {/* </div> */}
+                                        {/* <div className="msg-item">  
                                             <div className="msg-wrapper">
                                                 <img src={user} alt="" />
                                                 <div className="msg-info">
@@ -161,7 +154,7 @@ const Message = () => {
                                             <div className="time">
                                                 <p>12.03</p>
                                             </div>
-                                        </div>
+                                        </div> */}
                                     </div>
                                     <div className="yesterday">
                                         <h6 className="mb-3">Yesterday</h6>

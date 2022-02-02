@@ -4,7 +4,6 @@ import { Link, useHistory } from 'react-router-dom';
 import '../../dashboard/dashboard.scss';
 import '../../admin/admin.scss';
 import '../../admin/ads-ticket/ads-ticket.scss';
-import caretDown from '../../../assets/CaretDown.svg';
 import paperclip from '../../../assets/Paperclip.svg';
 import userP from '../../../assets/Ellipse 48.png';
 import usericon from '../../../assets/User.svg';
@@ -23,7 +22,6 @@ const Tickets = () => {
         show2 : false,
         show3 : false
     })
-    const [hide, setHide] = useState("none");
     const [adsList, setAdsList] = useState([]);
     const [notification, setNotification] = useState([]);
     const [user, setUser] = useState([]);
@@ -54,7 +52,7 @@ const Tickets = () => {
         setState({show : false, show1 : false, show2 : false, show3 : true});
     }
 
-    const newItems = adsList.filter(item => item.active != null);
+    const newItems = adsList.filter(item => item.active !== null);
     console.log(newItems);
     const ApprovedList = adsList.filter(item => item.approved == 1);
     console.log(ApprovedList)

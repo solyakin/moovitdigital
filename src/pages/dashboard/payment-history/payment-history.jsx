@@ -60,7 +60,7 @@ const PaymentHistory = () => {
                             
                         </div> 
                         <div className="history-table">
-                            <table class="table table-striped">
+                            <table className="table table-striped">
                                 <thead>
                                     <tr>
                                     <th scope="col"></th>
@@ -72,7 +72,7 @@ const PaymentHistory = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    {/* <tr>
                                         <th scope="row">
                                             <input type="checkbox" name="" id="" />
                                         </th>
@@ -101,7 +101,7 @@ const PaymentHistory = () => {
                                         <td>Paid</td>
                                         <td>-</td>
                                         <td className="invoice">view now</td>
-                                    </tr>
+                                    </tr> */}
                                 </tbody>
                                 </table>
                             </div>

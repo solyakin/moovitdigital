@@ -13,13 +13,15 @@ import ReportModal from '../../Report-Modal/report-modal';
 import hamburger from '../../../../assets/hamburger.png';
 import logo from '../../../../assets/image 1.png';
 import MobileTags from '../../../../components/MobileTags/mobileTags';
+import RequestForm from '../../../../components/RequestForm/RequestForm';
+import close from '../../../../assets/close2.png';
 
 const RunningAds = (props) => {
     const [ham, setHam] = useState(false);
     const [isLoading, setLoading] = useState(false);
     const [fbData, setfbData] = useState([]);
     const [linkedinData, setLinkedinData] = useState([]);
-
+    const [contactAgent, setContactAgent] = useState(false);
     const [show, setShow] = useState("none");
     const [style, setStyle] = useState({
         hide : false,
@@ -61,6 +63,7 @@ const RunningAds = (props) => {
         const fetchingData = async () => {
             const linkedinAds = await authAxios.get('/api/linkedin');
             const res = linkedinAds.data;
+            console.log(res)
             setLinkedinData(res.elements)
         }
         fetchingData()
@@ -87,10 +90,16 @@ const RunningAds = (props) => {
                     <div className="logo">
                         <img src={hamburger} alt="hamburger" width="25px" className="hamburger" onClick={toggler}/>
                         <Link to='/home'>
-                            <img src={logo} alt="moovit-logo" />
+                            <img src={logo} alt="moovit-logo" className="logo-img" />
                         </Link>
+                        <div className="text d-flex align-items-center mobile">
+                            <p className='mt-1'>Need help?</p>
+                            <button onClick={() => setContactAgent(true)}>Contact an agent</button>
+                        </div>
                     </div>
-                    <div className="text d-flex align center">
+                    <div className="text d-flex align-items-center">
+                        <p className='mt-1'>Need help?</p>
+                        <button onClick={() => setContactAgent(true)}>Contact an agent</button>
                     </div>
                 </div>
                 <div className="dashboard-main-wrapper">
@@ -224,7 +233,7 @@ const RunningAds = (props) => {
                                             <tbody>
                                                 {                 
                                                     linkedinData.map((item, index) => {
-                                                        
+  
                                                         const array_list = item.variables.data;
                                                         const newItem = Object.values(array_list)
                                                         console.log(newItem)
@@ -270,6 +279,13 @@ const RunningAds = (props) => {
             fbData={fbData}
             modalClick={modalClick}
             />
+            <div className="contact-agent" style={{display : contactAgent ? "block" : "none"}}>
+                {/* <h5>Contact an agent</h5> */}
+                <RequestForm />
+                <div className="close" onClick={() =>setContactAgent(false)}>
+                    <img src={close} alt="close btn" width="20px" height="20px" />
+                </div>
+            </div>
         </div>
     )
 }

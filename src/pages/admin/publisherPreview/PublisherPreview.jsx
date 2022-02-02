@@ -41,7 +41,7 @@ const PublisherPreview = () => {
             setNotification(notification_array.data);
 
             const allList = await authAxios.get('/api/admin/publisher');
-            const itemList = allList.data;
+            const itemList = allList.data.data;
             setPubl(itemList.data);
 
             const publisherads = await authAxios.get('api/admin/all-script')
