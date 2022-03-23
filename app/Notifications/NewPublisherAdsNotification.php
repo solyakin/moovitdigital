@@ -7,18 +7,19 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class NewPublisherAdsNotification extends Notification
+class NewPublisherAdsNotification extends Notification implements ShouldQueue
 {
     use Queueable;
+    private $script;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($name)
+    public function __construct($script)
     {
-        $this->name = $name;
+        $this->script = $script;
     }
 
     /**
@@ -40,10 +41,10 @@ class NewPublisherAdsNotification extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+        // return (new MailMessage)
+        //             ->line('The introduction to the notification.')
+        //             ->action('Notification Action', url('/'))
+        //             ->line('Thank you for using our application!');
     }
 
     /**
@@ -55,7 +56,7 @@ class NewPublisherAdsNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'name' => $this->name
+            'script' => $this->script
         ];
     }
 }

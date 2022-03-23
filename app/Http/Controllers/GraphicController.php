@@ -9,28 +9,43 @@ use Illuminate\Support\Facades\Validator;
 class GraphicController extends Controller
 {
     public function createGraphic (Request $request) {
-        $data = $request->all();
-        $validator = Validator::make($data, [
-            'name' => ['required', 'string', 'max:250'],
-            'image' => ['required', 'string', 'max:250'],
-            // 'image' => ['required', 'image', 'mimes:png,jpg,svg,gif', 'max:2500']
-        ]);
+        try {
+            $data = $request->all();
+            $validator = Validator::make($data, [
+                'name' => ['required', 'string', 'max:250'],
+                'image' => ['required', 'string', 'max:250'],
+                // 'image' => ['required', 'image', 'mimes:png,jpg,svg,gif', 'max:2500']
+            ]);
 
-        if($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 401);
-        };
+            if($validator->fails()) {
+                return response()->json(['error' => $validator->errors()], 401);
+            };
 
-        // $path = $request->file('image')->store('public/ads/images');
+            // $path = $request->file('image')->store('public/ads/images');
 
-        $graphic = Graphic::create([
-            'name' => $request->name,
-            'image' => $request->image
-        ]);
+            $graphic = Graphic::create([
+                'name' => $request->name,
+                'image' => $request->image
+            ]);
 
+            return response()->json([
+                'success' => true,
+                'message' => 'Graphic created successfully',
+                'data' => $graphic
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => $th
+            ], 503);
+        }
+    }
+
+    public function getAll() {
+        $graphic = Graphic::all();
         return response()->json([
             'success' => true,
-            'message' => 'Graphic created successfully',
             'data' => $graphic
-        ], 200);
+            ], 200);
     }
 }

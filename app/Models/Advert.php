@@ -31,13 +31,17 @@ class Advert extends Model
         'phone',
         'start',
         'end',
+        'fb_page',
+        'twitter',
+        'linkedin',
         'demographics',
         'interests',
         'createdBy',
         'approved',
         'assigned',
         'amount',
-        'active'
+        'active',
+        'amount_used'
     ];
 
     public function user() {
@@ -54,5 +58,13 @@ class Advert extends Model
 
     public function budget() {
         return $this->belongsTo(Budget::class, 'budget_id');
+    }
+
+    public function Advert() {
+        return $this->hasMany(Banners::class, 'advert_id');
+    }
+
+    public function Ad() {
+        return $this->hasMany(PublisherAds::class, 'advert_id');
     }
 }

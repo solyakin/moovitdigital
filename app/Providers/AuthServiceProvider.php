@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -32,5 +33,9 @@ class AuthServiceProvider extends ServiceProvider
             'user' => 'User Type',
             'admin' => 'Admin User Type',
         ]);
+
+        ResetPassword::createUrlUsing(function ($user, string $token) {
+            return 'https://moovitdigital.com/reset-password?token=' . $token;
+        });
     }
 }

@@ -14,38 +14,45 @@ class FlutterwaveController extends Controller
      */
     public function initialize()
     {
-        //This generates a payment reference
-        $reference = Flutterwave::generateReference();
+        try {
+            //This generates a payment reference
+            $reference = Flutterwave::generateReference();
 
-        // Enter the details of the payment
-        $data = [
-            'payment_options' => 'card,banktransfer',
-            'amount' => 500,
-            'email' => request()->email,
-            'tx_ref' => $reference,
-            'currency' => "NGN",
-            'redirect_url' => route('callback'),
-            'customer' => [
+            // Enter the details of the payment
+            $data = [
+                'payment_options' => 'card,banktransfer',
+                'amount' => request()->amount,
                 'email' => request()->email,
-                "phone_number" => request()->phone,
-                "name" => request()->name
-            ],
+                'tx_ref' => $reference,
+                'currency' => "NGN",
+                'redirect_url' => route('callback'),
+                'customer' => [
+                    'email' => request()->email,
+                    "phone_number" => request()->phone,
+                    "name" => request()->name
+                ],
 
-            "customizations" => [
-                "title" => 'Movie Ticket',
-                "description" => "20th October"
-            ]
-        ];
+                "customizations" => [
+                    "title" => 'Movie Ticket',
+                    "description" => now()
+                ]
+            ];
 
-        $payment = Flutterwave::initializePayment($data);
+            $payment = Flutterwave::initializePayment($data);
 
 
-        if ($payment['status'] !== 'success') {
-            // notify something went wrong
-            return;
+            if ($payment['status'] !== 'success') {
+                // notify something went wrong
+                return;
+            }
+
+            return redirect($payment['data']['link']);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => $th
+            ], 503);
         }
-
-        return redirect($payment['data']['link']);
     }
 
     /**
@@ -54,31 +61,39 @@ class FlutterwaveController extends Controller
      */
     public function callback()
     {
+        try {
+            $status = request()->status;
 
-        $status = request()->status;
+            //if payment is successful
+            if ($status ==  'successful') {
 
-        //if payment is successful
-        if ($status ==  'successful') {
+                $transactionID = Flutterwave::getTransactionIDFromCallback();
+                $data = Flutterwave::verifyTransaction($transactionID);
 
-        $transactionID = Flutterwave::getTransactionIDFromCallback();
-        $data = Flutterwave::verifyTransaction($transactionID);
+                // Advert::where
 
-        dd($data);
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Transaction Successful',
+                    'data' => $data
+                ], 200);
+            } elseif ($status ==  'cancelled') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Transaction cancelled'
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Transaction failed'
+                ]);
+            }
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => $th
+            ], 503);
         }
-        elseif ($status ==  'cancelled'){
-            //Put desired action/code after transaction has been cancelled here
-        }
-        else{
-            //Put desired action/code after transaction has failed here
-        }
-        // Get the transaction from your DB using the transaction reference (txref)
-        // Check if you have previously given value for the transaction. If you have, redirect to your successpage else, continue
-        // Confirm that the currency on your db transaction is equal to the returned currency
-        // Confirm that the db transaction amount is equal to the returned amount
-        // Update the db transaction record (including parameters that didn't exist before the transaction is completed. for audit purpose)
-        // Give value for the transaction
-        // Update the transaction to note that you have given value for the transaction
-        // You can also redirect to your success page from here
 
     }
 }

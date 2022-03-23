@@ -23,31 +23,49 @@ class GoogleController extends Controller
             // dd($user);
 
             $is_user = User::where('email', $user->getEmail())->first();
-            if(!$is_user){
+            if (!$is_user) {
 
-                $saveUser = User::updateOrCreate([
+                $saveUser = User::create([
                     'google_id' => $user->getId(),
-                ],[
                     'email' => $user->getEmail(),
-                    'remember_token'=>$user->token,
-                    'password' => Hash::make($user->getName().'@'.$user->getId()),
+                    'remember_token' => $user->token,
+                    'password' => Hash::make($user->getName() . '@' . $user->getId()),
                     'email_verified_at' => now(),
                 ]);
-            }else{
+
+
+                Auth::loginUsingId($saveUser->id);
+
+                // return redirect()->to('https://moovitdigital.com/account-type');
+                return response()->json([
+                    'success' => true,
+                    'user'=> $saveUser,
+                    'token'=> $user->token,
+                    'action'=>'register'
+                ]);
+            } else {
                 $saveUser = User::where('email',  $user->getEmail())->update([
                     'google_id' => $user->getId(),
-                    'remember_token'=>$user->token,
+                    'remember_token' => $user->token,
                 ]);
                 $saveUser = User::where('email', $user->getEmail())->first();
+
+                Auth::loginUsingId($saveUser->id);
+                // $userId = User::select('users.*')->find(auth()->user()->id);
+
+                // return redirect()->to('https://moovitdigital.com/dashboard');
+                return response()->json([
+                    'success' => true,
+                    'user'=> $saveUser,
+                    'token'=> $user->token,
+                    'action'=>'login'
+                ]);
             }
-
-
-            Auth::loginUsingId($saveUser->id);
-            // dd($saveUser->id);
-
-            return redirect()->route('home');
         } catch (\Throwable $th) {
-            throw $th;
+            return response()->json([
+                'success' => false,
+                'message'=> $th
+            ], 503);
         }
     }
 }

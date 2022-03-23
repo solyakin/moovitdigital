@@ -17,68 +17,98 @@ class ProfileController extends Controller
      */
     public function profile()
     {
-        return response()->json(auth()->user());
+        try {
+            return response()->json(auth()->user());
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => $th
+            ], 503);
+        }
     }
 
     public function editUser(Request $request, $id)
     {
-        $data = $request->all();
-        $validator = Validator::make($data, [
-            'firstName' => ['required', 'string', 'max:255'],
-            'lastName' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
-            'phone' => ['required', 'string', 'max:255']
-        ]);
+        try {
+            $data = $request->all();
+            $validator = Validator::make($data, [
+                'firstName' => ['required', 'string', 'max:255'],
+                'lastName' => ['required', 'string', 'max:255'],
+                'email' => ['string', 'email', 'max:255'],
+                'phone' => ['required', 'string', 'max:255']
+            ]);
 
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 401);
+            if ($validator->fails()) {
+                return response()->json(['error' => $validator->errors()], 401);
+            }
+
+            if(!$request->file('image')){
+                $user = User::where('id', $id);
+            $user->update([
+                'firstName' => $request->firstName,
+                'lastName' => $request->lastName,
+                'email' => $request->email,
+                'phone' => $request->phone
+            ]);
+            }
+            else{
+            $path = $request->file('image')->store('public/profile/images');
+            $user = User::where('id', $id);
+            $user->update([
+                'firstName' => $request->firstName,
+                'lastName' => $request->lastName,
+                'email' => $request->email,
+                'image' => $path,
+                'phone' => $request->phone
+            ]);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'User updated successfully',
+                'data' => $user
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message' => $th
+            ], 503);
         }
-
-        $path = $request->file('image')->store('public/profile/images');
-        $user = User::where('id', $id);
-        $user->update([
-            'firstName' => $request->firstName,
-            'lastName' => $request->lastName,
-            'email' => $request->email,
-            'image' => $path,
-            'phone' => $request->phone
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'User updated successfully',
-            'data' => $user
-        ], 200);
     }
 
     public function editAdmin(Request $request, $id)
     {
-        $data = $request->all();
-        $validator = Validator::make($data, [
-            'firstName' => ['required', 'string', 'max:255'],
-            'lastName' => ['required', 'string', 'max:255'],
-            'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
-            'phone' => ['required', 'string', 'max:255']
-        ]);
+        try {
+            $data = $request->all();
+            $validator = Validator::make($data, [
+                'firstName' => ['required', 'string', 'max:255'],
+                'lastName' => ['required', 'string', 'max:255'],
+                'phone' => ['required', 'string', 'max:255']
+            ]);
 
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 401);
+            if ($validator->fails()) {
+                return response()->json(['error' => $validator->errors()], 401);
+            }
+
+            $path = $request->file('image')->store('public/profile/images');
+            $admin = Admin::where('id', $id);
+            $admin->update([
+                'firstName' => $request->firstName,
+                'lastName' => $request->lastName,
+                'image' => $path,
+                'phone' => $request->phone
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Staff updated successfully',
+                'data' => $admin
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success'=> false,
+                'message' => $th
+            ], 503);
         }
-
-        $path = $request->file('image')->store('public/profile/images');
-        $admin = Admin::where('id', $id);
-        $admin->update([
-            'firstName' => $request->firstName,
-            'lastName' => $request->lastName,
-            'image' => $path,
-            'phone' => $request->phone
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Staff updated successfully',
-            'data' => $admin
-        ], 200);
     }
 }

@@ -31,14 +31,20 @@ class User extends Authenticatable implements MustVerifyEmail
         'dob',
         'country',
         'company',
+        'industry',
+        'website',
+        'industry',
         'business_type',
         'other',
+        'average_visit',
+        'website_timeline',
         'turnover',
         'business_size',
         'business_bio',
         'business_duration',
         'role',
-        'agree'
+        'agree',
+        'approved'
     ];
 
     /**
@@ -61,7 +67,8 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     public function sendPasswordResetNotification($token){
-        $this->notify(new \App\Notifications\MailResetPasswordNotification($token));
+        $url = 'https://moovitdigital.com/reset-password?token='.$token;
+        $this->notify(new \App\Notifications\MailResetPasswordNotification($url));
     }
 
     public function adverts() {
@@ -69,6 +76,14 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     public function publisherAds() {
-        return $this->hasMany(PublisherAds::class, 'user_id');
+        return $this->hasMany(PublisherAds::class, 'publisher_id');
+    }
+
+    public function Banners() {
+        return $this->hasMany(Banners::class, 'user_id');
+    }
+
+    public function Withdraw() {
+        return $this->hasMany(Withdraw::class, 'request_by');
     }
 }

@@ -10,12 +10,28 @@ class PublisherAds extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'banner',
-        'user_id'
+        'script',
+        'banner_id',
+        'publisher_id',
+        'impressions',
+        'clicks',
+        'user_id',
+        'advert_id'
     ];
 
     public function users() {
-        return $this->belongsToMany(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'publisher_id');
+    }
+
+    public function advertisers() {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function banners() {
+        return $this->belongsTo(Banners::class, 'banner_id');
+    }
+
+    public function Ad() {
+        return $this->belongsTo(Advert::class, 'advert_id');
     }
 }

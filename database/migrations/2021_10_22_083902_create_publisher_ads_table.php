@@ -15,9 +15,13 @@ class CreatePublisherAdsTable extends Migration
     {
         Schema::create('publisher_ads', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('banner');
+            $table->string('script');
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('banner_id')->constrained('banners')->cascadeOnDelete();
+            $table->foreignId('publisher_id')->constrained('users')->cascadeOnDelete();
+            $table->integer('impressions')->default(0);
+            $table->integer('clicks')->default(0);
+            $table->foreignId('advert_id')->constrained('adverts')->cascadeOnDelete();
             $table->timestamps();
         });
     }

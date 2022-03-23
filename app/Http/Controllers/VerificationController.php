@@ -81,20 +81,4 @@ class VerificationController extends Controller
 
         return response()->json(["msg" => "Email verification link sent on your email id"]);
     }
-
-    // public function request()
-    // {
-    //     auth()->user()->sendEmailVerificationNotification();
-
-    //     return back()
-    //         ->with('success', 'Verification link sent!');
-    // }
-
-    // public function verify(EmailVerificationRequest $request)
-    // {
-
-    //     $request->fulfill();
-
-    //     return Redirect::to('https://moovitdigital.com/login');
-    // }
 }

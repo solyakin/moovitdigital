@@ -35,6 +35,10 @@ class CreateAdvertsTable extends Migration
             $table->string('ageRange');
             $table->string('start');
             $table->string('end');
+            $table->string('fb_page')->nullable();
+            $table->string('twitter')->nullable();
+            $table->string('linkedin')->nullable();
+            $table->string('instagram')->nullable();
             $table->string('demographics')->nullable();
             $table->string('interests')->nullable();
             $table->foreignId('createdBy')->constrained('users')->cascadeOnDelete();
@@ -42,6 +46,7 @@ class CreateAdvertsTable extends Migration
             $table->integer('active')->nullable();
             $table->foreignId('assigned')->nullable()->constrained('admins')->cascadeOnDelete();
             $table->string('amount')->nullable();
+            $table->integer('amount_used')->nullable();
             $table->timestamps();
         });
     }

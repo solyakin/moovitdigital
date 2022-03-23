@@ -9,20 +9,20 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class MailResetPasswordNotification extends ResetPassword
+class MailResetPasswordNotification extends ResetPassword implements ShouldQueue
 {
     use Queueable;
-    protected $pageUrl;
+    protected $url;
     public $token;
     /**
     * Create a new notification instance.
     *
     * @param $token
     */
-    public function __construct($token)
+    public function __construct($url)
     {
-        parent::__construct($token);
-        $this->pageUrl = env('APP_URL');
+        // parent::__construct($token);
+        $this->url = $url;
         }
     /**
     * Get the notification's delivery channels.
@@ -46,11 +46,11 @@ class MailResetPasswordNotification extends ResetPassword
             return call_user_func(static::$toMailCallback, $notifiable, $this->token);
         }
         return (new MailMessage)
-            ->subject(Lang::getFromJson('Reset application Password'))
-            ->line(Lang::getFromJson('You are receiving this email because we received a password reset request for your account.'))
-            ->action(Lang::getFromJson('Reset Password'), $this->pageUrl."?token=".$this->token)
-            ->line(Lang::getFromJson('This password reset link will expire in :count minutes.', ['count' => config('auth.passwords.users.expire')]))
-            ->line(Lang::getFromJson('If you did not request a password reset, no further action is required.'));
+            ->subject(Lang::get('Reset application Password'))
+            ->line(Lang::get('You are receiving this email because we received a password reset request for your account.'))
+            ->action(Lang::get('Reset Password'), $this->url)
+            ->line(Lang::get('This password reset link will expire in :count minutes.', ['count' => config('auth.passwords.users.expire')]))
+            ->line(Lang::get('If you did not request a password reset, no further action is required.'));
     }
     /**
     * Get the array representation of the notification.
